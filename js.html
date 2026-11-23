@@ -1,0 +1,1237 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>تعلّم JavaScript من الصفر - بالألعاب</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;800&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#f6f7fb; --card:#ffffff; --ink:#1f2937; --muted:#6b7280;
+    --brand:#ea580c; --brand2:#2563eb; --line:#e5e7eb; --soft:#fff7ed;
+    --code-bg:#1e1e2e; --code-ink:#e5e7eb;
+    --tip:#ecfdf5; --tip-line:#10b981; --warn:#fef2f2; --warn-line:#ef4444;
+  }
+  *{box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  body{margin:0;font-family:"Cairo",Tahoma,"Segoe UI",Arial,sans-serif;background:var(--bg);color:var(--ink);line-height:1.9;font-size:17px}
+  header.hero{background:linear-gradient(135deg,#f59e0b,var(--brand) 50%,#be123c);color:#fff;padding:40px 20px 56px;text-align:center}
+  header.hero h1{margin:0 0 8px;font-size:2.4rem;font-weight:800}
+  header.hero p{margin:0 auto;max-width:780px;font-size:1.15rem;opacity:.97}
+  .pages{display:flex;justify-content:center;gap:8px;flex-wrap:wrap;margin-bottom:18px}
+  .pages a{color:#fff;text-decoration:none;border:1px solid rgba(255,255,255,.55);border-radius:999px;padding:2px 14px;font-size:.95rem}
+  .pages a.on{background:#fff;color:var(--brand);font-weight:800}
+  .layout{display:grid;grid-template-columns:270px 1fr;gap:24px;max-width:1250px;margin:-30px auto 40px;padding:0 16px}
+  nav.toc{position:sticky;top:12px;align-self:start;background:var(--card);border-radius:16px;padding:16px;box-shadow:0 4px 18px rgba(0,0,0,.06);max-height:calc(100vh - 24px);overflow:auto}
+  nav.toc h3{margin:0 0 8px;font-size:1.05rem;color:var(--brand)}
+  nav.toc a{display:block;padding:5px 10px;border-radius:8px;color:var(--ink);text-decoration:none;font-size:.93rem}
+  nav.toc a:hover,nav.toc a.active{background:var(--soft);color:var(--brand)}
+  main{min-width:0}
+  section.lesson{background:var(--card);border-radius:18px;padding:26px 28px;margin-bottom:22px;box-shadow:0 4px 18px rgba(0,0,0,.05)}
+  section.lesson h2{margin:0 0 12px;font-size:1.6rem;display:flex;align-items:center;gap:12px}
+  .num{background:var(--brand);color:#fff;border-radius:12px;min-width:42px;height:42px;display:inline-flex;align-items:center;justify-content:center;font-size:1.1rem}
+  h3.sub{color:var(--brand);margin:22px 0 6px;font-size:1.2rem}
+  code.in{background:var(--soft);color:#9a3412;padding:1px 7px;border-radius:6px;font-family:Consolas,"Courier New",monospace;direction:ltr;unicode-bidi:embed;font-size:.92em}
+  .tip,.warn,.idea{border-right:5px solid var(--tip-line);background:var(--tip);padding:12px 16px;border-radius:10px;margin:14px 0}
+  .warn{border-color:var(--warn-line);background:var(--warn)}
+  .idea{border-color:var(--brand2);background:#eff6ff}
+  .tip b:first-child,.warn b:first-child,.idea b:first-child{display:block}
+  table.ref{width:100%;border-collapse:collapse;margin:10px 0;font-size:.95rem}
+  table.ref th,table.ref td{border:1px solid var(--line);padding:8px 10px;text-align:right;vertical-align:top}
+  table.ref th{background:var(--soft);color:var(--brand)}
+  table.ref td:first-child{direction:ltr;text-align:left;font-family:Consolas,monospace;color:#1d4ed8;white-space:nowrap}
+  .example{margin:16px 0;border:1px solid var(--line);border-radius:14px;overflow:hidden}
+  .ex-bar{display:flex;justify-content:space-between;align-items:center;padding:8px 14px;font-weight:700;font-size:.95rem;gap:8px;flex-wrap:wrap}
+  .ex-bar.code{background:#2a2a3d;color:#fdba74}
+  .ex-bar.res{background:#eff6ff;color:#1e40af;border-top:1px solid var(--line)}
+  .ex-bar.con{background:#0b1020;color:#93c5fd;border-top:1px solid #1f2937}
+  .ex-bar button{font-family:inherit;font-size:.85rem;border:0;border-radius:8px;padding:4px 12px;cursor:pointer;background:var(--brand);color:#fff;margin-inline-start:6px}
+  .ex-bar button.ghost{background:#3f3f5a}
+  .ex-bar button.run{background:#16a34a}
+  pre.code{margin:0;background:var(--code-bg);color:var(--code-ink);padding:16px;direction:ltr;text-align:left;overflow:auto;font-family:Consolas,"Courier New",monospace;font-size:15px;line-height:1.7;white-space:pre}
+  textarea.code{display:none;width:100%;min-height:160px;margin:0;border:0;background:#111827;color:#fde68a;padding:16px;direction:ltr;text-align:left;font-family:Consolas,monospace;font-size:15px;line-height:1.7;resize:vertical;outline:none}
+  .t{color:#f472b6}.a{color:#93c5fd}.v{color:#86efac}.c{color:#9ca3af;font-style:italic}.e{color:#fbbf24}
+  iframe.stagef{display:block;width:100%;border:0;background:#fff;min-height:60px}
+  .console{background:#0b1020;color:#e5e7eb;font-family:Consolas,monospace;direction:ltr;text-align:left;padding:10px 14px;min-height:46px;white-space:pre-wrap;font-size:15px;line-height:1.7}
+  .console .ln::before{content:"› ";color:#64748b}
+  .console .warnl{color:#fde68a}
+  .console .err{color:#fca5a5}
+  .console .why{direction:rtl;text-align:right;font-family:"Cairo",Tahoma,sans-serif;background:#3f1d1d;color:#fecaca;border-radius:8px;padding:6px 10px;margin:6px 0}
+  .console .empty{color:#64748b;font-family:"Cairo",Tahoma;direction:rtl;text-align:right}
+  footer{text-align:center;color:var(--muted);padding:20px 10px 40px}
+  .anatomy{direction:ltr;text-align:center;font-family:Consolas,monospace;font-size:1.3rem;background:#0f172a;color:#fff;padding:18px;border-radius:12px;margin:12px 0;line-height:2.2}
+  .anatomy span{padding:3px 8px;border-radius:6px}
+  .lbls{display:flex;justify-content:center;gap:12px;flex-wrap:wrap;font-size:.95rem}
+  .lbls span{padding:2px 10px;border-radius:8px}
+  #topBtn{position:fixed;left:18px;bottom:18px;background:var(--brand);color:#fff;border:0;border-radius:50%;width:48px;height:48px;font-size:22px;cursor:pointer;box-shadow:0 6px 16px rgba(234,88,12,.4);z-index:50}
+
+  /* games */
+  .game{border:2px solid #fdba74;background:linear-gradient(180deg,#fff7ed,#fff 60%);border-radius:18px;padding:16px 18px;margin:18px 0}
+  .game-h{display:flex;align-items:center;gap:10px;font-weight:800;font-size:1.2rem;color:var(--brand);margin-bottom:4px;flex-wrap:wrap}
+  .badge{background:var(--brand2);color:#fff;border-radius:999px;padding:0 12px;font-size:.8rem}
+  .row{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin:8px 0}
+  .row input[type=text],.row input[type=number],.row select{font-family:inherit;font-size:1rem;padding:5px 10px;border-radius:10px;border:1px solid #cbd5e1}
+  .row input.mono{font-family:Consolas,monospace;direction:ltr;width:130px}
+  input[type=range]{accent-color:var(--brand)}
+  .btn{font-family:inherit;border:0;border-radius:10px;padding:7px 16px;cursor:pointer;background:var(--brand);color:#fff;font-size:.95rem}
+  .btn.alt{background:var(--brand2)} .btn.gray{background:#64748b} .btn.green{background:#16a34a}
+  .btn:disabled{opacity:.45;cursor:default}
+  .msg{margin-top:8px;font-weight:700;min-height:1.6em}
+  .ok{color:#059669}.no{color:#dc2626}
+  .codeview{direction:ltr;text-align:left;background:#0f172a;color:#e2e8f0;font-family:Consolas,monospace;padding:10px 14px;border-radius:10px;white-space:pre;overflow:auto;font-size:14.5px;line-height:1.8;margin:8px 0}
+  .shake{animation:shake .4s}
+  @keyframes shake{0%,100%{transform:translateX(0)}25%{transform:translateX(-8px)}75%{transform:translateX(8px)}}
+  @keyframes pop{0%{transform:scale(.3);opacity:0}100%{transform:scale(1);opacity:1}}
+  /* vars */
+  .shelf{display:flex;flex-wrap:wrap;gap:14px;min-height:130px;background:repeating-linear-gradient(0deg,#fff,#fff 108px,#d6b98c 108px,#d6b98c 116px);padding:10px;border-radius:12px;border:1px solid #e7d5b5}
+  .vbox{width:120px;text-align:center;animation:pop .3s}
+  .vbox .lid{background:#b45309;color:#fff;border-radius:8px 8px 0 0;font-family:Consolas,monospace;font-size:.85rem;padding:2px 4px;direction:ltr;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+  .vbox .body{background:#fde68a;border:2px solid #b45309;border-top:0;border-radius:0 0 10px 10px;height:58px;display:flex;align-items:center;justify-content:center;font-family:Consolas,monospace;direction:ltr;font-weight:700;overflow:hidden;padding:0 4px;word-break:break-all;font-size:.9rem}
+  .vbox small{display:block;font-size:.75rem;color:var(--muted)}
+  .vbox.const .lid{background:#475569}.vbox.const .body{background:#e2e8f0;border-color:#475569}
+  /* types */
+  .big-val{direction:ltr;font-family:Consolas,monospace;font-size:2rem;text-align:center;background:#0f172a;color:#fde68a;border-radius:14px;padding:14px;margin:8px 0}
+  .choices{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:8px}
+  .choices button{font-family:inherit;font-size:1rem;padding:10px;border-radius:12px;border:2px solid var(--line);background:#fff;cursor:pointer}
+  .choices button:hover{border-color:var(--brand)}
+  .choices button.right{background:#dcfce7;border-color:#16a34a}.choices button.wrong{background:#fee2e2;border-color:#dc2626}
+  /* if */
+  .cl{display:block;padding:0 8px;border-radius:6px;transition:.2s}
+  .cl.on{background:rgba(34,197,94,.25)}.cl.off{opacity:.35}
+  .tag{font-size:.8rem;padding:0 8px;border-radius:999px;margin-left:8px;font-family:Cairo,Tahoma}
+  .tag.T{background:#16a34a;color:#fff}.tag.F{background:#dc2626;color:#fff}
+  .gate{font-size:2.2rem;text-align:center;background:#fff;border:1px dashed #cbd5e1;border-radius:14px;padding:10px}
+  /* robot */
+  .track{display:grid;grid-template-columns:repeat(12,1fr);gap:4px;direction:ltr;margin:10px 0}
+  .cell{aspect-ratio:1;background:#e2e8f0;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:clamp(14px,3vw,30px);position:relative}
+  .cell small{position:absolute;bottom:0;font-size:.6rem;color:#64748b}
+  .cell.trail{background:#bfdbfe}
+  .bubbles{display:flex;flex-wrap:wrap;gap:6px;direction:ltr;min-height:40px}
+  .bubbles span{background:var(--brand2);color:#fff;border-radius:999px;padding:2px 12px;font-family:Consolas,monospace;animation:pop .25s}
+  /* juice */
+  .machine{display:flex;align-items:center;gap:14px;justify-content:center;flex-wrap:wrap;background:#fff;border:1px dashed #cbd5e1;border-radius:14px;padding:14px}
+  .mbox{width:160px;height:120px;background:linear-gradient(180deg,#94a3b8,#475569);border-radius:16px;color:#fff;display:flex;flex-direction:column;align-items:center;justify-content:center;font-weight:800;position:relative}
+  .mbox.work{animation:shake .25s 4}
+  .fruit-drop{font-size:40px;min-width:60px;text-align:center}
+  .cups{font-size:34px;min-width:120px;text-align:center;direction:ltr}
+  /* train */
+  .train{display:flex;align-items:flex-end;gap:6px;direction:ltr;overflow:auto;padding:10px 4px;min-height:120px;background:linear-gradient(0deg,#78716c 6px,transparent 6px)}
+  .wagon{min-width:74px;text-align:center;animation:pop .3s}
+  .wagon .w{background:#fb923c;border:3px solid #9a3412;border-radius:10px;height:60px;display:flex;align-items:center;justify-content:center;font-size:30px}
+  .wagon .wheels{font-size:12px;letter-spacing:14px;color:#1f2937}
+  .wagon .ix{font-family:Consolas,monospace;font-size:.85rem;color:#1d4ed8;font-weight:700}
+  .wagon.hl .w{background:#fde047;box-shadow:0 0 0 4px #2563eb}
+  .engine{font-size:52px;line-height:1}
+  .oplog{max-height:150px;overflow:auto}
+  /* object card */
+  .idcard{width:290px;background:linear-gradient(135deg,#1e3a8a,#2563eb);color:#fff;border-radius:18px;padding:16px;box-shadow:0 10px 24px rgba(37,99,235,.35)}
+  .idcard .av{font-size:46px;float:left}
+  .idcard b{color:#fde68a}
+  /* order */
+  .pool,.answer{min-height:60px;border-radius:12px;padding:8px;direction:ltr}
+  .pool{background:#f1f5f9}
+  .answer{background:#0f172a;margin-top:8px}
+  .pool button,.answer button{display:block;width:100%;text-align:left;font-family:Consolas,monospace;font-size:14.5px;border:0;border-radius:8px;padding:6px 10px;margin:4px 0;cursor:pointer;white-space:pre}
+  .pool button{background:#fff;border:1px solid #cbd5e1}
+  .answer button{background:#1e293b;color:#fde68a}
+  /* quiz */
+  .quiz .q{font-weight:800;font-size:1.1rem;margin:6px 0 10px}
+  .quiz .opt{display:block;width:100%;text-align:right;margin:6px 0;padding:10px 14px;border:2px solid var(--line);border-radius:12px;background:#fff;cursor:pointer;font-family:inherit;font-size:1rem}
+  .quiz .opt:hover{border-color:var(--brand)}
+  .quiz .opt.right{border-color:#10b981;background:#ecfdf5}.quiz .opt.wrong{border-color:#ef4444;background:#fef2f2}
+  .quiz code{direction:ltr;unicode-bidi:embed;font-family:Consolas,monospace;background:#f1f5f9;padding:0 5px;border-radius:5px}
+  .bar{height:10px;background:#e5e7eb;border-radius:9px;overflow:hidden;margin:6px 0}
+  .bar i{display:block;height:100%;background:linear-gradient(90deg,var(--brand),var(--brand2));transition:width .3s}
+  /* playground */
+  .pg-tools{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin:14px 0}
+  .pg-tools button,.challenges .try{font-family:inherit;border:0;border-radius:10px;padding:7px 16px;cursor:pointer;background:var(--brand);color:#fff;font-size:.95rem}
+  .pg-tools button.gray{background:#64748b}.pg-tools button.green{background:#16a34a}
+  .pg-tools select{font-family:inherit;font-size:.95rem;padding:6px 10px;border-radius:10px;border:1px solid var(--line)}
+  .pg-wrap{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+  .pg-pane{border:1px solid var(--line);border-radius:14px;overflow:hidden;display:flex;flex-direction:column}
+  .pg-pane textarea{width:100%;border:0;background:#111827;color:#fde68a;padding:14px;direction:ltr;text-align:left;font-family:Consolas,"Courier New",monospace;font-size:15px;line-height:1.7;resize:vertical;outline:none;tab-size:2}
+  #pgHtml{min-height:110px;color:#a5f3fc}
+  #pgJs{min-height:300px;flex:1}
+  #pgStage{width:100%;border:0;background:#fff;min-height:200px}
+  .challenges li{margin:8px 0}
+  .challenges .try{padding:2px 12px;font-size:.85rem;margin-inline-start:8px;background:var(--brand2)}
+  @media (max-width:900px){.pg-wrap{grid-template-columns:1fr}.layout{grid-template-columns:1fr}nav.toc{position:static;max-height:none}section.lesson{padding:20px 16px}}
+</style>
+</head>
+<body>
+
+<header class="hero">
+  <div class="pages">
+    <a href="mero.html">🌐 HTML</a><a href="css.html">🎨 CSS</a><a href="js.html" class="on">⚡ JavaScript</a><a href="python.html">🐍 Python</a>
+  </div>
+  <h1>⚡ تعلّم JavaScript من الصفر... وإنت بتلعب!</h1>
+  <p>ولا يهمك لو عمرك ما كتبت سطر كود. هنمشي مع بعض واحدة واحدة، وبلغة بسيطة جدًا. في كل درس هتلاقي <b>كود تقدر تشغّله ▶️</b> و<b>🎮 لعبة</b> تفهّمك الفكرة من غير حفظ.</p>
+</header>
+
+<div class="layout">
+<nav class="toc" id="toc"><h3>📚 الفهرس</h3></nav>
+<main>
+
+<!-- 1 -->
+<section class="lesson" id="l1" data-title="يعني إيه JavaScript؟">
+  <h2><span class="num">1</span> يعني إيه JavaScript؟ 🤔</h2>
+  <p>نرجع لمثال البيت 🏠:</p>
+  <ul>
+    <li><b>HTML</b> = الطوب والحيطان.</li>
+    <li><b>CSS</b> = الدهان والديكور.</li>
+    <li><b>JavaScript</b> = <b>الكهربا</b> ⚡. لما تدوس على زرار النور، النور ينوّر. لما ترن الجرس، الجرس يضرب.</li>
+  </ul>
+  <p>يعني JavaScript (واختصارها <b>JS</b>) هي اللي بتخلّي الصفحة <b>تفكّر وتتصرف</b>: لما تدوس زرار يحصل حاجة، لما تكتب غلط يطلعلك تحذير، لما تضيف حاجة للسلة العدد يزيد.</p>
+  <p>والأهم: JS دي <b>لغة برمجة بجد</b>. يعني إنت بتدّي الكمبيوتر <b>أوامر</b> وهو ينفذها بالترتيب، زي وصفة الأكل بالظبط 🍳: «حط الزيت، استنى يسخن، حط البيض...».</p>
+  <div class="example"><template class="stage"><button id="b" style="font-size:20px;padding:10px 24px;border-radius:12px;border:0;background:#ea580c;color:#fff;cursor:pointer">💡 دوس عليّا</button>
+<p id="t" style="font-size:22px"></p></template><script type="text/plain">
+// لما حد يدوس على الزرار...
+document.getElementById("b").onclick = function () {
+  // ...اكتب الكلام ده في الفقرة
+  document.getElementById("t").textContent = "🎉 أهلًا! أنا JavaScript وشغّال!";
+  document.body.style.background = "#fef3c7";
+};
+  </script></div>
+  <div class="tip"><b>💡 متخافش من الكود ده</b>لسه مش مطلوب منك تفهمه. في آخر الصفحة هتلاقي نفسك فاهمه كله 😉. بس دوس على الزرار اللي في «📺 الشاشة».</div>
+</section>
+
+<!-- 2 -->
+<section class="lesson" id="l2" data-title="الكونسول وأول أمر">
+  <h2><span class="num">2</span> الكونسول: أول أمر ليك 🖥️</h2>
+  <p>الكونسول (Console) ده زي <b>كشكول ملاحظات</b> الكمبيوتر بيكتب لك فيه. أهم أمر في الدنيا:</p>
+  <div class="anatomy">
+    <span style="background:#1d4ed8">console</span><span style="background:#334155">.</span><span style="background:#be185d">log</span><span style="background:#334155">(</span><span style="background:#047857">"أهلًا"</span><span style="background:#334155">)</span><span style="background:#334155">;</span>
+  </div>
+  <div class="lbls">
+    <span style="background:#dbeafe">🖥️ console = الكشكول</span>
+    <span style="background:#fce7f3">✍️ log = اكتب فيه</span>
+    <span style="background:#d1fae5">💬 اللي بين القوسين = تكتب إيه</span>
+  </div>
+  <p>دوس <b>▶️ شغّل</b> وشوف الكلام بيطلع في «🖥️ الكونسول»:</p>
+  <div class="example"><script type="text/plain">
+console.log("أهلًا يا عالم 👋");
+console.log("أنا بتعلم JavaScript");
+console.log(5 + 3);
+  </script></div>
+  <div class="warn"><b>⚠️ لاحظ</b>الكلام العادي لازم يبقى بين علامتين تنصيص <code class="in">"..."</code>. لكن الأرقام والحسابات من غير تنصيص. وفي آخر كل أمر <code class="in">;</code> (زي النقطة في آخر الجملة).</div>
+  <h3 class="sub">فين بتكتب JS في الحقيقة؟</h3>
+  <p>جوه ملف HTML، في وسم <code class="in">&lt;script&gt;</code> قبل ما تقفل الـ body:</p>
+  <pre class="code">&lt;body&gt;
+  &lt;h1&gt;صفحتي&lt;/h1&gt;
+
+  &lt;script&gt;
+    console.log("أهلًا");
+  &lt;/script&gt;
+&lt;/body&gt;</pre>
+  <p>وعشان تشوف الكونسول الحقيقي في أي موقع: دوس <b>F12</b> واختار <b>Console</b>. 🔍</p>
+  <div class="tip"><b>💡 التعليقات</b>أي سطر بيبدأ بـ <code class="in">//</code> ده ملاحظة ليك، الكمبيوتر بيتجاهله خالص.</div>
+</section>
+
+<!-- 3 -->
+<section class="lesson" id="l3" data-title="المتغيرات: العلب">
+  <h2><span class="num">3</span> المتغيرات: علب بتشيل حاجات 📦</h2>
+  <p>المتغير (Variable) = <b>علبة عليها اسم</b> وجواها حاجة. زي علب المطبخ: علبة مكتوب عليها «سكر» وجواها سكر.</p>
+  <div class="anatomy">
+    <span style="background:#be185d">let</span> <span style="background:#1d4ed8">age</span> <span style="background:#334155">=</span> <span style="background:#047857">25</span><span style="background:#334155">;</span>
+  </div>
+  <div class="lbls">
+    <span style="background:#fce7f3">🆕 let = «اعمل علبة جديدة»</span>
+    <span style="background:#dbeafe">🏷️ age = اسم العلبة</span>
+    <span style="background:#f1f5f9">= معناها «حط جواها»</span>
+    <span style="background:#d1fae5">🎁 25 = اللي جواها</span>
+  </div>
+  <div class="example"><script type="text/plain">
+let name = "مروة";
+let age = 25;
+
+console.log(name);
+console.log(age);
+
+age = 26;          // غيرنا اللي جوه العلبة (عيد ميلاد سعيد 🎂)
+console.log(age);
+  </script></div>
+  <h3 class="sub">let ولا const؟</h3>
+  <ul>
+    <li><code class="in">let</code> = علبة <b>عادية</b> 📦 تقدر تغيّر اللي جواها براحتك.</li>
+    <li><code class="in">const</code> = علبة <b>مقفولة بقفل</b> 🔒 تحط فيها حاجة مرة واحدة وخلاص، متتغيرش (زي تاريخ ميلادك).</li>
+  </ul>
+  <div class="game" id="gVars">
+    <div class="game-h">🎮 لعبة: رفّ العلب <span class="badge">اعمل علب</span></div>
+    <p>اعمل علبة: اختار نوعها، اكتب اسمها (بالإنجليزي) وحط جواها حاجة. وبعدين جرّب تغيّر اللي جوه علبة <b>const</b> وشوف هيحصل إيه 😈</p>
+    <div class="row" style="direction:ltr;justify-content:flex-end">
+      <select id="vKind"><option>let</option><option>const</option></select>
+      <input type="text" class="mono" id="vName" placeholder="اسم العلبة" value="city">
+      <b>=</b>
+      <input type="text" class="mono" id="vVal" placeholder='قيمة' value='"القاهرة"'>
+      <button class="btn" id="vMake">📦 اعمل العلبة</button>
+    </div>
+    <div class="row" style="direction:ltr;justify-content:flex-end">
+      <select id="vPick"></select><b>=</b>
+      <input type="text" class="mono" id="vNew" value="100">
+      <button class="btn alt" id="vSet">✏️ غيّر اللي جواها</button>
+    </div>
+    <div class="shelf" id="vShelf"></div>
+    <div class="codeview" id="vCode"></div>
+    <div class="msg" id="vMsg"></div>
+  </div>
+  <div class="warn"><b>⚠️ قواعد اسم العلبة</b>
+    ✅ بالإنجليزي، ممكن فيه أرقام بس مايبدأش برقم: <code class="in">age</code>, <code class="in">user1</code>, <code class="in">firstName</code><br>
+    ❌ من غير مسافات ولا شرطة: <code class="in">first name</code> و <code class="in">first-name</code> غلط.<br>
+    ⚠️ <code class="in">Age</code> و <code class="in">age</code> علبتين مختلفين خالص!
+  </div>
+</section>
+
+<!-- 4 -->
+<section class="lesson" id="l4" data-title="أنواع البيانات">
+  <h2><span class="num">4</span> أنواع الحاجات اللي بتتحط في العلب 🧺</h2>
+  <table class="ref">
+    <tr><th>النوع</th><th>بالبلدي</th><th>شكله</th></tr>
+    <tr><td>number</td><td>🔢 رقم، تقدر تحسب بيه</td><td><code class="in">25</code> <code class="in">3.14</code> <code class="in">-7</code></td></tr>
+    <tr><td>string</td><td>📝 كلام (نص). لازم بين تنصيص</td><td><code class="in">"أحمد"</code> <code class="in">'مرحبا'</code></td></tr>
+    <tr><td>boolean</td><td>✅ يا صح يا غلط. زي مفتاح النور: on أو off</td><td><code class="in">true</code> <code class="in">false</code></td></tr>
+    <tr><td>array</td><td>🚂 قايمة حاجات ورا بعض</td><td><code class="in">["تفاح", "موز"]</code></td></tr>
+    <tr><td>object</td><td>🪪 كارت معلومات: لكل حاجة اسم وقيمة</td><td><code class="in">{ name: "علي", age: 20 }</code></td></tr>
+    <tr><td>undefined</td><td>📭 علبة فاضية لسه محطناش فيها حاجة</td><td><code class="in">let x;</code></td></tr>
+  </table>
+  <div class="warn"><b>⚠️ الفخ الأشهر</b><code class="in">5</code> ده رقم، لكن <code class="in">"5"</code> ده <b>كلام</b> شكله رقم! والفرق ده بيعمل مصايب (هتشوفها في الدرس الجاي).</div>
+  <div class="example"><script type="text/plain">
+console.log(typeof 42);        // typeof = «ده نوعه إيه؟»
+console.log(typeof "42");
+console.log(typeof true);
+console.log(typeof ["a", "b"]); // الـ array بيقول object (عادي، دي حاجة كده في JS 🙃)
+  </script></div>
+  <div class="game" id="gTypes">
+    <div class="game-h">🎮 لعبة: خمّن النوع <span class="badge" id="tyScore">0 / 0</span></div>
+    <p>هيطلعلك قيمة، وإنت قول نوعها إيه. خلّي بالك من التنصيص! 👀</p>
+    <div class="big-val" id="tyVal"></div>
+    <div class="choices" id="tyCh"></div>
+    <div class="msg" id="tyMsg"></div>
+  </div>
+</section>
+
+<!-- 5 -->
+<section class="lesson" id="l5" data-title="الحسابات">
+  <h2><span class="num">5</span> الحسابات: الكمبيوتر آلة حاسبة جبارة 🧮</h2>
+  <table class="ref">
+    <tr><th>العلامة</th><th>معناها</th><th>مثال</th></tr>
+    <tr><td>+</td><td>زائد</td><td><code class="in">5 + 2</code> = 7</td></tr>
+    <tr><td>-</td><td>ناقص</td><td><code class="in">5 - 2</code> = 3</td></tr>
+    <tr><td>*</td><td>ضرب (نجمة مش x)</td><td><code class="in">5 * 2</code> = 10</td></tr>
+    <tr><td>/</td><td>قسمة</td><td><code class="in">5 / 2</code> = 2.5</td></tr>
+    <tr><td>%</td><td>باقي القسمة (الفكة 🪙)</td><td><code class="in">5 % 2</code> = 1</td></tr>
+    <tr><td>**</td><td>أُس (تربيع وتكعيب)</td><td><code class="in">5 ** 2</code> = 25</td></tr>
+  </table>
+  <div class="example"><script type="text/plain">
+let price = 50;
+let count = 3;
+let total = price * count;
+
+console.log("الحساب:", total, "جنيه");
+console.log("بعد خصم 10%:", total - total * 0.1);
+
+let x = 10;
+x = x + 5;     // زوّد 5 على اللي في العلبة
+x += 5;        // نفس الكلام بس اختصار
+x++;           // زوّد 1
+console.log(x);
+  </script></div>
+  <div class="game" id="gCalc">
+    <div class="game-h">🎮 لعبة: الآلة الحاسبة المجنونة <span class="badge">جرّب "5" بالتنصيص</span></div>
+    <p>اكتب رقمين، واختار العملية. وبعدين جرّب تحط واحد منهم بين تنصيص <code class="in">"5"</code> وشوف المفاجأة 😱</p>
+    <div class="row" style="direction:ltr;justify-content:center">
+      <input type="text" class="mono" id="caA" value="5" style="width:90px">
+      <select id="caOp" style="font-family:Consolas;font-size:1.1rem"><option>+</option><option>-</option><option>*</option><option>/</option><option>%</option><option>**</option><option>==</option><option>===</option><option>&gt;</option><option>&lt;</option></select>
+      <input type="text" class="mono" id="caB" value="3" style="width:90px">
+    </div>
+    <div class="codeview" id="caCode" style="font-size:1.2rem;text-align:center"></div>
+    <div class="msg" id="caMsg"></div>
+  </div>
+</section>
+
+<!-- 6 -->
+<section class="lesson" id="l6" data-title="النصوص (Strings)">
+  <h2><span class="num">6</span> اللعب بالكلام (Strings) 📝</h2>
+  <p>تقدر <b>تلزق</b> الكلام في بعض بـ <code class="in">+</code>، أو تستخدم الطريقة الأحلى: العلامة المايلة <code class="in">`</code> (اللي جنب رقم 1 في الكيبورد) وتحط المتغير جوه <code class="in">${ }</code>:</p>
+  <div class="example"><script type="text/plain">
+let name = "سارة";
+let age = 22;
+
+// الطريقة القديمة: لزق بـ +
+console.log("أنا اسمي " + name + " وعندي " + age + " سنة");
+
+// الطريقة الحلوة: ` ` و ${ }
+console.log(`أنا اسمي ${name} وعندي ${age} سنة`);
+
+let word = "JavaScript";
+console.log(word.length);         // عدد الحروف
+console.log(word.toUpperCase());  // كله كابيتال
+console.log(word.toLowerCase());  // كله سمول
+console.log(word.includes("Script")); // فيه كلمة Script؟
+  </script></div>
+</section>
+
+<!-- 7 -->
+<section class="lesson" id="l7" data-title="if: لو كده اعمل كده">
+  <h2><span class="num">7</span> القرارات: «لو» كده... اعمل كده 🚦</h2>
+  <p>كل يوم إنت بتاخد قرارات: «<b>لو</b> الجو برد ← البس جاكيت، <b>غير كده</b> ← البس تيشيرت». الكمبيوتر بيعمل كده بـ <code class="in">if</code> و <code class="in">else</code>:</p>
+  <div class="example"><script type="text/plain">
+let weather = "برد";
+
+if (weather === "برد") {
+  console.log("🧥 البس جاكيت");
+} else {
+  console.log("👕 البس تيشيرت");
+}
+  </script></div>
+  <h3 class="sub">علامات المقارنة (بترجع true أو false)</h3>
+  <table class="ref">
+    <tr><th>العلامة</th><th>معناها</th></tr>
+    <tr><td>===</td><td>بيساوي بالظبط؟ (3 علامات = عشان واحدة بس معناها «حط في العلبة»)</td></tr>
+    <tr><td>!==</td><td>مش بيساوي؟</td></tr>
+    <tr><td>&gt;  &lt;</td><td>أكبر من، أصغر من</td></tr>
+    <tr><td>&gt;=  &lt;=</td><td>أكبر من أو يساوي، أصغر من أو يساوي</td></tr>
+    <tr><td>&amp;&amp;</td><td><b>و</b>: الاتنين لازم يبقوا صح</td></tr>
+    <tr><td>||</td><td><b>أو</b>: كفاية واحد يبقى صح</td></tr>
+    <tr><td>!</td><td><b>عكس</b>: بتقلب الصح غلط والغلط صح</td></tr>
+  </table>
+  <div class="game" id="gIf">
+    <div class="game-h">🎮 لعبة: بوّاب السينما 🎬 <span class="badge">غيّر وشوف الكود ماشي فين</span></div>
+    <div class="row">
+      <label>🎂 السن: <b id="ifAgeV"></b> <input type="range" id="ifAge" min="1" max="80" value="20"></label>
+      <label style="margin-right:16px"><input type="checkbox" id="ifTicket" checked> 🎟️ معاه تذكرة</label>
+      <label style="margin-right:16px"><input type="checkbox" id="ifVip"> ⭐ VIP</label>
+    </div>
+    <div class="codeview" id="ifCode"></div>
+    <div class="gate" id="ifGate"></div>
+    <p style="font-size:.92rem;color:var(--muted)">السطور اللي بالأخضر هي اللي اتنفذت. الباقي الكمبيوتر عدّاه خالص. وجنب كل شرط مكتوب هو طلع صح ولا غلط.</p>
+  </div>
+</section>
+
+<!-- 8 -->
+<section class="lesson" id="l8" data-title="اللوب: كرّر">
+  <h2><span class="num">8</span> اللوب (Loop): كرّر من غير ما تزهق 🔁</h2>
+  <p>لو عايز تكتب «أنا شاطر» 100 مرة، هتكتب 100 سطر؟ لأ طبعًا 😅. اللوب بيقول للكمبيوتر «<b>كرّر</b> الكلام ده كذا مرة».</p>
+  <div class="anatomy" style="font-size:1.05rem">
+    <span style="background:#be185d">for</span> (<span style="background:#1d4ed8">let i = 1</span>; <span style="background:#b45309">i &lt;= 5</span>; <span style="background:#047857">i++</span>) { ... }
+  </div>
+  <div class="lbls">
+    <span style="background:#dbeafe">🏁 ابدأ العدّ من 1</span>
+    <span style="background:#fef3c7">❓ طول ما i أصغر من أو يساوي 5 كمّل</span>
+    <span style="background:#d1fae5">➕ كل لفة زوّد i واحد</span>
+  </div>
+  <div class="example"><script type="text/plain">
+for (let i = 1; i <= 5; i++) {
+  console.log("لفة رقم " + i + " 🏃");
+}
+console.log("خلصت! 🏁");
+  </script></div>
+  <div class="game" id="gRobot">
+    <div class="game-h">🎮 لعبة: وصّل الروبوت للنجمة 🤖⭐ <span class="badge" id="rbScore">النجوم: 0</span></div>
+    <p>الروبوت بيمشي خطوة واحدة كل لفة. <b>كام لفة</b> محتاج عشان يوصل للنجمة بالظبط؟ (لو زوّدت هيعدّيها 😅)</p>
+    <div class="track" id="rbTrack"></div>
+    <div class="codeview" id="rbCode"></div>
+    <div class="row"><label>🔁 عدد اللفات: <input type="number" id="rbN" min="0" max="11" value="3" style="width:80px"></label><button class="btn green" id="rbGo">▶️ شغّل اللوب</button><button class="btn gray" id="rbNew">🔄 نجمة جديدة</button></div>
+    <div class="msg" id="rbMsg"></div>
+  </div>
+  <div class="game" id="gRange">
+    <div class="game-h">🎮 لعبة: العدّاد <span class="badge">غيّر الأرقام</span></div>
+    <div class="row" style="direction:ltr;justify-content:center;font-family:Consolas">
+      for (let i = <input type="number" id="rgS" value="0" style="width:64px">; i &lt; <input type="number" id="rgE" value="10" style="width:64px">; i += <input type="number" id="rgP" value="2" style="width:64px">)
+    </div>
+    <div class="bubbles" id="rgOut"></div>
+    <div class="msg" id="rgMsg"></div>
+  </div>
+  <h3 class="sub">while: كرّر طول ما...</h3>
+  <p><code class="in">while</code> بيقول «طول ما الشرط صح، كمّل». زي «طول ما إنت جعان كُل لقمة» 🍔.</p>
+  <div class="example"><script type="text/plain">
+let hunger = 3;
+while (hunger > 0) {
+  console.log("🍔 كلت لقمة... الجوع = " + hunger);
+  hunger--;   // قلّل 1
+}
+console.log("😌 شبعت");
+  </script></div>
+  <div class="warn"><b>⚠️ اللوب اللي مبيخلصش</b>لو نسيت تقلّل <code class="in">hunger</code>، الشرط هيفضل صح على طول والصفحة هتهنّج 🥶. دايمًا اتأكد إن اللوب ليه نهاية.</div>
+</section>
+
+<!-- 9 -->
+<section class="lesson" id="l9" data-title="الفانكشن: المكنة">
+  <h2><span class="num">9</span> الفانكشن (Function): مكنة بتعمل حاجة 🏭</h2>
+  <p>الفانكشن = <b>مكنة</b> إنت بتعملها مرة واحدة، وتشغّلها كل ما تحتاجها. زي مكنة العصير: <b>بتحط</b> فاكهة (المدخلات) ← <b>بتطلع</b> عصير (النتيجة).</p>
+  <div class="example"><script type="text/plain">
+// 1) بنعمل المكنة مرة واحدة
+function sayHello(name) {
+  console.log("أهلًا يا " + name + " 👋");
+}
+
+// 2) نشغّلها كل ما نحب بأي اسم
+sayHello("أحمد");
+sayHello("منى");
+sayHello("مروة");
+  </script></div>
+  <ul>
+    <li><code class="in">function</code> = «هعمل مكنة».</li>
+    <li><code class="in">sayHello</code> = اسم المكنة.</li>
+    <li><code class="in">(name)</code> = الفتحة اللي بتحط فيها الحاجة (اسمها <b>parameter</b>).</li>
+    <li><code class="in">return</code> = اللي المكنة بتطلّعه برّه عشان تستخدمه.</li>
+  </ul>
+  <div class="game" id="gJuice">
+    <div class="game-h">🎮 لعبة: مكنة العصير 🧃 <span class="badge">شغّل المكنة</span></div>
+    <div class="codeview" id="juCode"></div>
+    <div class="row">
+      <label>🍓 الفاكهة: <select id="juF"><option value="🍊|برتقان">🍊 برتقان</option><option value="🍓|فراولة">🍓 فراولة</option><option value="🥭|مانجا">🥭 مانجا</option><option value="🍋|لمون">🍋 لمون</option><option value="🍌|موز">🍌 موز</option></select></label>
+      <label>🥤 كام كوباية: <input type="number" id="juN" min="1" max="6" value="2" style="width:70px"></label>
+      <button class="btn green" id="juGo">⚙️ شغّل المكنة</button>
+    </div>
+    <div class="machine"><div class="fruit-drop" id="juIn">🍊</div><div style="font-size:30px">➡️</div><div class="mbox" id="juBox">🏭<br>makeJuice</div><div style="font-size:30px">➡️</div><div class="cups" id="juOut">؟</div></div>
+    <div class="msg" id="juMsg"></div>
+  </div>
+  <div class="example"><script type="text/plain">
+// مكنة بترجع نتيجة بـ return
+function add(a, b) {
+  return a + b;
+}
+
+let result = add(10, 5);
+console.log(result);
+console.log(add(100, 1) * 2);
+  </script></div>
+</section>
+
+<!-- 10 -->
+<section class="lesson" id="l10" data-title="Array: القطر">
+  <h2><span class="num">10</span> الـ Array: قطر فيه عربيات 🚂</h2>
+  <p>الـ Array = <b>قايمة</b> فيها حاجات كتير ورا بعض، زي القطر: كل عربية فيها حاجة، وكل عربية ليها <b>رقم</b>.</p>
+  <div class="warn"><b>⚠️ أغرب حاجة في البرمجة</b>العدّ بيبدأ من <b>0</b> مش من 1! أول عربية رقمها 0، والتانية 1... 🤯</div>
+  <div class="example"><script type="text/plain">
+let fruits = ["🍎 تفاح", "🍌 موز", "🍇 عنب"];
+
+console.log(fruits[0]);       // أول واحدة
+console.log(fruits[2]);       // التالتة
+console.log(fruits.length);   // عددهم
+
+fruits.push("🍉 بطيخ");       // زوّد في الآخر
+console.log(fruits);
+
+for (let f of fruits) {       // لف على كل واحدة
+  console.log("عندي " + f);
+}
+  </script></div>
+  <div class="game" id="gTrain">
+    <div class="game-h">🎮 لعبة: سواق القطر 🚂 <span class="badge" id="trLen">length = 3</span></div>
+    <div class="row">
+      <label>الحمولة: <select id="trItem"><option>🍎</option><option>🍌</option><option>🍇</option><option>🍉</option><option>🐱</option><option>🎁</option><option>⚽</option></select></label>
+      <button class="btn" data-op="push">push ➕ في الآخر</button>
+      <button class="btn" data-op="unshift">unshift ➕ في الأول</button>
+      <button class="btn alt" data-op="pop">pop ➖ من الآخر</button>
+      <button class="btn alt" data-op="shift">shift ➖ من الأول</button>
+    </div>
+    <div class="row"><label>اسأل عن عربية رقم: <input type="number" id="trIx" value="0" min="0" style="width:70px"></label><button class="btn gray" id="trGet">🔍 train[ ? ]</button></div>
+    <div class="train" id="trTrain"></div>
+    <div class="codeview oplog" id="trLog"></div>
+  </div>
+</section>
+
+<!-- 11 -->
+<section class="lesson" id="l11" data-title="Object: الكارت">
+  <h2><span class="num">11</span> الـ Object: كارت معلومات 🪪</h2>
+  <p>لو عايز تشيل معلومات كتير عن <b>حاجة واحدة</b> (شخص مثلًا)، بتستخدم Object. زي البطاقة الشخصية: فيها خانة «الاسم» وخانة «السن» وخانة «المحافظة».</p>
+  <div class="example"><script type="text/plain">
+let person = {
+  name: "كريم",
+  age: 30,
+  city: "إسكندرية",
+  isStudent: false
+};
+
+console.log(person.name);   // بنستخدم النقطة عشان نجيب خانة
+console.log(person.city);
+
+person.age = 31;            // نغيّر خانة
+person.job = "مهندس";       // نضيف خانة جديدة
+console.log(person);
+  </script></div>
+  <div class="game" id="gObj">
+    <div class="game-h">🎮 لعبة: اعمل بطاقتك 🪪 <span class="badge">اكتب واسأل</span></div>
+    <div class="row">
+      <label>name: <input type="text" id="obName" value="مروة"></label>
+      <label>age: <input type="number" id="obAge" value="22" style="width:80px"></label>
+      <label>city: <input type="text" id="obCity" value="القاهرة"></label>
+      <label><input type="checkbox" id="obStu" checked> isStudent</label>
+    </div>
+    <div style="display:flex;gap:16px;flex-wrap:wrap;align-items:flex-start">
+      <div class="codeview" id="obCode" style="flex:1;min-width:240px"></div>
+      <div class="idcard" id="obCard"></div>
+    </div>
+    <div class="row" style="direction:ltr;justify-content:flex-end;font-family:Consolas">console.log(person.<select id="obKey"><option>name</option><option>age</option><option>city</option><option>isStudent</option><option>phone</option></select>) ➜ <b id="obAns" style="background:#0f172a;color:#86efac;padding:2px 12px;border-radius:8px"></b></div>
+    <div class="msg" id="obMsg"></div>
+  </div>
+</section>
+
+<!-- 12 -->
+<section class="lesson" id="l12" data-title="JS بيغيّر الصفحة (DOM)">
+  <h2><span class="num">12</span> إزاي JS يمسك حاجة في الصفحة ويغيّرها؟ ✋</h2>
+  <p>الصفحة بالنسبة لـ JS عبارة عن شجرة عناصر اسمها <b>DOM</b>. وعشان تغيّر حاجة لازم الأول «تمسكها»:</p>
+  <ol>
+    <li>حط على العنصر <code class="in">id</code> في الـ HTML: <code class="in">&lt;p id="msg"&gt;</code></li>
+    <li>امسكه في JS: <code class="in">document.getElementById("msg")</code></li>
+    <li>غيّر فيه: الكلام بـ <code class="in">.textContent</code>، الشكل بـ <code class="in">.style</code></li>
+  </ol>
+  <div class="example"><template class="stage"><h2 id="title">عنوان عادي</h2>
+<p id="msg">كلام قديم</p>
+<img id="pic" src="" alt="" width="0"></template><script type="text/plain">
+let title = document.getElementById("title");
+title.textContent = "عنوان اتغير بـ JS ✨";
+title.style.color = "crimson";
+title.style.fontSize = "36px";
+
+let msg = document.getElementById("msg");
+msg.innerHTML = "كلام <b>جديد</b> وفيه <mark>تظليل</mark>";
+  </script></div>
+  <table class="ref">
+    <tr><th>الأمر</th><th>بيعمل إيه</th></tr>
+    <tr><td>document.getElementById("x")</td><td>هات العنصر اللي الـ id بتاعه x</td></tr>
+    <tr><td>document.querySelector(".card")</td><td>هات أول عنصر يطابق محدِّد CSS (زي اللي اتعلمناه في CSS)</td></tr>
+    <tr><td>el.textContent = "..."</td><td>غيّر الكلام اللي جواه</td></tr>
+    <tr><td>el.style.color = "red"</td><td>غيّر الـ CSS بتاعه (الاسم بيتكتب fontSize مش font-size)</td></tr>
+    <tr><td>el.classList.add("x")</td><td>زوّد عليه كلاس</td></tr>
+    <tr><td>input.value</td><td>اقرا اللي المستخدم كتبه في خانة</td></tr>
+  </table>
+</section>
+
+<!-- 13 -->
+<section class="lesson" id="l13" data-title="الأحداث (Events)">
+  <h2><span class="num">13</span> الأحداث: لما حاجة تحصل... اعمل حاجة 🔔</h2>
+  <p>الـ Event = حاجة بتحصل في الصفحة: المستخدم <b>داس</b>، <b>كتب</b>، <b>حرّك الماوس</b>. وإحنا بنقول لـ JS: «<b>استنى</b> الحدث ده، ولما يحصل نفّذ الكلام ده».</p>
+  <div class="example"><template class="stage"><input id="nameBox" placeholder="اكتب اسمك هنا..." style="font-size:18px;padding:6px 10px;border-radius:8px;border:1px solid #ccc">
+<button id="hiBtn" style="font-size:18px;padding:6px 16px">سلّم عليّا</button>
+<h2 id="out"></h2></template><script type="text/plain">
+let box = document.getElementById("nameBox");
+let btn = document.getElementById("hiBtn");
+let out = document.getElementById("out");
+
+// لما يدوس على الزرار
+btn.addEventListener("click", function () {
+  out.textContent = "أهلًا يا " + box.value + " 🌹";
+  console.log("حد داس على الزرار!");
+});
+
+// لما يكتب أي حرف
+box.addEventListener("input", function () {
+  console.log("بتكتب: " + box.value);
+});
+  </script></div>
+  <table class="ref">
+    <tr><th>الحدث</th><th>بيحصل إمتى</th></tr>
+    <tr><td>click</td><td>لما يدوس على العنصر</td></tr>
+    <tr><td>input</td><td>لما يكتب في خانة (كل حرف)</td></tr>
+    <tr><td>mouseover</td><td>لما الماوس يدخل على العنصر</td></tr>
+    <tr><td>keydown</td><td>لما يدوس زرار في الكيبورد</td></tr>
+    <tr><td>submit</td><td>لما يبعت فورم</td></tr>
+  </table>
+</section>
+
+<!-- 14 -->
+<section class="lesson" id="l14" data-title="مشروع: العدّاد">
+  <h2><span class="num">14</span> 🛠️ مشروع صغير: العدّاد</h2>
+  <p>يلا نجمع كل اللي اتعلمناه: <b>متغير</b> + <b>فانكشن</b> + <b>أحداث</b> + <b>تغيير الصفحة</b> + <b>if</b>.</p>
+  <div class="example"><template class="stage"><div style="text-align:center">
+  <h1 id="num" style="font-size:70px;margin:10px">0</h1>
+  <button id="minus" style="font-size:26px;width:60px">➖</button>
+  <button id="reset" style="font-size:20px">صفّر</button>
+  <button id="plus" style="font-size:26px;width:60px">➕</button>
+</div></template><script type="text/plain">
+let count = 0;
+let numEl = document.getElementById("num");
+
+function update() {
+  numEl.textContent = count;
+  if (count > 0) {
+    numEl.style.color = "green";
+  } else if (count < 0) {
+    numEl.style.color = "red";
+  } else {
+    numEl.style.color = "black";
+  }
+}
+
+document.getElementById("plus").onclick = function () { count++; update(); };
+document.getElementById("minus").onclick = function () { count--; update(); };
+document.getElementById("reset").onclick = function () { count = 0; update(); };
+  </script></div>
+  <div class="idea"><b>✨ طوّره بنفسك</b>دوس «✏️ عدّل» وخلّي الرقم ميعديش 10. (تلميح: جوه الـ plus اعمل <code class="in">if (count &lt; 10)</code>)</div>
+</section>
+
+<!-- 15 -->
+<section class="lesson" id="l15" data-title="مشروع: خمّن الرقم">
+  <h2><span class="num">15</span> 🎯 مشروع: لعبة خمّن الرقم</h2>
+  <p>الكمبيوتر هيختار رقم سري من 1 لـ 20، وإنت تخمّن. <code class="in">Math.random()</code> بيطلّع رقم عشوائي، و<code class="in">Math.floor</code> بيشيل الكسور.</p>
+  <div class="example"><template class="stage"><div style="text-align:center">
+  <h2>🤫 خمّن الرقم من 1 لـ 20</h2>
+  <input id="guess" type="number" style="font-size:22px;width:100px;text-align:center">
+  <button id="go" style="font-size:20px">خمّن!</button>
+  <h2 id="hint">...</h2>
+  <p id="tries"></p>
+</div></template><script type="text/plain">
+let secret = Math.floor(Math.random() * 20) + 1;
+let tries = 0;
+
+document.getElementById("go").onclick = function () {
+  let g = Number(document.getElementById("guess").value);
+  tries++;
+  let hint = document.getElementById("hint");
+
+  if (g === secret) {
+    hint.textContent = "🎉 صح! الرقم كان " + secret;
+  } else if (g > secret) {
+    hint.textContent = "⬇️ أصغر من كده";
+  } else {
+    hint.textContent = "⬆️ أكبر من كده";
+  }
+  document.getElementById("tries").textContent = "عدد المحاولات: " + tries;
+};
+console.log("🤫 (غش) الرقم السري هو: " + secret);
+  </script></div>
+</section>
+
+<!-- 16 -->
+<section class="lesson" id="l16" data-title="🧩 رتّب الكود">
+  <h2><span class="num">16</span> 🧩 لعبة: رتّب الكود</h2>
+  <p>الكمبيوتر بيقرا الكود <b>من فوق لتحت بالترتيب</b>. السطور هنا اتلخبطت! دوس عليهم <b>بالترتيب الصح</b>. (لو غلطت دوس على السطر تحت يرجع)</p>
+  <div class="game" id="gOrder">
+    <div class="game-h">🎮 <span id="orTitle"></span> <span class="badge" id="orLvl"></span></div>
+    <p id="orGoal" style="font-weight:700"></p>
+    <div class="pool" id="orPool"></div>
+    <div class="answer" id="orAns"></div>
+    <div class="row"><button class="btn green" id="orCheck">✅ اتأكد</button><button class="btn alt" id="orNext" disabled>➡️ اللي بعده</button><button class="btn gray" id="orReset">↩️ من الأول</button></div>
+    <div class="msg" id="orMsg"></div>
+  </div>
+</section>
+
+<!-- 17 -->
+<section class="lesson" id="l17" data-title="الأخطاء الشائعة">
+  <h2><span class="num">17</span> الأخطاء: صحابك الجداد 🐞</h2>
+  <p>كل المبرمجين بيغلطوا <b>كل يوم</b>، عادي جدًا. المهم تعرف تقرا الغلطة. الصفحة دي بتترجملك الأخطاء بالمصري لما تشغّل كود فيه مشكلة. جرّب:</p>
+  <div class="example" data-noauto><script type="text/plain">
+let name = "علي";
+console.log(nme);   // ❌ كاتب الاسم غلط!
+  </script></div>
+  <table class="ref">
+    <tr><th>الغلطة</th><th>يعني إيه بالمصري</th></tr>
+    <tr><td>x is not defined</td><td>بتستخدم علبة اسمها x مش موجودة. غالبًا كاتب الاسم غلط أو نسيت <code class="in">let</code>.</td></tr>
+    <tr><td>Unexpected token</td><td>فيه حرف في غير مكانه: قوس ناقص، أو زيادة، أو تنصيص مقفلتوش.</td></tr>
+    <tr><td>is not a function</td><td>بتشغّل حاجة على إنها مكنة وهي مش مكنة. اتأكد من الاسم.</td></tr>
+    <tr><td>Assignment to constant</td><td>بتحاول تغيّر علبة <code class="in">const</code> المقفولة.</td></tr>
+    <tr><td>Cannot read properties of null</td><td>بتمسك عنصر مش موجود في الصفحة. اتأكد من الـ id.</td></tr>
+  </table>
+  <div class="tip"><b>💡 نصيحة ذهبية</b>لما حاجة متشتغلش: حط <code class="in">console.log()</code> في كل حتة وشوف القيم. ده اسمه Debugging (اصطياد الحشرات 🐛).</div>
+</section>
+
+<!-- 18 -->
+<section class="lesson" id="l18" data-title="🧠 اختبر نفسك">
+  <h2><span class="num">18</span> 🧠 اختبر نفسك</h2>
+  <div class="game quiz" id="quiz"></div>
+</section>
+
+<!-- 19 -->
+<section class="lesson" id="l19" data-title="🧪 ملعب التجربة">
+  <h2><span class="num">19</span> 🧪 ملعب التجربة</h2>
+  <p>فوق تكتب HTML (لو محتاج)، وتحت تكتب JavaScript. دوس <b>▶️ شغّل</b> وشوف الشاشة والكونسول.</p>
+  <div class="pg-tools">
+    <button id="pgRun" class="green">▶️ شغّل (Ctrl+Enter)</button>
+    <select id="pgTpl">
+      <option value="">📂 ابدأ بمثال جاهز...</option>
+      <option value="table">جدول الضرب</option>
+      <option value="todo">قايمة مهام</option>
+      <option value="color">زرار يغيّر اللون</option>
+      <option value="clock">ساعة شغالة</option>
+      <option value="age">حاسب سنك</option>
+    </select>
+    <button id="pgClear" class="gray">🗑️ مسح</button>
+  </div>
+  <div class="pg-wrap">
+    <div class="pg-pane">
+      <div class="ex-bar code"><span>🌐 HTML (اختياري)</span></div>
+      <textarea id="pgHtml" spellcheck="false"></textarea>
+      <div class="ex-bar code"><span>⚡ JavaScript</span></div>
+      <textarea id="pgJs" spellcheck="false"></textarea>
+    </div>
+    <div class="pg-pane">
+      <div class="ex-bar res"><span>📺 الشاشة</span></div>
+      <iframe id="pgStage" sandbox="allow-scripts allow-modals" title="الشاشة"></iframe>
+      <div class="ex-bar con"><span>🖥️ الكونسول</span></div>
+      <div class="console" id="pgCon" style="min-height:120px;flex:1"></div>
+    </div>
+  </div>
+  <h3 class="sub">🎯 تحديات</h3>
+  <ol class="challenges">
+    <li>اطبع الأرقام من 1 لـ 10 في الكونسول. <button class="try" data-c="1">ابدأ</button></li>
+    <li>اعمل فانكشن بتاخد رقم وترجع ضعفه. <button class="try" data-c="2">ابدأ</button></li>
+    <li>اطبع الأرقام الزوجية بس من 1 لـ 20 (تلميح: <code class="in">%</code>). <button class="try" data-c="3">ابدأ</button></li>
+    <li>زرار كل ما تدوس عليه يكتب رقم عشوائي. <button class="try" data-c="4">ابدأ</button></li>
+    <li>اعمل array فيه 5 أسماء واطبعهم كل واحد في سطر. <button class="try" data-c="5">ابدأ</button></li>
+  </ol>
+  <div class="idea"><b>🚀 خطوتك الجاية</b>دلوقتي إنت فاهم أساسيات البرمجة! نفس الأفكار دي (علب، if، لوب، فانكشن) موجودة في كل اللغات. جرّب تشوفها في <a href="python.html">🐍 بايثون</a> وهتلاقيها أسهل كمان.</div>
+</section>
+
+</main>
+</div>
+
+<footer>صُنع بحب ❤️ عشان تتعلم JavaScript وإنت بتلعب · <a href="mero.html">HTML</a> · <a href="css.html">CSS</a> · <a href="python.html">Python</a></footer>
+<button id="topBtn" title="لفوق" onclick="window.scrollTo({top:0})">↑</button>
+
+<script>
+function $(id){return document.getElementById(id);}
+function esc(s){return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');}
+/* تلوين كود JS */
+function hlJS(src){
+  var re=/(\/\/.*$|\/\*[\s\S]*?\*\/)|("(?:\\.|[^"\\\n])*"|'(?:\\.|[^'\\\n])*'|`(?:\\.|[^`\\])*`)|\b(let|const|var|function|return|if|else|for|while|do|true|false|null|undefined|new|of|in|break|continue|typeof)\b|\b(\d+(?:\.\d+)?)\b|\b(console|document|Math|alert|prompt|Number|String)\b/gm;
+  var out='',last=0,m;
+  while((m=re.exec(src))){
+    out+=esc(src.slice(last,m.index));
+    var cls=m[1]?'c':m[2]?'v':m[3]?'t':m[4]?'e':'a';
+    out+='<span class="'+cls+'">'+esc(m[0])+'</span>';last=re.lastIndex;
+  }
+  return out+esc(src.slice(last));
+}
+function dedent(s){
+  s=s.replace(/^\s*\n/,'').replace(/\s+$/,'');
+  var lines=s.split('\n'),min=Infinity;
+  lines.forEach(function(l){if(l.trim()){var n=l.match(/^ */)[0].length;if(n<min)min=n;}});
+  return lines.map(function(l){return l.slice(min===Infinity?0:min);}).join('\n');
+}
+/* ترجمة الأخطاء للمصري */
+function explain(msg){
+  var m;
+  if((m=/(\S+) is not defined/.exec(msg)))return '🤔 «'+m[1]+'» مش متعرّف! يا إمّا كاتب الاسم غلط (الكابيتال والسمول بيفرقوا)، يا إمّا نسيت تعمل العلبة بـ let الأول.';
+  if(/Assignment to constant/.test(msg))return '🔒 بتحاول تغيّر علبة const! المقفولة متتغيرش. لو عايز تغيّرها اعملها بـ let.';
+  if(/is not a function/.test(msg))return '🏭 بتشغّل حاجة على إنها فانكشن (مكنة) وهي مش كده. راجع الاسم والأقواس.';
+  if(/Cannot read prop|of null|of undefined/.test(msg))return '📭 بتحاول تاخد حاجة من علبة فاضية (null أو undefined). غالبًا الـ id غلط أو العنصر مش موجود.';
+  if(/Unexpected|missing|Invalid or unexpected|Unterminated|unterminated/.test(msg))return '✏️ فيه غلطة في الكتابة: قوس ناقص أو زيادة، أو علامة تنصيص مقفلتش، أو فاصلة في غير مكانها.';
+  if(/already been declared/.test(msg))return '📦📦 عملت علبتين بنفس الاسم! استخدم let مرة واحدة بس، وبعد كده غيّر القيمة من غير let.';
+  return '🐞 فيه غلطة. اقرا الرسالة الإنجليزي اللي فوق، وراجع الكود سطر سطر.';
+}
+/* بيبني الصفحة اللي بتشغّل الكود جوه iframe */
+function buildRunner(code,stage,id){
+  var boot='(function(){var ID='+JSON.stringify(id)+';function post(t,x){parent.postMessage({__js:ID,t:t,x:x},"*");}'+
+    'function fmt(v){if(typeof v==="string")return v;if(v===undefined)return "undefined";if(typeof v==="function")return "ƒ "+(v.name||"function");try{return JSON.stringify(v);}catch(e){return String(v);}}'+
+    'function mk(t){return function(){post(t,[].slice.call(arguments).map(fmt).join(" "));};}'+
+    'console.log=mk("log");console.info=mk("log");console.warn=mk("warn");console.error=mk("error");'+
+    'window.onerror=function(m){post("error",String(m).replace(/^Uncaught /,""));return true;};'+
+    'function h(){post("h",document.documentElement.scrollHeight);}window.addEventListener("load",h);try{new ResizeObserver(h).observe(document.body);}catch(e){}'+
+    'window.__run=function(src){try{(0,eval)(src);}catch(e){post("error",e.name+": "+e.message);}setTimeout(h,50);};})();';
+  var safe=JSON.stringify(code).replace(/<\//g,'<\\/').replace(/<!--/g,'<\\!--');
+  return '<!DOCTYPE html><html lang="ar" dir="rtl"><head><meta charset="UTF-8"><style>body{font-family:Tahoma,Arial,sans-serif;margin:12px;line-height:1.7;color:#222}</style></head><body>'+
+    (stage||'')+'<scr'+'ipt>'+boot+'<\/scr'+'ipt><scr'+'ipt>__run('+safe+');<\/scr'+'ipt></body></html>';
+}
+var RUNNERS={};
+window.addEventListener('message',function(e){
+  var d=e.data;if(!d||!d.__js)return;var r=RUNNERS[d.__js];if(!r)return;
+  if(d.t==='h'){if(r.frame&&r.hasStage)r.frame.style.height=Math.min(d.x+8,600)+'px';return;}
+  var c=r.con;var empty=c.querySelector('.empty');if(empty)empty.remove();
+  var div=document.createElement('div');
+  if(d.t==='error'){div.className='err';div.textContent='❌ '+d.x;c.appendChild(div);var w=document.createElement('div');w.className='why';w.textContent=explain(d.x);c.appendChild(w);}
+  else{div.className='ln'+(d.t==='warn'?' warnl':'');div.textContent=d.x;c.appendChild(div);}
+});
+var RUNC=0;
+function runInto(frame,con,code,stage){
+  var id='r'+(++RUNC);
+  Object.keys(RUNNERS).forEach(function(k){if(RUNNERS[k].con===con)delete RUNNERS[k];});
+  RUNNERS[id]={frame:frame,con:con,hasStage:!!stage};
+  con.innerHTML='<div class="empty">(لسه مفيش حاجة اتكتبت في الكونسول)</div>';
+  frame.srcdoc=buildRunner(code,stage,id);
+}
+
+/* ===== صناديق الأمثلة ===== */
+document.querySelectorAll('.example').forEach(function(box){
+  var s=box.querySelector('script[type="text/plain"]'),tp=box.querySelector('template.stage');
+  var original=dedent(s.textContent),stage=tp?tp.innerHTML:'',auto=!box.hasAttribute('data-noauto');
+  box.innerHTML='<div class="ex-bar code"><span>⚡ الكود</span><span><button class="run">▶️ شغّل</button><button class="ed">✏️ عدّل</button><button class="ghost rs" style="display:none">↩️ الأصلي</button><button class="ghost cp">📋 نسخ</button></span></div>'+
+    '<pre class="code"></pre><textarea class="code" spellcheck="false"></textarea>'+
+    (stage?'<div class="ex-bar res"><span>📺 الشاشة (دوس وجرّب فيها)</span></div>':'')+
+    '<iframe class="stagef" sandbox="allow-scripts allow-modals" title="الشاشة"'+(stage?'':' style="display:none"')+'></iframe>'+
+    '<div class="ex-bar con"><span>🖥️ الكونسول</span></div><div class="console"><div class="empty">دوس ▶️ شغّل</div></div>';
+  var pre=box.querySelector('pre'),ta=box.querySelector('textarea'),fr=box.querySelector('iframe'),con=box.querySelector('.console');
+  var bRun=box.querySelector('.run'),bEd=box.querySelector('.ed'),bRs=box.querySelector('.rs'),bCp=box.querySelector('.cp');
+  ta.value=original;pre.innerHTML=hlJS(original);
+  function cur(){return ta.style.display==='block'?ta.value:ta.value;}
+  bRun.onclick=function(){pre.innerHTML=hlJS(ta.value);runInto(fr,con,ta.value,stage);};
+  bEd.onclick=function(){
+    if(ta.style.display==='block'){ta.style.display='none';pre.style.display='block';pre.innerHTML=hlJS(ta.value);bEd.textContent='✏️ عدّل';}
+    else{ta.style.height=Math.max(pre.offsetHeight,140)+'px';ta.style.display='block';pre.style.display='none';ta.focus();bEd.textContent='✅ خلصت';bRs.style.display='inline-block';}
+  };
+  ta.addEventListener('keydown',function(e){if(e.key==='Enter'&&(e.ctrlKey||e.metaKey)){e.preventDefault();bRun.onclick();}if(e.key==='Tab'){e.preventDefault();var a=ta.selectionStart;ta.value=ta.value.slice(0,a)+'  '+ta.value.slice(ta.selectionEnd);ta.selectionStart=ta.selectionEnd=a+2;}});
+  bRs.onclick=function(){ta.value=original;pre.innerHTML=hlJS(original);bRun.onclick();};
+  bCp.onclick=function(){if(navigator.clipboard)navigator.clipboard.writeText(ta.value).then(function(){bCp.textContent='✔️ اتنسخ';setTimeout(function(){bCp.textContent='📋 نسخ';},1500);});};
+  if(auto)bRun.onclick(); else if(stage)runInto(fr,con,'',stage);
+});
+
+/* ===== الفهرس ===== */
+(function(){
+  var toc=$('toc'),secs=document.querySelectorAll('section.lesson');
+  secs.forEach(function(sec,i){var a=document.createElement('a');a.href='#'+sec.id;a.textContent=(i+1)+'. '+sec.dataset.title;toc.appendChild(a);});
+  var links=toc.querySelectorAll('a');
+  window.addEventListener('scroll',function(){var c=0;secs.forEach(function(s,i){if(s.getBoundingClientRect().top<120)c=i;});links.forEach(function(l,i){l.classList.toggle('active',i===c);});});
+})();
+</script>
+
+<script>
+/* ================= الألعاب ================= */
+
+/* ---------- رف العلب ---------- */
+(function(){
+  var vars=[],log=[];
+  function parse(v){
+    v=v.trim();
+    if(/^-?\d+(\.\d+)?$/.test(v))return {ok:true,val:v,type:'number 🔢'};
+    if(v==='true'||v==='false')return {ok:true,val:v,type:'boolean ✅'};
+    if(/^"[^"]*"$|^'[^']*'$/.test(v))return {ok:true,val:v,type:'string 📝'};
+    if(v==='')return {ok:false,why:'حط حاجة جوه العلبة!'};
+    return {ok:false,why:'لو ده كلام لازم تحطه بين تنصيص: "'+v+'". ولو رقم اكتبه أرقام بس.'};
+  }
+  function draw(){
+    var sh=$('vShelf');sh.innerHTML='';
+    vars.forEach(function(v){var d=document.createElement('div');d.className='vbox'+(v.kind==='const'?' const':'');d.id='vb-'+v.name;
+      d.innerHTML='<div class="lid">'+(v.kind==='const'?'🔒 ':'')+esc(v.name)+'</div><div class="body">'+esc(v.val)+'</div><small>'+v.kind+' · '+v.type+'</small>';sh.appendChild(d);});
+    $('vPick').innerHTML=vars.map(function(v){return '<option>'+esc(v.name)+'</option>';}).join('');
+    $('vCode').innerHTML=hlJS(log.join('\n')||'// لسه مفيش كود');
+  }
+  function make(kind,name,val,silent){
+    var msg=$('vMsg');name=name.trim();
+    if(!/^[A-Za-z_$][\w$]*$/.test(name)){msg.innerHTML='<span class="no">❌ اسم العلبة لازم يكون إنجليزي، من غير مسافات، ومايبدأش برقم. زي: myName</span>';return;}
+    if(/^(let|const|var|if|else|for|function|return|true|false|while)$/.test(name)){msg.innerHTML='<span class="no">❌ «'+name+'» كلمة محجوزة في اللغة، اختار اسم تاني.</span>';return;}
+    if(vars.some(function(v){return v.name===name;})){msg.innerHTML='<span class="no">❌ فيه علبة اسمها '+name+' قبل كده! (SyntaxError: already been declared)</span>';return;}
+    var p=parse(val);if(!p.ok){msg.innerHTML='<span class="no">❌ '+p.why+'</span>';return;}
+    vars.push({kind:kind,name:name,val:p.val,type:p.type});log.push(kind+' '+name+' = '+p.val+';');draw();
+    if(!silent)msg.innerHTML='<span class="ok">✅ اتعملت علبة اسمها '+name+' وجواها '+esc(p.val)+'</span>';
+  }
+  $('vMake').onclick=function(){make($('vKind').value,$('vName').value,$('vVal').value);};
+  $('vSet').onclick=function(){
+    var n=$('vPick').value,v=vars.filter(function(x){return x.name===n;})[0],msg=$('vMsg');if(!v)return;
+    var p=parse($('vNew').value);if(!p.ok){msg.innerHTML='<span class="no">❌ '+p.why+'</span>';return;}
+    log.push(n+' = '+p.val+';');
+    if(v.kind==='const'){log.push('// ❌ TypeError: Assignment to constant variable.');draw();var b=$('vb-'+n);b.classList.add('shake');setTimeout(function(){b.classList.remove('shake');},500);
+      msg.innerHTML='<span class="no">🔒 ممنوع! العلبة دي const مقفولة. الكمبيوتر طلّع غلطة: Assignment to constant variable</span>';return;}
+    v.val=p.val;v.type=p.type;draw();msg.innerHTML='<span class="ok">✅ القديم اترمى، والعلبة '+n+' بقى جواها '+esc(p.val)+'</span>';
+  };
+  make('let','age','25',true);make('const','birthYear','2000',true);draw();
+})();
+
+/* ---------- خمّن النوع ---------- */
+(function(){
+  var Q=[['42','number'],['"42"','string'],['true','boolean'],['"true"','string'],['3.14','number'],['"أحمد"','string'],['false','boolean'],['[1, 2, 3]','array'],['{ name: "علي" }','object'],['-7','number'],["'مرحبا'",'string'],['["تفاح", "موز"]','array'],['{ age: 20, city: "طنطا" }','object'],['""','string'],['0','number'],['[ ]','array'],['"false"','string']];
+  var T={number:'🔢 number (رقم)',string:'📝 string (كلام)',boolean:'✅ boolean (صح/غلط)',array:'🚂 array (قايمة)',object:'🪪 object (كارت)'};
+  var W={number:'أرقام من غير تنصيص = number.',string:'أي حاجة بين تنصيص "" تبقى string، حتى لو شكلها رقم أو true!',boolean:'true و false من غير تنصيص = boolean.',array:'الأقواس المربعة [ ] = array.',object:'الأقواس المعكوفة { } وجواها اسم: قيمة = object.'};
+  var cur,score=0,total=0,last=-1;
+  function next(){var i;do{i=Math.floor(Math.random()*Q.length);}while(i===last);last=i;cur=Q[i];$('tyVal').textContent=cur[0];$('tyMsg').textContent='';
+    var ch=$('tyCh');ch.innerHTML='';Object.keys(T).forEach(function(k){var b=document.createElement('button');b.textContent=T[k];b.onclick=function(){answer(k,b);};ch.appendChild(b);});}
+  function answer(k,b){
+    if($('tyCh').dataset.lock)return;$('tyCh').dataset.lock=1;total++;
+    if(k===cur[1]){score++;b.className='right';$('tyMsg').innerHTML='<span class="ok">🎉 صح! '+W[cur[1]]+'</span>';}
+    else{b.className='wrong';$('tyMsg').innerHTML='<span class="no">❌ لأ، ده '+T[cur[1]]+'. '+W[cur[1]]+'</span>';
+      [].forEach.call($('tyCh').children,function(x){if(x.textContent===T[cur[1]])x.className='right';});}
+    $('tyScore').textContent=score+' / '+total;
+    setTimeout(function(){delete $('tyCh').dataset.lock;next();},k===cur[1]?1100:2600);
+  }
+  next();
+})();
+
+/* ---------- الآلة الحاسبة ---------- */
+(function(){
+  var ok=/^-?\d+(\.\d+)?$|^"[^"]*"$|^'[^']*'$|^(true|false)$/;
+  function upd(){
+    var a=$('caA').value.trim(),b=$('caB').value.trim(),op=$('caOp').value,msg=$('caMsg');
+    if(!ok.test(a)||!ok.test(b)){$('caCode').innerHTML=hlJS('console.log('+a+' '+op+' '+b+');');msg.innerHTML='<span class="no">❌ اكتب رقم (زي 5) أو كلام بين تنصيص (زي "5").</span>';return;}
+    var r=Function('return ('+a+') '+op+' ('+b+');')();
+    var shown=typeof r==='string'?'"'+r+'"':String(r);
+    $('caCode').innerHTML=hlJS('console.log('+a+' '+op+' '+b+');')+'\n<span class="c">// ➜ '+esc(shown)+'</span>';
+    var sA=/^["']/.test(a),sB=/^["']/.test(b),t='';
+    if(op==='+'&&(sA||sB))t='😱 لما فيه كلام (string)، الـ + مبتجمعش! بتلزق الكلام جنب بعض. "5" + 3 = "53" مش 8.';
+    else if((op==='-'||op==='*'||op==='/')&&(sA||sB))t='🤯 الغريبة إن - و * و / بيحوّلوا الكلام لرقم ويحسبوا عادي. JS لغة مزاجية شوية 😅';
+    else if(op==='%')t='🪙 % = باقي القسمة. يعني لو قسمت '+a+' على '+b+' يفضل كام.';
+    else if(op==='==')t='== بتقارن القيمة بس وبتسامح في النوع. عشان كده "5" == 5 بيطلع true.';
+    else if(op==='===')t='=== بتقارن القيمة والنوع مع بعض. "5" === 5 بيطلع false. استخدم === دايمًا، أضمن.';
+    else if(op==='>'||op==='<')t='المقارنة بترجع true (صح) أو false (غلط).';
+    else if(op==='**')t='** = أُس. '+a+' ** '+b+' يعني '+a+' مضروبة في نفسها '+b+' مرات.';
+    else if(op==='/'&&b==='0')t='♾️ القسمة على صفر في JS بتطلع Infinity (ما لا نهاية).';
+    else t='✅ حساب عادي.';
+    msg.textContent=t;
+  }
+  ['caA','caB','caOp'].forEach(function(i){$(i).addEventListener('input',upd);$(i).addEventListener('change',upd);});upd();
+})();
+
+/* ---------- البواب (if) ---------- */
+(function(){
+  function upd(){
+    var age=+$('ifAge').value,t=$('ifTicket').checked,v=$('ifVip').checked;$('ifAgeV').textContent=age;
+    var c1=v,c2=age<12,c3=age>=12&&t,br=c1?1:c2?2:c3?3:4;
+    function tag(x){return '<span class="tag '+(x?'T':'F')+'">'+(x?'true ✔':'false ✘')+'</span>';}
+    function L(txt,on){return '<span class="cl '+(on===true?'on':on===false?'off':'')+'">'+txt+'</span>';}
+    var h=L(hlJS('let age = '+age+';'))+L(hlJS('let hasTicket = '+t+';'))+L(hlJS('let isVip = '+v+';'))+L('')+
+      L(hlJS('if (isVip) {')+tag(c1),br===1)+L(hlJS('  console.log("⭐ اتفضل يا باشا، الصف الأول");'),br===1)+
+      L(hlJS('} else if (age < 12) {')+(c1?'':tag(c2)),br===2)+L(hlJS('  console.log("👶 لازم تدخل مع بابا وماما");'),br===2)+
+      L(hlJS('} else if (age >= 12 && hasTicket) {')+(c1||c2?'':tag(c3)),br===3)+L(hlJS('  console.log("🎟️ اتفضل ادخل");'),br===3)+
+      L(hlJS('} else {'),br===4)+L(hlJS('  console.log("🚫 روح هات تذكرة الأول");'),br===4)+L('}');
+    $('ifCode').innerHTML=h;
+    $('ifGate').textContent=['','⭐ اتفضل يا باشا، الصف الأول','👶 لازم تدخل مع بابا وماما','🎟️ اتفضل ادخل','🚫 روح هات تذكرة الأول'][br];
+  }
+  ['ifAge','ifTicket','ifVip'].forEach(function(i){$(i).addEventListener('input',upd);$(i).addEventListener('change',upd);});upd();
+})();
+
+/* ---------- الروبوت ---------- */
+(function(){
+  var star=5,pos=0,busy=false,score=0;
+  function draw(trail){
+    var tr=$('rbTrack');tr.innerHTML='';
+    for(var i=0;i<12;i++){var c=document.createElement('div');c.className='cell'+(trail&&i<pos&&i>0?' trail':'');c.innerHTML=(i===pos?'🤖':i===star?'⭐':'')+'<small>'+i+'</small>';tr.appendChild(c);}
+  }
+  function code(){var n=$('rbN').value;$('rbCode').innerHTML=hlJS('for (let i = 1; i <= '+n+'; i++) {\n  robot.moveRight();   // امشي خطوة\n}');}
+  function newStar(){star=2+Math.floor(Math.random()*10);pos=0;$('rbMsg').textContent='';draw();}
+  $('rbN').addEventListener('input',code);
+  $('rbGo').onclick=function(){
+    if(busy)return;busy=true;pos=0;draw();var n=Math.max(0,Math.min(11,+$('rbN').value||0)),i=0;
+    $('rbMsg').textContent='';
+    (function step(){
+      if(i>=n){busy=false;
+        if(pos===star){score++;$('rbScore').textContent='النجوم: '+score;$('rbMsg').innerHTML='<span class="ok">🎉 وصل! اللوب لفّ '+n+' مرات بالظبط. نجمة جديدة جاية...</span>';setTimeout(newStar,1600);}
+        else $('rbMsg').innerHTML='<span class="no">'+(pos<star?'😅 لسه موصلش! ناقصه '+(star-pos)+' خطوة.':'🙈 عدّاها بـ '+(pos-star)+' خطوة!')+' جرّب رقم تاني.</span>';
+        return;}
+      i++;pos++;draw(true);$('rbMsg').textContent='🔁 لفة رقم i = '+i;setTimeout(step,380);
+    })();
+  };
+  $('rbNew').onclick=newStar;code();newStar();
+})();
+
+/* ---------- العداد ---------- */
+(function(){
+  function upd(){
+    var s=+$('rgS').value,e=+$('rgE').value,p=+$('rgP').value,out=$('rgOut'),msg=$('rgMsg');out.innerHTML='';
+    if(p<=0&&s<e){msg.innerHTML='<span class="no">♾️ خطر! i عمرها ما هتوصل للنهاية كده. ده لوب مالوش آخر وكان هيهنّج الصفحة.</span>';return;}
+    var n=0;for(var i=s;i<e&&n<60;i+=p){var b=document.createElement('span');b.textContent='i = '+i;out.appendChild(b);n++;}
+    msg.innerHTML=n===0?'🤷 الشرط طلع غلط من أول مرة، فاللوب ملفش ولا لفة.':'🔁 اللوب لفّ <b>'+n+'</b> مرة'+(n>=60?' (وقفنا عند 60 عشان كفاية 😅)':'')+'.';
+  }
+  ['rgS','rgE','rgP'].forEach(function(i){$(i).addEventListener('input',upd);});upd();
+})();
+
+/* ---------- مكنة العصير ---------- */
+(function(){
+  function code(){var f=$('juF').value.split('|'),n=$('juN').value;
+    $('juCode').innerHTML=hlJS('function makeJuice(fruit, cups) {\n  return "🥤".repeat(cups) + " عصير " + fruit;\n}\n\nlet result = makeJuice("'+f[1]+'", '+n+');\nconsole.log(result);');$('juIn').textContent=f[0];}
+  $('juGo').onclick=function(){
+    var f=$('juF').value.split('|'),n=Math.max(1,Math.min(6,+$('juN').value||1)),b=$('juBox');
+    $('juOut').textContent='⏳';b.classList.add('work');
+    setTimeout(function(){b.classList.remove('work');$('juOut').textContent='🥤'.repeat(n);
+      $('juMsg').innerHTML='<span class="ok">return ➜ "'+'🥤'.repeat(n)+' عصير '+f[1]+'"</span><br><small style="font-weight:400">«'+f[1]+'» و '+n+' دخلوا المكنة من الفتحات (fruit و cups)، والمكنة رجّعت النتيجة بـ return.</small>';},1000);
+  };
+  ['juF','juN'].forEach(function(i){$(i).addEventListener('input',code);$(i).addEventListener('change',code);});code();
+})();
+
+/* ---------- القطر ---------- */
+(function(){
+  var arr=['🍎','🍌','🍇'],log=['let train = ["🍎", "🍌", "🍇"];'],hl=-1;
+  function draw(){
+    var t=$('trTrain');t.innerHTML='';
+    arr.forEach(function(x,i){var w=document.createElement('div');w.className='wagon'+(i===hl?' hl':'');w.innerHTML='<div class="w">'+x+'</div><div class="wheels">●●</div><div class="ix">['+i+']</div>';t.appendChild(w);});
+    var e=document.createElement('div');e.className='engine';e.textContent='🚂';e.style.transform='scaleX(-1)';t.appendChild(e);
+    $('trLen').textContent='length = '+arr.length;
+    $('trLog').innerHTML=hlJS(log.join('\n'));$('trLog').scrollTop=1e5;
+  }
+  document.querySelectorAll('#gTrain [data-op]').forEach(function(b){b.onclick=function(){
+    var op=b.dataset.op,it=$('trItem').value,r;hl=-1;
+    if(op==='push'||op==='unshift'){if(arr.length>=9){log.push('// 🚫 القطر اتملى! (في الحقيقة مفيش حد، بس هنا الشاشة صغيرة 😅)');draw();return;}arr[op](it);log.push('train.'+op+'("'+it+'");   // length بقى '+arr.length);}
+    else{r=arr[op]();log.push('train.'+op+'();   // ➜ طلّع '+(r===undefined?'undefined (القطر فاضي!)':'"'+r+'"'));}
+    draw();
+  };});
+  $('trGet').onclick=function(){var i=+$('trIx').value;hl=i;var v=arr[i];log.push('console.log(train['+i+']);   // ➜ '+(v===undefined?'undefined (مفيش عربية بالرقم ده!)':'"'+v+'"'));draw();};
+  draw();
+})();
+
+/* ---------- البطاقة ---------- */
+(function(){
+  function obj(){return {name:$('obName').value,age:+$('obAge').value,city:$('obCity').value,isStudent:$('obStu').checked};}
+  function upd(){
+    var o=obj();
+    $('obCode').innerHTML=hlJS('let person = {\n  name: "'+o.name+'",\n  age: '+o.age+',\n  city: "'+o.city+'",\n  isStudent: '+o.isStudent+'\n};');
+    $('obCard').innerHTML='<div class="av">'+(o.isStudent?'🧑‍🎓':'🧑‍💼')+'</div><div>الاسم: <b>'+esc(o.name)+'</b></div><div>السن: <b>'+o.age+'</b></div><div>المدينة: <b>'+esc(o.city)+'</b></div><div>طالب؟ <b>'+(o.isStudent?'آه':'لأ')+'</b></div>';
+    var k=$('obKey').value,v=o[k];
+    $('obAns').textContent=v===undefined?'undefined':typeof v==='string'?'"'+v+'"':String(v);
+    $('obMsg').innerHTML=v===undefined?'<span class="no">📭 مفيش خانة اسمها phone في البطاقة، فـ JS بيرد بـ undefined (مش موجود).</span>':'';
+  }
+  ['obName','obAge','obCity','obStu','obKey'].forEach(function(i){$(i).addEventListener('input',upd);$(i).addEventListener('change',upd);});upd();
+})();
+
+/* ---------- رتّب الكود ---------- */
+(function(){
+  var L=[
+    {t:'رسالة ترحيب',goal:'🎯 المطلوب: يطبع «أهلًا يا مروة»',lines:['let name = "مروة";','let msg = "أهلًا يا " + name;','console.log(msg);']},
+    {t:'مجموع الأرقام',goal:'🎯 المطلوب: يجمع 1 + 2 + 3 ويطبع 6',lines:['let total = 0;','for (let i = 1; i <= 3; i++) {','  total = total + i;','}','console.log(total);']},
+    {t:'مكنة الضعف',goal:'🎯 المطلوب: يعمل فانكشن تضاعف الرقم، ويطبع 10',lines:['function double(n) {','  return n * 2;','}','let x = double(5);','console.log(x);']},
+    {t:'ناجح ولا ساقط',goal:'🎯 المطلوب: يطبع «ناجح 🎉» لو الدرجة 50 أو أكتر',lines:['let grade = 75;','if (grade >= 50) {','  console.log("ناجح 🎉");','} else {','  console.log("ساقط 😢");','}']}
+  ];
+  var lvl=0,pool=[],ans=[];
+  function shuffle(a){a=a.slice();for(var i=a.length-1;i>0;i--){var j=Math.floor(Math.random()*(i+1)),t=a[i];a[i]=a[j];a[j]=t;}if(a.join()===L[lvl].lines.join())return shuffle(a);return a;}
+  function build(){var l=L[lvl];pool=shuffle(l.lines);ans=[];$('orTitle').textContent=l.t;$('orLvl').textContent='مستوى '+(lvl+1)+' من '+L.length;$('orGoal').textContent=l.goal;$('orMsg').textContent='';$('orNext').disabled=true;draw();}
+  function draw(){
+    var p=$('orPool'),a=$('orAns');p.innerHTML='';a.innerHTML=ans.length?'':'<div style="color:#64748b;font-family:Cairo;direction:rtl">👆 دوس على السطور فوق بالترتيب وهتنزل هنا</div>';
+    pool.forEach(function(x,i){var b=document.createElement('button');b.textContent=x;b.onclick=function(){ans.push(pool.splice(i,1)[0]);draw();};p.appendChild(b);});
+    ans.forEach(function(x,i){var b=document.createElement('button');b.textContent=x;b.onclick=function(){pool.push(ans.splice(i,1)[0]);draw();};a.appendChild(b);});
+  }
+  $('orCheck').onclick=function(){
+    var l=L[lvl];
+    if(pool.length){$('orMsg').innerHTML='<span class="no">لسه فيه سطور فوق محطتهاش ☝️</span>';return;}
+    if(ans.join('\n')===l.lines.join('\n')){
+      var out=[];try{Function('console',ans.join('\n'))({log:function(x){out.push(x);}});}catch(e){}
+      $('orMsg').innerHTML='<span class="ok">🎉 برافو! الكود اشتغل وطبع: '+esc(out.join(' '))+'</span>'+(lvl===L.length-1?'<br><span class="ok">🏆 خلّصت كل المستويات!</span>':'');$('orNext').disabled=lvl===L.length-1;}
+    else $('orMsg').innerHTML='<span class="no">❌ الترتيب مش مظبوط. فكّر: لازم تعمل العلبة قبل ما تستخدمها، والقوس اللي بيتفتح لازم يتقفل.</span>';
+  };
+  $('orNext').onclick=function(){lvl++;build();};
+  $('orReset').onclick=build;build();
+})();
+
+/* ---------- الاختبار ---------- */
+(function(){
+  var Q=[
+    {q:'JavaScript في مثال البيت تبقى إيه؟',o:['الطوب 🧱','الدهان 🎨','الكهربا ⚡'],a:2,w:'HTML طوب، CSS دهان، JS كهربا.'},
+    {q:'إزاي تكتب «أهلًا» في الكونسول؟',o:['<code>print("أهلًا")</code>','<code>console.log("أهلًا");</code>','<code>write أهلًا</code>'],a:1,w:'console.log() هو الكشكول بتاعنا.'},
+    {q:'إيه الفرق بين let و const؟',o:['مفيش فرق','const مقفولة متتغيرش، let تتغير','let للأرقام وconst للكلام'],a:1,w:'const = علبة بقفل 🔒.'},
+    {q:'<code>"5" + 3</code> بيطلع كام؟',o:['8','"53"','غلطة'],a:1,w:'لما فيه string، الـ + بتلزق مش بتجمع.'},
+    {q:'<code>true</code> نوعها إيه؟',o:['string','number','boolean'],a:2,w:'true/false من غير تنصيص = boolean.'},
+    {q:'في <code>let a = ["x","y","z"]</code> إيه قيمة <code>a[1]</code>؟',o:['"x"','"y"','"z"'],a:1,w:'العد بيبدأ من 0! a[0]="x" و a[1]="y".'},
+    {q:'الكود ده هيطبع كام مرة؟ <code>for (let i = 0; i &lt; 3; i++)</code>',o:['2','3','4'],a:1,w:'i = 0، 1، 2 ← 3 مرات.'},
+    {q:'عشان تقارن إن قيمتين متساويين بالظبط بنستخدم؟',o:['<code>=</code>','<code>===</code>','<code>=&gt;</code>'],a:1,w:'= بتحط في العلبة، === بتقارن.'},
+    {q:'<code>return</code> جوه الفانكشن بتعمل إيه؟',o:['بتطلّع النتيجة برّه المكنة','بترجع لأول الصفحة','بتمسح الفانكشن'],a:0,w:'return = اللي بيطلع من المكنة.'},
+    {q:'إزاي تخلّي حاجة تحصل لما المستخدم يدوس على زرار؟',o:['<code>btn.addEventListener("click", ...)</code>','<code>btn.style.click</code>','<code>console.click()</code>'],a:0,w:'الأحداث: استنى click وبعدين نفّذ.'}
+  ];
+  var el=$('quiz'),i=0,score=0;
+  function show(){
+    if(i>=Q.length){el.innerHTML='<div class="game-h">🏁 خلصت!</div><p style="font-size:1.3rem">نتيجتك: <b>'+score+' من '+Q.length+'</b> '+(score===Q.length?'🏆 أسطورة!':score>=7?'🔥 ممتاز!':'💪 كويس، راجع واعيد.')+'</p><button class="btn">🔁 من الأول</button>';el.querySelector('button').onclick=function(){i=0;score=0;show();};return;}
+    var q=Q[i];el.innerHTML='<div class="game-h">سؤال '+(i+1)+' من '+Q.length+' <span class="badge">النقط: '+score+'</span></div><div class="bar"><i style="width:'+(i/Q.length*100)+'%"></i></div><div class="q">'+q.q+'</div>'+q.o.map(function(o,k){return '<button class="opt" data-k="'+k+'">'+o+'</button>';}).join('')+'<div class="msg"></div>';
+    var done=false;el.querySelectorAll('.opt').forEach(function(b){b.onclick=function(){if(done)return;done=true;var k=+b.dataset.k;
+      if(k===q.a){score++;b.classList.add('right');el.querySelector('.msg').innerHTML='<span class="ok">✅ صح! '+q.w+'</span>';}
+      else{b.classList.add('wrong');el.querySelectorAll('.opt')[q.a].classList.add('right');el.querySelector('.msg').innerHTML='<span class="no">❌ لأ. '+q.w+'</span>';}
+      var n=document.createElement('button');n.className='btn';n.textContent='➡️ اللي بعده';n.onclick=function(){i++;show();};el.appendChild(n);};});
+  }
+  show();
+})();
+
+/* ---------- الملعب ---------- */
+(function(){
+  var H=$('pgHtml'),J=$('pgJs'),KEY='mero-js-playground';
+  var T={
+    table:['<h2>جدول ضرب 7</h2>\n<div id="out"></div>','let out = document.getElementById("out");\n\nfor (let i = 1; i <= 10; i++) {\n  out.innerHTML += `7 × ${i} = ${7 * i}<br>`;\n}\nconsole.log("خلصت الجدول ✅");'],
+    todo:['<input id="task" placeholder="اكتب مهمة...">\n<button id="add">➕ زوّد</button>\n<ul id="list"></ul>','let input = document.getElementById("task");\nlet list = document.getElementById("list");\n\ndocument.getElementById("add").onclick = function () {\n  if (input.value === "") {\n    alert("اكتب حاجة الأول!");\n    return;\n  }\n  let li = document.createElement("li");\n  li.textContent = input.value;\n  li.onclick = function () { li.style.textDecoration = "line-through"; };\n  list.appendChild(li);\n  console.log("اتضافت: " + input.value);\n  input.value = "";\n};'],
+    color:['<button id="btn" style="font-size:20px;padding:10px 20px">🎨 غيّر اللون</button>','let colors = ["#fecaca", "#bbf7d0", "#bfdbfe", "#fde68a", "#e9d5ff"];\nlet i = 0;\n\ndocument.getElementById("btn").onclick = function () {\n  document.body.style.background = colors[i];\n  console.log("اللون رقم " + i + ": " + colors[i]);\n  i++;\n  if (i === colors.length) {\n    i = 0;\n  }\n};'],
+    clock:['<h1 id="clock" style="font-size:50px;text-align:center"></h1>','function tick() {\n  let now = new Date();\n  document.getElementById("clock").textContent = now.toLocaleTimeString("ar-EG");\n}\n\ntick();\nsetInterval(tick, 1000);   // كرّر كل ثانية'],
+    age:['<label>سنة ميلادك: <input id="year" type="number" value="2000"></label>\n<button id="calc">احسب</button>\n<h2 id="res"></h2>','document.getElementById("calc").onclick = function () {\n  let year = Number(document.getElementById("year").value);\n  let age = new Date().getFullYear() - year;\n  let res = document.getElementById("res");\n\n  if (age < 0) {\n    res.textContent = "🤔 لسه متولدتش؟!";\n  } else {\n    res.textContent = `عندك تقريبًا ${age} سنة 🎂`;\n  }\n  console.log("السن:", age);\n};']
+  };
+  var C={
+    '1':['','// اطبع من 1 لـ 10\nfor (let i = 1; i <= ???; i++) {\n  console.log(i);\n}'],
+    '2':['','function double(n) {\n  // رجّع n مضروبة في 2\n}\n\nconsole.log(double(4));  // المفروض 8'],
+    '3':['','for (let i = 1; i <= 20; i++) {\n  // لو باقي قسمة i على 2 = 0 يبقى زوجي\n  if (???) {\n    console.log(i);\n  }\n}'],
+    '4':['<button id="b">🎲 رقم عشوائي</button>\n<h1 id="n"></h1>','document.getElementById("b").onclick = function () {\n  let r = Math.floor(Math.random() * 100);\n  // حط r جوه العنصر n\n};'],
+    '5':['','let names = ["أحمد", ...];\n\nfor (let n of names) {\n  // اطبع n\n}']
+  };
+  function run(){runInto($('pgStage'),$('pgCon'),J.value,H.value||'');try{localStorage.setItem(KEY,JSON.stringify([H.value,J.value]));}catch(e){}}
+  function load(p){H.value=p[0];J.value=p[1];run();J.focus();}
+  var saved=null;try{saved=JSON.parse(localStorage.getItem(KEY));}catch(e){}
+  if(saved&&(saved[0]||saved[1])){H.value=saved[0];J.value=saved[1];}else{H.value=T.color[0];J.value=T.color[1];}
+  run();
+  [H,J].forEach(function(t){t.addEventListener('keydown',function(e){
+    if(e.key==='Tab'){e.preventDefault();var a=t.selectionStart;t.value=t.value.slice(0,a)+'  '+t.value.slice(t.selectionEnd);t.selectionStart=t.selectionEnd=a+2;}
+    if(e.key==='Enter'&&(e.ctrlKey||e.metaKey)){e.preventDefault();run();}
+  });});
+  $('pgRun').onclick=run;
+  $('pgClear').onclick=function(){if(confirm('متأكد إنك عايز تمسح؟'))load(['','']);};
+  $('pgTpl').onchange=function(){if(this.value){load(T[this.value]);this.value='';}};
+  document.querySelectorAll('.challenges .try').forEach(function(b){b.onclick=function(){load(C[b.dataset.c]);J.scrollIntoView({behavior:'smooth',block:'center'});};});
+})();
+</script>
+
+<script>
+/* ===== تاسكات الدروس: كل درس مقفول لحد ما تحل تاسك اللي قبله ===== */
+function __has(c, s) { return c.lines.some(function (l) { return l.indexOf(s) > -1; }); }
+window.LESSON_TASKS = { page: 'js', mode: 'js',
+exam: [
+  { q: 'إيه الفرق بين <code>let</code> و <code>const</code>؟', o: ['مفيش فرق', '<code>const</code> مقفولة متتغيرش، و <code>let</code> تتغير', '<code>let</code> للأرقام بس'], a: 1 },
+  { q: 'الكود ده هيطبع إيه؟ <code>console.log("5" + 3)</code>', o: ['8', '53', 'غلطة'], a: 1 },
+  { q: '<code>typeof true</code> بيطلع إيه؟', o: ['string', 'boolean', 'number'], a: 1 },
+  { q: 'لو <code>let a = [10, 20, 30];</code> يبقى <code>a[1]</code> كام؟', o: ['10', '20', '30'], a: 1 },
+  { q: 'اللوب ده هيلف كام مرة؟ <code>for (let i = 0; i &lt; 4; i++)</code>', o: ['3', '4', '5'], a: 1 },
+  { q: 'عشان تقارن إن حاجتين متساويين بالظبط بتستخدم؟', o: ['<code>=</code>', '<code>===</code>', '<code>=&gt;</code>'], a: 1 },
+  { q: 'جوه الفانكشن، أنهي كلمة بتطلّع النتيجة برّه؟', o: ['<code>return</code>', '<code>print</code>', '<code>out</code>'], a: 0 },
+  { q: 'عشان تمسك عنصر في الصفحة عليه <code>id="title"</code>؟', o: ['<code>document.getElementById("title")</code>', '<code>get.title</code>', '<code>console.log(title)</code>'], a: 0 },
+  { q: 'عشان حاجة تحصل لما حد <b>يدوس</b> على زرار؟', o: ['<code>btn.addEventListener("click", ...)</code>', '<code>btn.style.click</code>', '<code>btn.press()</code>'], a: 0 },
+  { q: 'لو <code>let person = { name: "مروة" };</code> إزاي تجيب الاسم؟', o: ['<code>person(name)</code>', '<code>person.name</code>', '<code>name.person</code>'], a: 1 }
+],
+tasks: {
+  l1: { q: 'أول تاسك سهل خالص 😊: كمّل الكود عشان الكونسول يكتب <b>أنا جاهز</b>.<br>اكتب الكلمة بين علامتين التنصيص <code>" "</code>.',
+    start: 'console.log("");', hint: 'console.log("أنا جاهز");', sol: 'console.log("أنا جاهز");',
+    check: function (c) { return __has(c, 'جاهز') || 'الكونسول لسه مكتبش «أنا جاهز».'; } },
+  l2: { q: 'اطبع سطرين في الكونسول:<br>1️⃣ اسمك (كلام، يعني بين تنصيص).<br>2️⃣ ناتج <code>7 + 8</code> (حساب، يعني <b>من غير</b> تنصيص، والكمبيوتر هو اللي يحسب).',
+    start: '', hint: 'console.log("مروة");<br>console.log(7 + 8);', sol: 'console.log("مروة");\nconsole.log(7 + 8);',
+    check: function (c) { if (c.lines.length < 2) return 'محتاج سطرين console.log.'; if (!c.has(/7\s*\+\s*8/)) return 'اكتب 7 + 8 والكمبيوتر يحسبها (متكتبش 15 بإيدك).'; return c.lines.indexOf('15') > -1 || 'الحساب لازم يبقى من غير تنصيص عشان يطلع 15.'; } },
+  l3: { q: 'اعمل علبة بـ <code>let</code> اسمها <code>age</code> وجواها سنك، واطبعها.<br>وبعدين زوّد عليها 1 (<code>age = age + 1;</code>) واطبعها تاني.',
+    start: '', hint: 'let age = 20;<br>console.log(age);<br>age = age + 1;<br>console.log(age);', sol: 'let age = 20;\nconsole.log(age);\nage = age + 1;\nconsole.log(age);',
+    check: function (c) { if (!c.has(/let\s+age\s*=/)) return 'اعمل العلبة كده: let age = ...'; var n = c.lines.map(Number).filter(function (x) { return !isNaN(x); }); if (n.length < 2) return 'لازم تطبع age مرتين.'; return n[n.length - 1] === n[0] + 1 || 'المرة التانية لازم تبقى أكبر بـ 1.'; } },
+  l4: { q: 'استخدم <code>typeof</code> واطبع نوع التلاتة دول: <code>"مرحبا"</code> و <code>10</code> و <code>true</code>.',
+    start: 'console.log(typeof "مرحبا");\n', hint: 'console.log(typeof 10); و console.log(typeof true);', sol: 'console.log(typeof "مرحبا");\nconsole.log(typeof 10);\nconsole.log(typeof true);',
+    check: function (c) { var m = ['string', 'number', 'boolean'].filter(function (t) { return c.lines.indexOf(t) < 0; }); return !m.length || ('لسه ناقص يطبع: ' + m.join(' و ')); } },
+  l5: { q: 'عندك سعر الحاجة <code>price</code> = 20 والعدد <code>count</code> = 4. اطبع <b>الإجمالي</b> (اضربهم في بعض بـ <code>*</code>).',
+    start: 'let price = 20;\nlet count = 4;\n', hint: 'console.log(price * count);', sol: 'let price = 20;\nlet count = 4;\nconsole.log(price * count);',
+    check: function (c) { if (!c.has(/price\s*\*\s*count|count\s*\*\s*price/)) return 'استخدم المتغيرات: price * count'; return c.lines.indexOf('80') > -1 || 'الناتج لازم يطلع 80.'; } },
+  l6: { q: 'عندك <code>let name = "مروة";</code>. اطبع <b>أهلًا يا مروة</b> باستخدام العلامة المايلة <code>`</code> و <code>${name}</code>.',
+    start: 'let name = "مروة";\n', hint: 'console.log(`أهلًا يا ${name}`);', sol: 'let name = "مروة";\nconsole.log(`أهلًا يا ${name}`);',
+    check: function (c) { if (!c.has(/`[^`]*\$\{\s*name\s*\}[^`]*`/)) return 'استخدم ` ` وجواها ${name}'; return __has(c, 'أهلًا يا مروة') || 'لازم يطبع «أهلًا يا مروة» بالظبط.'; } },
+  l7: { q: 'عندك درجة <code>grade = 70</code>. اكتب <code>if</code>: لو الدرجة <b>50 أو أكتر</b> اطبع <b>ناجح</b>، غير كده (<code>else</code>) اطبع <b>ساقط</b>.<br><small>(إحنا هنجرّب الكود بتاعك بدرجة 70 وبدرجة 30 كمان)</small>',
+    start: 'let grade = 70;\n', hint: 'if (grade >= 50) { console.log("ناجح"); } else { console.log("ساقط"); }',
+    sol: 'let grade = 70;\n\nif (grade >= 50) {\n  console.log("ناجح");\n} else {\n  console.log("ساقط");\n}',
+    check: function (c) { if (!c.has(/if\s*\(/) || !c.has(/else/)) return 'لازم تستخدم if و else.'; if (!__has(c, 'ناجح')) return 'بدرجة 70 المفروض يطبع ناجح.';
+      return c.run(c.code.replace(/grade\s*=\s*\d+/, 'grade = 30')).then(function (d) { return (__has(d, 'ساقط') && !__has(d, 'ناجح')) || 'جرّبنا بدرجة 30 ومطبعش «ساقط» لوحدها. راجع الـ else.'; }); } },
+  l8: { q: 'اطبع الأرقام من <b>1 لـ 10</b> (كل رقم في سطر) باستخدام لوب <code>for</code>.',
+    start: '', hint: 'for (let i = 1; i <= 10; i++) { console.log(i); }', sol: 'for (let i = 1; i <= 10; i++) {\n  console.log(i);\n}',
+    check: function (c) { if (!c.has(/for\s*\(/)) return 'لازم تستخدم for (متكتبش 10 سطور بإيدك 😄).'; return c.lines.join(',') === '1,2,3,4,5,6,7,8,9,10' || 'لازم يطبع 1 لحد 10 بالظبط. اللي طبعته: ' + c.lines.join('، '); } },
+  l9: { q: 'اعمل مكنة <code>function</code> اسمها <code>double</code> بتاخد رقم وبترجّع <b>ضعفه</b> بـ <code>return</code>. وبعدين اطبع <code>double(6)</code>.',
+    start: '', hint: 'function double(n) { return n * 2; }<br>console.log(double(6));', sol: 'function double(n) {\n  return n * 2;\n}\n\nconsole.log(double(6));',
+    check: function (c) { if (!c.has(/function\s+double/)) return 'اسم الفانكشن لازم يبقى double.'; if (!c.has(/return/)) return 'لازم تستخدم return.'; if (c.lines.indexOf('12') < 0) return 'double(6) المفروض يطلع 12.';
+      return c.run(c.code + '\nconsole.log("##" + double(21));').then(function (d) { return __has(d, '##42') || 'جرّبنا double(21) ومطلعش 42.'; }); } },
+  l10: { q: 'اعمل array اسمه <code>colors</code> فيه 3 ألوان، وزوّد لون رابع بـ <code>push</code>، واطبع عددهم <code>colors.length</code>.',
+    start: '', hint: 'let colors = ["أحمر", "أزرق", "أخضر"];<br>colors.push("أصفر");<br>console.log(colors.length);', sol: 'let colors = ["أحمر", "أزرق", "أخضر"];\ncolors.push("أصفر");\nconsole.log(colors.length);',
+    check: function (c) { if (!c.has(/colors\s*=\s*\[/)) return 'اعمل colors = [ ... ]'; if (!c.has(/colors\.push\(/)) return 'استخدم colors.push(...)'; return c.lines[c.lines.length - 1] === '4' || 'الـ length لازم يطلع 4.'; } },
+  l11: { q: 'اعمل object اسمه <code>car</code> فيه خانتين: <code>brand</code> (الماركة) و <code>year</code> (سنة الصنع). واطبع <code>car.brand</code>.',
+    start: '', hint: 'let car = { brand: "تويوتا", year: 2020 };<br>console.log(car.brand);', sol: 'let car = {\n  brand: "تويوتا",\n  year: 2020\n};\n\nconsole.log(car.brand);',
+    check: function (c) { if (!c.has(/car\s*=\s*\{/)) return 'اعمل car = { ... }'; if (!c.has(/brand\s*:/) || !c.has(/year\s*:/)) return 'ناقص خانة brand أو year.'; if (!c.has(/car\.brand/)) return 'اطبع car.brand'; return (c.lines.length > 0 && c.lines[0] !== 'undefined') || 'car.brand طلع undefined. اتأكد من الاسم.'; } },
+  l12: { q: 'فيه في الصفحة فقرة كده: <code>&lt;p id="msg"&gt;كلام قديم&lt;/p&gt;</code>.<br>امسكها بـ <code>getElementById</code> وغيّر الكلام اللي جواها لـ <b>كلام جديد</b>.',
+    stage: '<p id="msg">كلام قديم</p>', start: '', hint: 'document.getElementById("msg").textContent = "كلام جديد";', sol: 'let msg = document.getElementById("msg");\nmsg.textContent = "كلام جديد";',
+    check: function (c) { if (!c.has(/getElementById\(\s*["']msg["']\s*\)/)) return 'امسك العنصر بـ document.getElementById("msg")'; return c.byId('msg') === 'كلام جديد' || 'الفقرة لسه مكتوب فيها: «' + c.byId('msg') + '»'; } },
+  l13: { q: 'في الصفحة زرار <code>id="btn"</code> وفقرة فاضية <code>id="out"</code>.<br>خلّي <b>لما حد يدوس على الزرار</b> يتكتب في الفقرة كلمة <b>اتداس</b>.<br><small>(إحنا هندوس على الزرار بنفسنا ونشوف)</small>',
+    stage: '<button id="btn">دوس</button><p id="out"></p>', click: ['btn'], start: 'let btn = document.getElementById("btn");\nlet out = document.getElementById("out");\n\n',
+    hint: 'btn.addEventListener("click", function () { out.textContent = "اتداس"; });', sol: 'let btn = document.getElementById("btn");\nlet out = document.getElementById("out");\n\nbtn.addEventListener("click", function () {\n  out.textContent = "اتداس";\n});',
+    check: function (c) { if (!c.has(/addEventListener\(\s*["']click["']|\.onclick\s*=/)) return 'لازم تستنى الـ click بـ addEventListener("click", ...)'; return c.byId('out') === 'اتداس' || 'دوسنا على الزرار والفقرة مكتبش فيها «اتداس».'; } },
+  l14: { q: 'اعمل عدّاد: فيه رقم <code>id="num"</code> مكتوب فيه 0، وزرار <code>id="plus"</code>. كل ما حد يدوس على الزرار الرقم <b>يزيد 1</b>.<br><small>(هندوس 3 مرات والمفروض يبقى 3)</small>',
+    stage: '<h1 id="num">0</h1><button id="plus">➕</button>', click: ['plus', 'plus', 'plus'], start: 'let count = 0;\n\n',
+    hint: 'جوه الـ click: count++; وبعدين document.getElementById("num").textContent = count;',
+    sol: 'let count = 0;\n\ndocument.getElementById("plus").onclick = function () {\n  count++;\n  document.getElementById("num").textContent = count;\n};',
+    check: function (c) { return c.byId('num') === '3' || 'دوسنا 3 مرات والرقم بقى «' + c.byId('num') + '» مش 3.'; } },
+  l15: { q: 'اعمل زهر 🎲: اطبع رقم <b>عشوائي من 1 لـ 6</b> باستخدام <code>Math.random()</code> و <code>Math.floor()</code>.<br><small>(هنشغّل الكود بتاعك كذا مرة)</small>',
+    start: '', hint: 'console.log(Math.floor(Math.random() * 6) + 1);', sol: 'let dice = Math.floor(Math.random() * 6) + 1;\nconsole.log(dice);',
+    check: function (c) { if (!c.has(/Math\.random/) || !c.has(/Math\.floor/)) return 'استخدم Math.random و Math.floor.';
+      var runs = [c], p = Promise.resolve();
+      for (var k = 0; k < 6; k++) p = p.then(function () { return c.run(c.code).then(function (d) { runs.push(d); }); });
+      return p.then(function () { var ok = runs.every(function (d) { var n = Number(d.lines[d.lines.length - 1]); return Number.isInteger(n) && n >= 1 && n <= 6; }); return ok || 'فيه مرة طلع رقم مش من 1 لـ 6. افتكر: + 1 في الآخر.'; }); } },
+  l16: { q: 'دلوقتي اكتبه بنفسك من غير ترتيب 💪: اعمل <code>total = 0</code>، ولوب <code>for</code> يجمع الأرقام من 1 لـ 5 جوه total، وفي الآخر اطبع total.',
+    start: '', hint: 'let total = 0;<br>for (let i = 1; i <= 5; i++) { total = total + i; }<br>console.log(total);', sol: 'let total = 0;\nfor (let i = 1; i <= 5; i++) {\n  total = total + i;\n}\nconsole.log(total);',
+    check: function (c) { if (!c.has(/for\s*\(/)) return 'لازم تستخدم for.'; return c.lines[c.lines.length - 1] === '15' || 'المجموع لازم يطلع 15.'; } },
+  l17: { q: 'الكود ده فيه <b>غلطتين</b> 🐞. صلّحهم عشان يطبع <b>علي</b> وبعدين <b>6</b>.',
+    start: 'let name = "علي";\nconsole.log(nmae);\n\nconst x = 5;\nx = 6;\nconsole.log(x);', hint: '1) اسم المتغير مكتوب غلط  2) const مبتتغيرش، خليها let',
+    sol: 'let name = "علي";\nconsole.log(name);\n\nlet x = 5;\nx = 6;\nconsole.log(x);',
+    check: function (c) { return (c.lines[0] === 'علي' && c.lines[1] === '6') || 'لازم يطبع علي وبعدين 6.'; } },
+  l18: { q: 'التاسك الأخير 🏁: اعمل function اسمها <code>isEven</code> بتاخد رقم وترجّع <code>true</code> لو زوجي و <code>false</code> لو فردي.<br><small>(تلميح: الزوجي باقي قسمته على 2 = 0)</small>',
+    start: 'function isEven(n) {\n  \n}\n\nconsole.log(isEven(4));\nconsole.log(isEven(7));', hint: 'return n % 2 === 0;',
+    sol: 'function isEven(n) {\n  return n % 2 === 0;\n}\n\nconsole.log(isEven(4));\nconsole.log(isEven(7));',
+    check: function (c) { return c.run(c.code + '\nconsole.log("##" + isEven(10) + isEven(3) + isEven(0));').then(function (d) { return __has(d, '##truefalsetrue') || 'جرّبنا isEven على أرقام تانية ومطلعتش صح.'; }); } }
+}};
+</script>
+<script src="progress.js"></script>
+</body>
+</html>

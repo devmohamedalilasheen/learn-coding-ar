@@ -1,0 +1,1301 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>تعلّم بايثون من الصفر - بالألعاب</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;800&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#f6f7fb; --card:#ffffff; --ink:#1f2937; --muted:#6b7280;
+    --brand:#2563eb; --brand2:#ca8a04; --line:#e5e7eb; --soft:#eff6ff;
+    --code-bg:#1e1e2e; --code-ink:#e5e7eb;
+    --tip:#ecfdf5; --tip-line:#10b981; --warn:#fef2f2; --warn-line:#ef4444;
+  }
+  *{box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  body{margin:0;font-family:"Cairo",Tahoma,"Segoe UI",Arial,sans-serif;background:var(--bg);color:var(--ink);line-height:1.9;font-size:17px}
+  header.hero{background:linear-gradient(135deg,#1e40af,#2563eb 55%,#eab308);color:#fff;padding:40px 20px 56px;text-align:center}
+  header.hero h1{margin:0 0 8px;font-size:2.4rem;font-weight:800}
+  header.hero p{margin:0 auto;max-width:780px;font-size:1.15rem;opacity:.97}
+  .pages{display:flex;justify-content:center;gap:8px;flex-wrap:wrap;margin-bottom:18px}
+  .pages a{color:#fff;text-decoration:none;border:1px solid rgba(255,255,255,.55);border-radius:999px;padding:2px 14px;font-size:.95rem}
+  .pages a.on{background:#fff;color:var(--brand);font-weight:800}
+  #pyStatus{position:sticky;top:0;z-index:60;text-align:center;font-weight:700;padding:6px 10px;font-size:.95rem;background:#fef3c7;color:#92400e;border-bottom:1px solid #fde68a}
+  #pyStatus.ready{background:#dcfce7;color:#166534;border-color:#bbf7d0}
+  #pyStatus.fail{background:#fee2e2;color:#991b1b;border-color:#fecaca}
+  .layout{display:grid;grid-template-columns:270px 1fr;gap:24px;max-width:1250px;margin:-30px auto 40px;padding:0 16px}
+  nav.toc{position:sticky;top:44px;align-self:start;background:var(--card);border-radius:16px;padding:16px;box-shadow:0 4px 18px rgba(0,0,0,.06);max-height:calc(100vh - 56px);overflow:auto}
+  nav.toc h3{margin:0 0 8px;font-size:1.05rem;color:var(--brand)}
+  nav.toc a{display:block;padding:5px 10px;border-radius:8px;color:var(--ink);text-decoration:none;font-size:.93rem}
+  nav.toc a:hover,nav.toc a.active{background:var(--soft);color:var(--brand)}
+  main{min-width:0}
+  section.lesson{background:var(--card);border-radius:18px;padding:26px 28px;margin-bottom:22px;box-shadow:0 4px 18px rgba(0,0,0,.05)}
+  section.lesson h2{margin:0 0 12px;font-size:1.6rem;display:flex;align-items:center;gap:12px}
+  .num{background:var(--brand);color:#fff;border-radius:12px;min-width:42px;height:42px;display:inline-flex;align-items:center;justify-content:center;font-size:1.1rem}
+  h3.sub{color:var(--brand);margin:22px 0 6px;font-size:1.2rem}
+  code.in{background:var(--soft);color:#1e40af;padding:1px 7px;border-radius:6px;font-family:Consolas,"Courier New",monospace;direction:ltr;unicode-bidi:embed;font-size:.92em}
+  .tip,.warn,.idea{border-right:5px solid var(--tip-line);background:var(--tip);padding:12px 16px;border-radius:10px;margin:14px 0}
+  .warn{border-color:var(--warn-line);background:var(--warn)}
+  .idea{border-color:var(--brand2);background:#fefce8}
+  .tip b:first-child,.warn b:first-child,.idea b:first-child{display:block}
+  table.ref{width:100%;border-collapse:collapse;margin:10px 0;font-size:.95rem}
+  table.ref th,table.ref td{border:1px solid var(--line);padding:8px 10px;text-align:right;vertical-align:top}
+  table.ref th{background:var(--soft);color:var(--brand)}
+  table.ref td:first-child{direction:ltr;text-align:left;font-family:Consolas,monospace;color:#a16207;white-space:nowrap}
+  .example{margin:16px 0;border:1px solid var(--line);border-radius:14px;overflow:hidden}
+  .ex-bar{display:flex;justify-content:space-between;align-items:center;padding:8px 14px;font-weight:700;font-size:.95rem;gap:8px;flex-wrap:wrap}
+  .ex-bar.code{background:#2a2a3d;color:#fde68a}
+  .ex-bar.con{background:#0b1020;color:#93c5fd;border-top:1px solid #1f2937}
+  .ex-bar button{font-family:inherit;font-size:.85rem;border:0;border-radius:8px;padding:4px 12px;cursor:pointer;background:var(--brand);color:#fff;margin-inline-start:6px}
+  .ex-bar button.ghost{background:#3f3f5a}
+  .ex-bar button.run{background:#16a34a}
+  pre.code{margin:0;background:var(--code-bg);color:var(--code-ink);padding:16px;direction:ltr;text-align:left;overflow:auto;font-family:Consolas,"Courier New",monospace;font-size:15px;line-height:1.7;white-space:pre}
+  textarea.code{display:none;width:100%;min-height:160px;margin:0;border:0;background:#111827;color:#fde68a;padding:16px;direction:ltr;text-align:left;font-family:Consolas,monospace;font-size:15px;line-height:1.7;resize:vertical;outline:none;tab-size:4}
+  .t{color:#f472b6}.a{color:#93c5fd}.v{color:#86efac}.c{color:#9ca3af;font-style:italic}.e{color:#fbbf24}
+  .console{background:#0b1020;color:#e5e7eb;font-family:Consolas,monospace;direction:ltr;text-align:left;padding:10px 14px;min-height:46px;white-space:pre-wrap;font-size:15px;line-height:1.7}
+  .console .err{color:#fca5a5}
+  .console .why{direction:rtl;text-align:right;font-family:"Cairo",Tahoma,sans-serif;background:#3f1d1d;color:#fecaca;border-radius:8px;padding:6px 10px;margin:6px 0}
+  .console .empty{color:#64748b;font-family:"Cairo",Tahoma;direction:rtl;text-align:right}
+  footer{text-align:center;color:var(--muted);padding:20px 10px 40px}
+  .anatomy{direction:ltr;text-align:center;font-family:Consolas,monospace;font-size:1.3rem;background:#0f172a;color:#fff;padding:18px;border-radius:12px;margin:12px 0;line-height:2.2}
+  .anatomy span{padding:3px 8px;border-radius:6px}
+  .lbls{display:flex;justify-content:center;gap:12px;flex-wrap:wrap;font-size:.95rem}
+  .lbls span{padding:2px 10px;border-radius:8px}
+  #topBtn{position:fixed;left:18px;bottom:18px;background:var(--brand);color:#fff;border:0;border-radius:50%;width:48px;height:48px;font-size:22px;cursor:pointer;box-shadow:0 6px 16px rgba(37,99,235,.4);z-index:50}
+  /* games */
+  .game{border:2px solid #93c5fd;background:linear-gradient(180deg,#eff6ff,#fff 60%);border-radius:18px;padding:16px 18px;margin:18px 0}
+  .game-h{display:flex;align-items:center;gap:10px;font-weight:800;font-size:1.2rem;color:var(--brand);margin-bottom:4px;flex-wrap:wrap}
+  .badge{background:var(--brand2);color:#fff;border-radius:999px;padding:0 12px;font-size:.8rem}
+  .row{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin:8px 0}
+  .row input[type=text],.row input[type=number],.row select{font-family:inherit;font-size:1rem;padding:5px 10px;border-radius:10px;border:1px solid #cbd5e1}
+  .row input.mono{font-family:Consolas,monospace;direction:ltr;width:130px}
+  input[type=range]{accent-color:var(--brand)}
+  .btn{font-family:inherit;border:0;border-radius:10px;padding:7px 16px;cursor:pointer;background:var(--brand);color:#fff;font-size:.95rem}
+  .btn.alt{background:var(--brand2)} .btn.gray{background:#64748b} .btn.green{background:#16a34a}
+  .btn:disabled{opacity:.45;cursor:default}
+  .msg{margin-top:8px;font-weight:700;min-height:1.6em}
+  .ok{color:#059669}.no{color:#dc2626}
+  .codeview{direction:ltr;text-align:left;background:#0f172a;color:#e2e8f0;font-family:Consolas,monospace;padding:10px 14px;border-radius:10px;white-space:pre;overflow:auto;font-size:14.5px;line-height:1.8;margin:8px 0}
+  .shake{animation:shake .4s}
+  @keyframes shake{0%,100%{transform:translateX(0)}25%{transform:translateX(-8px)}75%{transform:translateX(8px)}}
+  @keyframes pop{0%{transform:scale(.3);opacity:0}100%{transform:scale(1);opacity:1}}
+  .shelf{display:flex;flex-wrap:wrap;gap:14px;min-height:130px;background:repeating-linear-gradient(0deg,#fff,#fff 108px,#d6b98c 108px,#d6b98c 116px);padding:10px;border-radius:12px;border:1px solid #e7d5b5}
+  .vbox{width:120px;text-align:center;animation:pop .3s}
+  .vbox .lid{background:#1d4ed8;color:#fff;border-radius:8px 8px 0 0;font-family:Consolas,monospace;font-size:.85rem;padding:2px 4px;direction:ltr;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+  .vbox .body{background:#fef08a;border:2px solid #1d4ed8;border-top:0;border-radius:0 0 10px 10px;height:58px;display:flex;align-items:center;justify-content:center;font-family:Consolas,monospace;direction:ltr;font-weight:700;overflow:hidden;padding:0 4px;word-break:break-all;font-size:.9rem}
+  .vbox small{display:block;font-size:.75rem;color:var(--muted);direction:ltr}
+  .big-val{direction:ltr;font-family:Consolas,monospace;font-size:2rem;text-align:center;background:#0f172a;color:#fde68a;border-radius:14px;padding:14px;margin:8px 0}
+  .choices{display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr));gap:8px}
+  .choices button{font-family:inherit;font-size:1rem;padding:10px;border-radius:12px;border:2px solid var(--line);background:#fff;cursor:pointer}
+  .choices button:hover{border-color:var(--brand)}
+  .choices button.right{background:#dcfce7;border-color:#16a34a}.choices button.wrong{background:#fee2e2;border-color:#dc2626}
+  .choices.mono button{font-family:Consolas,monospace;white-space:pre;direction:ltr;text-align:left}
+  .cl{display:block;padding:0 8px;border-radius:6px;transition:.2s}
+  .cl.on{background:rgba(34,197,94,.25)}.cl.off{opacity:.35}
+  .tag{font-size:.8rem;padding:0 8px;border-radius:999px;margin-left:8px;font-family:Cairo,Tahoma}
+  .tag.T{background:#16a34a;color:#fff}.tag.F{background:#dc2626;color:#fff}
+  .gate{font-size:2rem;text-align:center;background:#fff;border:1px dashed #cbd5e1;border-radius:14px;padding:10px}
+  .track{display:grid;grid-template-columns:repeat(12,1fr);gap:4px;direction:ltr;margin:10px 0}
+  .cell{aspect-ratio:1;background:#e2e8f0;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:clamp(14px,3vw,30px);position:relative}
+  .cell small{position:absolute;bottom:0;font-size:.6rem;color:#64748b}
+  .cell.trail{background:#fde68a}
+  .bubbles{display:flex;flex-wrap:wrap;gap:6px;direction:ltr;min-height:40px}
+  .bubbles span{background:var(--brand);color:#fff;border-radius:999px;padding:2px 12px;font-family:Consolas,monospace;animation:pop .25s}
+  /* slicing */
+  .chars{display:flex;justify-content:center;gap:4px;direction:ltr;flex-wrap:wrap;margin:10px 0}
+  .ch{width:52px;text-align:center}
+  .ch .p{font-family:Consolas;font-size:.8rem;color:#1d4ed8;font-weight:700}
+  .ch .n{font-family:Consolas;font-size:.8rem;color:#dc2626;font-weight:700}
+  .ch .b{height:52px;border-radius:10px;background:#e2e8f0;border:2px solid #cbd5e1;display:flex;align-items:center;justify-content:center;font-size:1.5rem;font-family:Consolas,monospace;transition:.2s}
+  .ch.sel .b{background:#fde047;border-color:#ca8a04;transform:translateY(-4px)}
+  /* indent */
+  .ind-row{display:flex;align-items:center;gap:6px;direction:ltr;margin:4px 0}
+  .ind-row button{border:0;border-radius:8px;width:34px;height:32px;cursor:pointer;background:#e2e8f0;font-size:1rem}
+  .ind-row button:hover{background:#bfdbfe}
+  .ind-row code{flex:1;font-family:Consolas,monospace;background:#0f172a;color:#e2e8f0;border-radius:8px;padding:4px 10px;white-space:pre;font-size:15px;border:2px solid transparent}
+  .ind-row code .dots{color:#475569}
+  .ind-row.bad code{border-color:#ef4444}.ind-row.good code{border-color:#22c55e}
+  /* juice/train/card */
+  .machine{display:flex;align-items:center;gap:14px;justify-content:center;flex-wrap:wrap;background:#fff;border:1px dashed #cbd5e1;border-radius:14px;padding:14px}
+  .mbox{width:170px;height:120px;background:linear-gradient(180deg,#60a5fa,#1e40af);border-radius:16px;color:#fff;display:flex;flex-direction:column;align-items:center;justify-content:center;font-weight:800;font-family:Consolas,monospace}
+  .mbox.work{animation:shake .25s 4}
+  .fruit-drop{font-size:40px;min-width:60px;text-align:center}
+  .cups{font-size:34px;min-width:120px;text-align:center;direction:ltr}
+  .train{display:flex;align-items:flex-end;gap:6px;direction:ltr;overflow:auto;padding:10px 4px;min-height:130px;background:linear-gradient(0deg,#78716c 6px,transparent 6px)}
+  .wagon{min-width:74px;text-align:center;animation:pop .3s}
+  .wagon .w{background:#60a5fa;border:3px solid #1e3a8a;border-radius:10px;height:60px;display:flex;align-items:center;justify-content:center;font-size:30px}
+  .wagon .wheels{font-size:12px;letter-spacing:14px;color:#1f2937}
+  .wagon .ix{font-family:Consolas,monospace;font-size:.8rem;font-weight:700;line-height:1.3}
+  .wagon .ix b{color:#1d4ed8}.wagon .ix i{color:#dc2626;font-style:normal}
+  .wagon.hl .w{background:#fde047;box-shadow:0 0 0 4px #ca8a04}
+  .engine{font-size:52px;line-height:1}
+  .oplog{max-height:160px;overflow:auto}
+  .idcard{width:290px;background:linear-gradient(135deg,#1e3a8a,#ca8a04);color:#fff;border-radius:18px;padding:16px;box-shadow:0 10px 24px rgba(37,99,235,.3)}
+  .idcard .av{font-size:46px;float:left}
+  .idcard b{color:#fef08a}
+  /* quiz */
+  .quiz .q{font-weight:800;font-size:1.1rem;margin:6px 0 10px}
+  .quiz .opt{display:block;width:100%;text-align:right;margin:6px 0;padding:10px 14px;border:2px solid var(--line);border-radius:12px;background:#fff;cursor:pointer;font-family:inherit;font-size:1rem}
+  .quiz .opt:hover{border-color:var(--brand)}
+  .quiz .opt.right{border-color:#10b981;background:#ecfdf5}.quiz .opt.wrong{border-color:#ef4444;background:#fef2f2}
+  .quiz code{direction:ltr;unicode-bidi:embed;font-family:Consolas,monospace;background:#f1f5f9;padding:0 5px;border-radius:5px}
+  .bar{height:10px;background:#e5e7eb;border-radius:9px;overflow:hidden;margin:6px 0}
+  .bar i{display:block;height:100%;background:linear-gradient(90deg,var(--brand),var(--brand2));transition:width .3s}
+  /* playground */
+  .pg-tools{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin:14px 0}
+  .pg-tools button,.challenges .try{font-family:inherit;border:0;border-radius:10px;padding:7px 16px;cursor:pointer;background:var(--brand);color:#fff;font-size:.95rem}
+  .pg-tools button.gray{background:#64748b}.pg-tools button.green{background:#16a34a}
+  .pg-tools select{font-family:inherit;font-size:.95rem;padding:6px 10px;border-radius:10px;border:1px solid var(--line)}
+  .pg-wrap{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+  .pg-pane{border:1px solid var(--line);border-radius:14px;overflow:hidden;display:flex;flex-direction:column}
+  #pgCode{width:100%;min-height:400px;flex:1;border:0;background:#111827;color:#fde68a;padding:14px;direction:ltr;text-align:left;font-family:Consolas,"Courier New",monospace;font-size:15px;line-height:1.7;resize:vertical;outline:none;tab-size:4}
+  #pgCon{flex:1;min-height:400px}
+  .challenges li{margin:8px 0}
+  .challenges .try{padding:2px 12px;font-size:.85rem;margin-inline-start:8px;background:var(--brand2)}
+  @media (max-width:900px){.pg-wrap{grid-template-columns:1fr}.layout{grid-template-columns:1fr}nav.toc{position:static;max-height:none}section.lesson{padding:20px 16px}}
+</style>
+</head>
+<body>
+
+<div id="pyStatus">⏳ بايثون بيتحمّل في المتصفح... (أول مرة بس بياخد شوية ثواني، ومحتاج نت)</div>
+
+<header class="hero">
+  <div class="pages">
+    <a href="mero.html">🌐 HTML</a><a href="css.html">🎨 CSS</a><a href="js.html">⚡ JavaScript</a><a href="python.html" class="on">🐍 Python</a>
+  </div>
+  <h1>🐍 تعلّم بايثون من الصفر... وإنت بتلعب!</h1>
+  <p>بايثون هي <b>أسهل لغة برمجة</b> في الدنيا تقريبًا، وكلامها قريب من الإنجليزي العادي. هنا هتكتب <b>كود بايثون حقيقي</b> وتشغّله جوه الصفحة على طول ▶️، وكمان فيه <b>🎮 ألعاب</b> تفهّمك كل فكرة بعينك.</p>
+</header>
+
+<div class="layout">
+<nav class="toc" id="toc"><h3>📚 الفهرس</h3></nav>
+<main>
+
+<!-- 1 -->
+<section class="lesson" id="l1" data-title="يعني إيه بايثون؟">
+  <h2><span class="num">1</span> يعني إيه بايثون؟ 🐍</h2>
+  <p>البرمجة = إنك تكتب <b>أوامر</b> للكمبيوتر بالترتيب وهو ينفذها، زي ما تكتب لحد <b>وصفة أكل</b> 🍳:</p>
+  <ol>
+    <li>هات طاسة.</li>
+    <li>حط زيت.</li>
+    <li><b>لو</b> الزيت سخن ← حط البيض.</li>
+    <li><b>كرّر</b> التقليب 5 مرات.</li>
+  </ol>
+  <p>والكمبيوتر ده <b>غبي جدًا بس سريع جدًا</b> 😄. بينفّذ اللي تقوله بالحرف، ولا أكتر ولا أقل. فلازم تكلمه بلغة هو فاهمها، وواحدة من أسهل اللغات دي هي <b>بايثون</b>.</p>
+  <h3 class="sub">بايثون بتستخدم في إيه؟</h3>
+  <ul>
+    <li>🤖 الذكاء الاصطناعي (زي الشات بوتات).</li>
+    <li>📊 تحليل البيانات والأرقام والإكسل.</li>
+    <li>🌐 مواقع الإنترنت (من ورا الكواليس).</li>
+    <li>⚙️ إنك تخلّي الكمبيوتر يعمل الحاجات المملة بدالك (أتمتة).</li>
+  </ul>
+  <h3 class="sub">شوف بايثون أسهل قد إيه</h3>
+  <p>نفس الأمر (اكتب «أهلًا») في 3 لغات:</p>
+  <table class="ref">
+    <tr><th>اللغة</th><th>الكود</th></tr>
+    <tr><td>Java</td><td><code class="in">System.out.println("أهلًا");</code> 😵</td></tr>
+    <tr><td>JavaScript</td><td><code class="in">console.log("أهلًا");</code></td></tr>
+    <tr><td>Python</td><td><code class="in">print("أهلًا")</code> 😍 وبس!</td></tr>
+  </table>
+  <div class="example"><script type="text/plain">
+print("أهلًا يا عالم 👋")
+print("أنا بتعلم بايثون")
+  </script></div>
+  <div class="tip"><b>💡 الكود ده حقيقي!</b>دوس <b>▶️ شغّل</b> فوق، بايثون شغالة جوه الصفحة دي فعلًا. ودوس <b>✏️ عدّل</b> وغيّر الكلام وشغّل تاني.</div>
+</section>
+
+<!-- 2 -->
+<section class="lesson" id="l2" data-title="تشغّلها على جهازك">
+  <h2><span class="num">2</span> إزاي تشغّل بايثون على جهازك؟ 💻</h2>
+  <ol>
+    <li>ادخل على <b>python.org</b> ونزّل آخر نسخة.</li>
+    <li>وإنت بتسطّب: <b>علّم على «Add Python to PATH»</b> ✅ (مهمة جدًا، متنساهاش!).</li>
+    <li>نزّل برنامج <b>VS Code</b> (مجاني) عشان تكتب فيه.</li>
+    <li>اعمل ملف اسمه بينتهي بـ <code class="in">.py</code> زي <code class="in">mero.py</code> (وإنت أصلًا عندك واحد 😉).</li>
+    <li>افتح الـ Terminal واكتب:</li>
+  </ol>
+  <pre class="code">python mero.py</pre>
+  <p>وهتلاقي الكلام اتطبع قدامك. 🎉</p>
+  <div class="tip"><b>💡 مش عايز تسطّب حاجة دلوقتي؟</b>ولا يهمك، الصفحة دي فيها بايثون جاهزة. كمّل وإنت مرتاح.</div>
+</section>
+
+<!-- 3 -->
+<section class="lesson" id="l3" data-title="print: اطبع">
+  <h2><span class="num">3</span> print: قول للكمبيوتر «اكتب» 🖨️</h2>
+  <div class="anatomy">
+    <span style="background:#1d4ed8">print</span><span style="background:#334155">(</span><span style="background:#047857">"أهلًا"</span><span style="background:#334155">)</span>
+  </div>
+  <div class="lbls">
+    <span style="background:#dbeafe">🖨️ print = اطبع</span>
+    <span style="background:#f1f5f9">( ) = جوه الأقواس اللي هيتطبع</span>
+    <span style="background:#d1fae5">💬 الكلام بين تنصيص</span>
+  </div>
+  <div class="example"><script type="text/plain">
+print("أنا كلام")       # الكلام بين تنصيص
+print(10 + 5)           # الأرقام والحسابات من غير تنصيص
+print("10 + 5")         # ده كلام، مش هيحسبه!
+print("الاسم:", "مروة")  # الفاصلة بتحط مسافة بين الحاجات
+print("🍕" * 5)          # سحر بايثون: كرّر الكلام 5 مرات
+  </script></div>
+  <div class="tip"><b>💡 التعليقات</b>أي حاجة بعد علامة <code class="in">#</code> ده تعليق، يعني ملاحظة ليك والكمبيوتر بيتجاهلها.</div>
+  <div class="warn"><b>⚠️ لاحظ</b>في بايثون <b>مفيش</b> فاصلة منقوطة <code class="in">;</code> في آخر السطر. السطر الجديد = أمر جديد. ببساطة كده.</div>
+</section>
+
+<!-- 4 -->
+<section class="lesson" id="l4" data-title="المتغيرات: العلب">
+  <h2><span class="num">4</span> المتغيرات: علب ليها أسامي 📦</h2>
+  <p>المتغير = <b>علبة عليها اسم</b>، جواها حاجة. زي علب المطبخ: «سكر»، «شاي»، «رز».</p>
+  <div class="anatomy">
+    <span style="background:#1d4ed8">age</span> <span style="background:#334155">=</span> <span style="background:#047857">25</span>
+  </div>
+  <div class="lbls">
+    <span style="background:#dbeafe">🏷️ age = اسم العلبة</span>
+    <span style="background:#f1f5f9">= معناها «حط جواها» (مش «يساوي» بتاعة الرياضيات!)</span>
+    <span style="background:#d1fae5">🎁 25 = اللي جواها</span>
+  </div>
+  <p>في بايثون مش محتاج تقول <code class="in">let</code> ولا حاجة. اكتب الاسم و <code class="in">=</code> وخلاص.</p>
+  <div class="example"><script type="text/plain">
+name = "مروة"
+age = 25
+print(name)
+print(age)
+
+age = age + 1      # خد اللي في العلبة، زوّد عليه 1، ورجّعه في العلبة
+print("السنة الجاية هيبقى عندك", age)
+  </script></div>
+  <div class="game" id="gVars">
+    <div class="game-h">🎮 لعبة: رفّ العلب <span class="badge">اعمل علب</span></div>
+    <p>اكتب اسم العلبة (إنجليزي) وحط جواها حاجة. ولو كتبت اسم علبة موجودة، القديم هيترمي والجديد ياخد مكانه.</p>
+    <div class="row" style="direction:ltr;justify-content:flex-end">
+      <input type="text" class="mono" id="vName" placeholder="name" value="city">
+      <b>=</b>
+      <input type="text" class="mono" id="vVal" value='"القاهرة"' style="width:170px">
+      <button class="btn" id="vMake">📦 حط في العلبة</button>
+    </div>
+    <div class="shelf" id="vShelf"></div>
+    <div class="codeview" id="vCode"></div>
+    <div class="msg" id="vMsg"></div>
+  </div>
+  <div class="warn"><b>⚠️ قواعد الأسماء</b>
+    ✅ إنجليزي، ممكن أرقام بس مش في الأول، والمسافة بنحط مكانها <code class="in">_</code>: <code class="in">first_name</code> <code class="in">user1</code><br>
+    ❌ <code class="in">first name</code> (فيه مسافة) و <code class="in">1user</code> (بيبدأ برقم) و <code class="in">first-name</code> (فيه شرطة)<br>
+    ⚠️ <code class="in">Name</code> و <code class="in">name</code> علبتين مختلفين!
+  </div>
+</section>
+
+<!-- 5 -->
+<section class="lesson" id="l5" data-title="أنواع البيانات">
+  <h2><span class="num">5</span> أنواع الحاجات اللي بتتحط في العلب 🧺</h2>
+  <table class="ref">
+    <tr><th>النوع</th><th>بالبلدي</th><th>مثال</th></tr>
+    <tr><td>int</td><td>🔢 رقم صحيح (من غير كسور)</td><td><code class="in">25</code> <code class="in">-3</code> <code class="in">0</code></td></tr>
+    <tr><td>float</td><td>🔢 رقم فيه علامة عشرية</td><td><code class="in">3.14</code> <code class="in">2.0</code></td></tr>
+    <tr><td>str</td><td>📝 كلام. لازم بين تنصيص</td><td><code class="in">"أحمد"</code> <code class="in">'هاي'</code></td></tr>
+    <tr><td>bool</td><td>✅ صح أو غلط (أول حرف كابيتال!)</td><td><code class="in">True</code> <code class="in">False</code></td></tr>
+    <tr><td>list</td><td>🚂 قايمة حاجات</td><td><code class="in">["تفاح", "موز"]</code></td></tr>
+    <tr><td>dict</td><td>🪪 كارت: مفتاح وقيمة</td><td><code class="in">{"name": "علي"}</code></td></tr>
+  </table>
+  <div class="example"><script type="text/plain">
+print(type(42))
+print(type(3.14))
+print(type("42"))      # بص! ده str مش int
+print(type(True))
+print(type([1, 2, 3]))
+  </script></div>
+  <div class="game" id="gTypes">
+    <div class="game-h">🎮 لعبة: خمّن النوع <span class="badge" id="tyScore">0 / 0</span></div>
+    <p>إيه نوع القيمة دي؟ خلّي بالك من التنصيص والعلامة العشرية 👀</p>
+    <div class="big-val" id="tyVal"></div>
+    <div class="choices" id="tyCh"></div>
+    <div class="msg" id="tyMsg"></div>
+  </div>
+</section>
+
+<!-- 6 -->
+<section class="lesson" id="l6" data-title="الحسابات">
+  <h2><span class="num">6</span> الحسابات: بايثون آلة حاسبة جبارة 🧮</h2>
+  <table class="ref">
+    <tr><th>العلامة</th><th>معناها</th><th>مثال</th></tr>
+    <tr><td>+  -</td><td>زائد، ناقص</td><td><code class="in">7 + 2</code> = 9</td></tr>
+    <tr><td>*</td><td>ضرب</td><td><code class="in">7 * 2</code> = 14</td></tr>
+    <tr><td>/</td><td>قسمة (دايمًا بتطلع float)</td><td><code class="in">7 / 2</code> = 3.5</td></tr>
+    <tr><td>//</td><td>قسمة وارمي الكسر</td><td><code class="in">7 // 2</code> = 3</td></tr>
+    <tr><td>%</td><td>باقي القسمة (الفكة 🪙)</td><td><code class="in">7 % 2</code> = 1</td></tr>
+    <tr><td>**</td><td>أُس</td><td><code class="in">7 ** 2</code> = 49</td></tr>
+  </table>
+  <div class="example"><script type="text/plain">
+price = 45
+count = 3
+total = price * count
+print("الحساب:", total, "جنيه")
+
+# عندك 17 جنيه، والسندوتش بـ 5. تجيب كام وتفضل معاك كام؟
+print("سندوتشات:", 17 // 5)
+print("الفكة:", 17 % 5)
+
+x = 10
+x += 5     # اختصار لـ x = x + 5
+print(x)
+  </script></div>
+  <div class="game" id="gCalc">
+    <div class="game-h">🎮 لعبة: الآلة الحاسبة المجنونة <span class="badge">جرّب "5" بالتنصيص</span></div>
+    <p>اكتب رقمين واختار العملية. وبعدين جرّب كلام بين تنصيص زي <code class="in">"ها"</code> مع <code class="in">*</code> أو <code class="in">+</code> وشوف بايثون هتعمل إيه 😱</p>
+    <div class="row" style="direction:ltr;justify-content:center">
+      <input type="text" class="mono" id="caA" value="7" style="width:90px">
+      <select id="caOp" style="font-family:Consolas;font-size:1.1rem"><option>+</option><option>-</option><option>*</option><option>/</option><option>//</option><option>%</option><option>**</option><option>==</option><option>&gt;</option><option>&lt;</option></select>
+      <input type="text" class="mono" id="caB" value="2" style="width:90px">
+    </div>
+    <div class="codeview" id="caCode" style="font-size:1.2rem;text-align:center"></div>
+    <div class="msg" id="caMsg"></div>
+  </div>
+</section>
+
+<!-- 7 -->
+<section class="lesson" id="l7" data-title="input: اسأل المستخدم">
+  <h2><span class="num">7</span> input: خلّي البرنامج يسألك 🙋</h2>
+  <p><code class="in">input()</code> بتوقف البرنامج وتستنى المستخدم يكتب حاجة، وبعدين تحطها في علبة.</p>
+  <div class="example" data-noauto><script type="text/plain">
+name = input("اسمك إيه؟ ")
+print("أهلًا يا", name, "🌹")
+  </script></div>
+  <div class="warn"><b>⚠️ أهم فخ في بايثون</b><code class="in">input</code> بترجع <b>كلام (str) دايمًا</b>، حتى لو كتبت رقم! فلو عايز تحسب بيه لازم تحوّله لرقم بـ <code class="in">int()</code>:</div>
+  <div class="example" data-noauto><script type="text/plain">
+age = int(input("عندك كام سنة؟ "))   # int() بتحوّل الكلام لرقم
+print("بعد 10 سنين هيبقى عندك", age + 10)
+  </script></div>
+  <table class="ref">
+    <tr><th>المحوِّل</th><th>بيعمل إيه</th></tr>
+    <tr><td>int("25")</td><td>كلام ← رقم صحيح: 25</td></tr>
+    <tr><td>float("2.5")</td><td>كلام ← رقم بكسور: 2.5</td></tr>
+    <tr><td>str(25)</td><td>رقم ← كلام: "25"</td></tr>
+  </table>
+  <div class="tip"><b>💡</b>دوس ▶️ شغّل وهيطلعلك مربع تكتب فيه.</div>
+</section>
+
+<!-- 8 -->
+<section class="lesson" id="l8" data-title="اللعب بالكلام">
+  <h2><span class="num">8</span> اللعب بالكلام (Strings) ✂️</h2>
+  <p>أحلى طريقة تحط متغيرات جوه الكلام: حط حرف <code class="in">f</code> قبل التنصيص، والمتغير جوه <code class="in">{ }</code>. اسمها <b>f-string</b>:</p>
+  <div class="example"><script type="text/plain">
+name = "سارة"
+age = 22
+print(f"أنا اسمي {name} وعندي {age} سنة")
+print(f"بعد 5 سنين: {age + 5}")
+
+word = "Python"
+print(len(word))        # عدد الحروف
+print(word.upper())     # كله كابيتال
+print(word.lower())     # كله سمول
+print(word[0])          # أول حرف (العد من 0!)
+print(word[-1])         # آخر حرف (السالب بيعد من الآخر)
+print(word.replace("Py", "My"))
+  </script></div>
+  <h3 class="sub">التقطيع (Slicing) ✂️</h3>
+  <p><code class="in">word[start:stop]</code> = قطّع من start <b>لحد قبل</b> stop. زي ما تقص حتة من شريط.</p>
+  <div class="game" id="gSlice">
+    <div class="game-h">🎮 لعبة: المقص ✂️ <span class="badge">غيّر الأرقام</span></div>
+    <div class="row"><label>الكلمة: <input type="text" id="slW" value="Python" style="direction:ltr;width:180px"></label></div>
+    <div class="chars" id="slChars"></div>
+    <div class="row" style="direction:ltr;justify-content:center;font-family:Consolas;font-size:1.15rem">
+      word[ <input type="text" id="slA" value="0" style="width:56px;text-align:center"> : <input type="text" id="slB" value="3" style="width:56px;text-align:center"> : <input type="text" id="slC" value="" placeholder="1" style="width:56px;text-align:center"> ]
+    </div>
+    <div class="codeview" id="slOut" style="text-align:center;font-size:1.3rem"></div>
+    <div class="msg" id="slMsg"></div>
+    <p style="font-size:.9rem;color:var(--muted)">الأزرق فوق = العد من الأول (0، 1، 2..). الأحمر تحت = العد من الآخر (-1، -2..). سيب الخانة فاضية يعني «من الأول خالص» أو «للآخر خالص». والخانة التالتة = بنط كام كام (جرّب -1 هتقلب الكلمة 😮).</p>
+  </div>
+</section>
+
+<!-- 9 -->
+<section class="lesson" id="l9" data-title="if: القرارات">
+  <h2><span class="num">9</span> القرارات: if «لو» 🚦</h2>
+  <div class="example"><script type="text/plain">
+weather = "برد"
+
+if weather == "برد":
+    print("🧥 البس جاكيت")
+else:
+    print("👕 البس تيشيرت")
+
+print("يلا ننزل")   # ده برّه الـ if فبيتنفذ في كل الأحوال
+  </script></div>
+  <p>لاحظ حاجتين مهمين جدًا:</p>
+  <ol>
+    <li>بعد الشرط <b>نقطتين</b> <code class="in">:</code> (يعني «اسمع اللي جاي»).</li>
+    <li>السطور اللي «جوه» الـ if بتبدأ بـ <b>4 مسافات</b> (اسمها Indentation). دي اللي بتقول لبايثون «السطر ده تبع الـ if».</li>
+  </ol>
+  <table class="ref">
+    <tr><th>العلامة</th><th>معناها</th></tr>
+    <tr><td>==</td><td>بيساوي؟ (اتنين = عشان واحدة بس معناها «حط في العلبة»)</td></tr>
+    <tr><td>!=</td><td>مش بيساوي؟</td></tr>
+    <tr><td>&gt;  &lt;  &gt;=  &lt;=</td><td>أكبر، أصغر، أكبر أو يساوي، أصغر أو يساوي</td></tr>
+    <tr><td>and</td><td>و (الاتنين صح)</td></tr>
+    <tr><td>or</td><td>أو (واحد بس يكفي)</td></tr>
+    <tr><td>not</td><td>العكس</td></tr>
+    <tr><td>elif</td><td>«ولو مش كده، طب لو...» (اختصار else if)</td></tr>
+  </table>
+  <div class="game" id="gIf">
+    <div class="game-h">🎮 لعبة: بوّاب الملاهي 🎢 <span class="badge">غيّر وشوف الكود ماشي فين</span></div>
+    <div class="row">
+      <label>🎂 السن: <b id="ifAgeV"></b> <input type="range" id="ifAge" min="1" max="80" value="20"></label>
+      <label style="margin-right:16px">📏 الطول (سم): <b id="ifHV"></b> <input type="range" id="ifH" min="80" max="200" value="160"></label>
+      <label style="margin-right:16px"><input type="checkbox" id="ifTicket" checked> 🎟️ معاه تذكرة</label>
+    </div>
+    <div class="codeview" id="ifCode"></div>
+    <div class="gate" id="ifGate"></div>
+    <p style="font-size:.92rem;color:var(--muted)">الأخضر = اتنفذ. الباهت = بايثون عدّته. وبايثون بتقف عند أول شرط يطلع True ومبتكملش الباقي.</p>
+  </div>
+</section>
+
+<!-- 10 -->
+<section class="lesson" id="l10" data-title="🧩 لعبة المسافات">
+  <h2><span class="num">10</span> 🧩 المسافات (Indentation): أهم قاعدة في بايثون</h2>
+  <p>في بايثون <b>المسافات في أول السطر ليها معنى</b>! تخيلها زي <b>البنود والبنود الفرعية</b> في ورقة:</p>
+  <pre class="code">قايمة الأكل:          ← سطر بينتهي بـ : (عنوان)
+    رز                ← تبع القايمة (4 مسافات)
+    فراخ              ← تبع القايمة
+خلصنا                  ← رجع لأول السطر = خرج برّه القايمة</pre>
+  <p><b>القاعدة:</b> أي سطر بينتهي بـ <code class="in">:</code> ← السطور اللي تحته وتبعه لازم تتزق جوه 4 مسافات. ولما تخلص، ارجع لورا.</p>
+  <div class="game" id="gIndent">
+    <div class="game-h">🎮 لعبة: صلّح المسافات <span class="badge" id="inLvl"></span></div>
+    <p id="inGoal" style="font-weight:700"></p>
+    <p style="font-size:.9rem;color:var(--muted);margin:0">استخدم ⬅️ و ➡️ عشان تزق كل سطر. كل نقطة <span style="font-family:Consolas">····</span> = 4 مسافات.</p>
+    <div id="inRows"></div>
+    <div class="row"><button class="btn green" id="inCheck">✅ اتأكد وشغّل</button><button class="btn alt" id="inNext" disabled>➡️ اللي بعده</button></div>
+    <div class="console" id="inOut" style="display:none;border-radius:10px"></div>
+    <div class="msg" id="inMsg"></div>
+  </div>
+</section>
+
+<!-- 11 -->
+<section class="lesson" id="l11" data-title="اللوب: for و range">
+  <h2><span class="num">11</span> اللوب: كرّر من غير ما تزهق 🔁</h2>
+  <p>عايز تكرر حاجة كذا مرة؟ استخدم <code class="in">for</code> مع <code class="in">range</code>:</p>
+  <div class="anatomy" style="font-size:1.1rem">
+    <span style="background:#be185d">for</span> <span style="background:#1d4ed8">i</span> <span style="background:#be185d">in</span> <span style="background:#047857">range(5)</span><span style="background:#334155">:</span>
+  </div>
+  <div class="lbls">
+    <span style="background:#dbeafe">i = عدّاد بيتغير كل لفة</span>
+    <span style="background:#d1fae5">range(5) = الأرقام 0، 1، 2، 3، 4 (5 أرقام، بيبدأ من 0 ومبيوصلش 5!)</span>
+  </div>
+  <div class="example"><script type="text/plain">
+for i in range(5):
+    print("لفة رقم", i, "🏃")
+print("خلصت! 🏁")
+  </script></div>
+  <div class="game" id="gRobot">
+    <div class="game-h">🎮 لعبة: وصّل الروبوت للنجمة 🤖⭐ <span class="badge" id="rbScore">النجوم: 0</span></div>
+    <p>الروبوت بيمشي خطوة كل لفة. حط الرقم الصح جوه <code class="in">range( )</code> عشان يقف على النجمة بالظبط.</p>
+    <div class="track" id="rbTrack"></div>
+    <div class="codeview" id="rbCode"></div>
+    <div class="row"><label>range( <input type="number" id="rbN" min="0" max="11" value="3" style="width:80px"> )</label><button class="btn green" id="rbGo">▶️ شغّل اللوب</button><button class="btn gray" id="rbNew">🔄 نجمة جديدة</button></div>
+    <div class="msg" id="rbMsg"></div>
+  </div>
+  <h3 class="sub">range بأشكال مختلفة</h3>
+  <div class="game" id="gRange">
+    <div class="game-h">🎮 لعبة: مولّد الأرقام <span class="badge">غيّر الأرقام</span></div>
+    <div class="row" style="direction:ltr;justify-content:center;font-family:Consolas;font-size:1.1rem">
+      range( <input type="number" id="rgS" value="2" style="width:64px"> , <input type="number" id="rgE" value="20" style="width:64px"> , <input type="number" id="rgP" value="3" style="width:64px"> )
+    </div>
+    <div class="bubbles" id="rgOut"></div>
+    <div class="msg" id="rgMsg"></div>
+    <p style="font-size:.9rem;color:var(--muted)">range(البداية، النهاية، القفزة). النهاية نفسها مش بتتحسب أبدًا.</p>
+  </div>
+  <h3 class="sub">for على قايمة أو كلمة</h3>
+  <div class="example"><script type="text/plain">
+for fruit in ["🍎 تفاح", "🍌 موز", "🍇 عنب"]:
+    print("بحب", fruit)
+
+for letter in "مروة":
+    print(letter)
+  </script></div>
+  <h3 class="sub">while: كرّر طول ما...</h3>
+  <div class="example"><script type="text/plain">
+hunger = 3
+while hunger > 0:
+    print("🍔 كلت لقمة، الجوع =", hunger)
+    hunger -= 1
+print("😌 شبعت")
+  </script></div>
+  <div class="warn"><b>⚠️ اللوب اللي مبيخلصش</b>لو نسيت <code class="in">hunger -= 1</code> الشرط هيفضل True على طول والبرنامج هيهنّج 🥶 (والصفحة دي كمان هتعلّق!). دايمًا اتأكد إن الـ while ليها نهاية. ولو عايز تخرج من لوب في النص استخدم <code class="in">break</code>.</div>
+</section>
+
+<!-- 12 -->
+<section class="lesson" id="l12" data-title="list: القطر">
+  <h2><span class="num">12</span> القايمة (list): قطر فيه عربيات 🚂</h2>
+  <div class="example"><script type="text/plain">
+fruits = ["🍎", "🍌", "🍇"]
+
+print(fruits[0])       # أول واحدة (العد من 0!)
+print(fruits[-1])      # آخر واحدة
+print(len(fruits))     # عددهم
+
+fruits.append("🍉")    # زوّد في الآخر
+fruits.remove("🍌")    # شيل الموز
+print(fruits)
+
+print("🍎" in fruits)  # التفاح موجود؟
+  </script></div>
+  <div class="game" id="gTrain">
+    <div class="game-h">🎮 لعبة: سواق القطر 🚂 <span class="badge" id="trLen">len = 3</span></div>
+    <div class="row">
+      <label>الحمولة: <select id="trItem"><option>🍎</option><option>🍌</option><option>🍇</option><option>🍉</option><option>🐱</option><option>🎁</option><option>⚽</option></select></label>
+      <button class="btn" data-op="append">append ➕ في الآخر</button>
+      <button class="btn" data-op="insert">insert(0) ➕ في الأول</button>
+      <button class="btn alt" data-op="pop">pop() ➖ من الآخر</button>
+      <button class="btn alt" data-op="pop0">pop(0) ➖ من الأول</button>
+    </div>
+    <div class="row"><label>اسأل عن عربية رقم: <input type="number" id="trIx" value="0" style="width:70px"></label><button class="btn gray" id="trGet">🔍 train[ ? ]</button><small style="color:var(--muted)">(جرّب أرقام سالبة زي -1)</small></div>
+    <div class="train" id="trTrain"></div>
+    <div class="codeview oplog" id="trLog"></div>
+  </div>
+</section>
+
+<!-- 13 -->
+<section class="lesson" id="l13" data-title="dict: الكارت">
+  <h2><span class="num">13</span> القاموس (dict): كارت معلومات 🪪</h2>
+  <p>زي البطاقة الشخصية: كل خانة ليها <b>اسم</b> (مفتاح key) و<b>قيمة</b> (value).</p>
+  <div class="example"><script type="text/plain">
+person = {
+    "name": "كريم",
+    "age": 30,
+    "city": "إسكندرية"
+}
+
+print(person["name"])
+person["age"] = 31          # غيّر خانة
+person["job"] = "مهندس"     # زوّد خانة جديدة
+print(person)
+
+for key, value in person.items():
+    print(key, "←", value)
+  </script></div>
+  <div class="game" id="gObj">
+    <div class="game-h">🎮 لعبة: اعمل بطاقتك 🪪 <span class="badge">اكتب واسأل</span></div>
+    <div class="row">
+      <label>name: <input type="text" id="obName" value="مروة"></label>
+      <label>age: <input type="number" id="obAge" value="22" style="width:80px"></label>
+      <label>city: <input type="text" id="obCity" value="القاهرة"></label>
+      <label><input type="checkbox" id="obStu" checked> is_student</label>
+    </div>
+    <div style="display:flex;gap:16px;flex-wrap:wrap;align-items:flex-start">
+      <div class="codeview" id="obCode" style="flex:1;min-width:240px"></div>
+      <div class="idcard" id="obCard"></div>
+    </div>
+    <div class="row" style="direction:ltr;justify-content:flex-end;font-family:Consolas">
+      <select id="obHow"><option value="br">person["key"]</option><option value="get">person.get("key")</option></select>
+      key = <select id="obKey"><option>name</option><option>age</option><option>city</option><option>is_student</option><option>phone</option></select> ➜ <b id="obAns" style="background:#0f172a;color:#86efac;padding:2px 12px;border-radius:8px"></b></div>
+    <div class="msg" id="obMsg"></div>
+  </div>
+</section>
+
+<!-- 14 -->
+<section class="lesson" id="l14" data-title="الفانكشن: المكنة">
+  <h2><span class="num">14</span> الفانكشن (def): اعمل مكنة بإيدك 🏭</h2>
+  <p>الفانكشن = مكنة بتعملها مرة، وتشغّلها كل ما تحتاجها. بتبدأ بكلمة <code class="in">def</code> (اختصار define = «عرّف»).</p>
+  <div class="example"><script type="text/plain">
+def say_hello(name):
+    print(f"أهلًا يا {name} 👋")
+
+say_hello("أحمد")
+say_hello("منى")
+say_hello("مروة")
+  </script></div>
+  <div class="game" id="gJuice">
+    <div class="game-h">🎮 لعبة: مكنة العصير 🧃 <span class="badge">شغّل المكنة</span></div>
+    <div class="codeview" id="juCode"></div>
+    <div class="row">
+      <label>🍓 الفاكهة: <select id="juF"><option value="🍊|برتقان">🍊 برتقان</option><option value="🍓|فراولة">🍓 فراولة</option><option value="🥭|مانجا">🥭 مانجا</option><option value="🍋|لمون">🍋 لمون</option><option value="🍌|موز">🍌 موز</option></select></label>
+      <label>🥤 كام كوباية: <input type="number" id="juN" min="1" max="6" value="2" style="width:70px"></label>
+      <button class="btn green" id="juGo">⚙️ شغّل المكنة</button>
+    </div>
+    <div class="machine"><div class="fruit-drop" id="juIn">🍊</div><div style="font-size:30px">⬅️</div><div class="mbox" id="juBox">🏭<br>make_juice</div><div style="font-size:30px">⬅️</div><div class="cups" id="juOut">؟</div></div>
+    <div class="msg" id="juMsg"></div>
+  </div>
+  <div class="example"><script type="text/plain">
+# مكنة بترجّع نتيجة بـ return
+def area(width, height):
+    return width * height
+
+room = area(4, 5)
+print("مساحة الأوضة:", room, "متر")
+print("مساحة الشقة:", area(10, 12), "متر")
+  </script></div>
+  <div class="tip"><b>💡 print ولا return؟</b><code class="in">print</code> بتكتب على الشاشة وبس. <code class="in">return</code> بتطلّع النتيجة من المكنة عشان تحطها في علبة وتستخدمها تاني.</div>
+</section>
+
+<!-- 15 -->
+<section class="lesson" id="l15" data-title="مشروع: خمّن الرقم">
+  <h2><span class="num">15</span> 🎯 مشروع: لعبة خمّن الرقم</h2>
+  <p>هنجمع كل حاجة: <b>import</b> (نجيب أدوات جاهزة)، <b>متغيرات</b>، <b>while</b>، <b>input</b>، <b>if/elif/else</b>.</p>
+  <div class="example" data-noauto><script type="text/plain">
+import random   # مكتبة جاهزة للأرقام العشوائية
+
+secret = random.randint(1, 20)
+tries = 0
+print("🤫 أنا اخترت رقم من 1 لـ 20... خمّن!")
+
+while True:
+    guess = int(input("تخمينك: "))
+    tries += 1
+    if guess == secret:
+        print(f"🎉 صح! الرقم كان {secret}، وخدت {tries} محاولات")
+        break
+    elif guess > secret:
+        print("⬇️ أصغر من كده")
+    else:
+        print("⬆️ أكبر من كده")
+  </script></div>
+  <div class="tip"><b>💡</b>دوس ▶️ شغّل والعب. انسخ الكود ده في ملف <code class="in">.py</code> على جهازك وهيشتغل بالظبط كده.</div>
+</section>
+
+<!-- 16 -->
+<section class="lesson" id="l16" data-title="🔮 خمّن الناتج">
+  <h2><span class="num">16</span> 🔮 لعبة: خمّن الناتج</h2>
+  <p>اقرا الكود وقول هيطبع إيه <b>قبل</b> ما تشغّله. دي أحسن تمرينة لدماغ المبرمج 🧠.</p>
+  <div class="game" id="gGuess">
+    <div class="game-h">🎮 <span id="ggN"></span> <span class="badge" id="ggScore">0</span></div>
+    <div class="codeview" id="ggCode" style="font-size:1.05rem"></div>
+    <div class="choices mono" id="ggCh"></div>
+    <div class="msg" id="ggMsg"></div>
+  </div>
+</section>
+
+<!-- 17 -->
+<section class="lesson" id="l17" data-title="الأخطاء الشائعة">
+  <h2><span class="num">17</span> الأخطاء: صحابك الجداد 🐞</h2>
+  <p>الغلط عادي جدًا، وبايثون بتقولك بالظبط المشكلة فين. والصفحة دي بتترجمها لك بالمصري. شغّل ده:</p>
+  <div class="example" data-noauto><script type="text/plain">
+age = 20
+print("عندي " + age + " سنة")   # ❌ بنلزق كلام مع رقم!
+  </script></div>
+  <table class="ref">
+    <tr><th>الغلطة</th><th>يعني إيه بالمصري</th></tr>
+    <tr><td>NameError</td><td>بتستخدم اسم مش موجود. غالبًا كاتبه غلط.</td></tr>
+    <tr><td>SyntaxError</td><td>غلطة كتابة: نسيت <code class="in">:</code>؟ قوس ناقص؟ تنصيص مقفلتوش؟</td></tr>
+    <tr><td>IndentationError</td><td>المسافات في أول السطر مش مظبوطة.</td></tr>
+    <tr><td>TypeError</td><td>بتعمل حاجة بين نوعين مينفعش، زي كلام + رقم.</td></tr>
+    <tr><td>ValueError</td><td>زي <code class="in">int("أحمد")</code>، مينفعش تحوّل ده لرقم.</td></tr>
+    <tr><td>IndexError</td><td>بتطلب عربية رقمها أكبر من القطر.</td></tr>
+    <tr><td>ZeroDivisionError</td><td>قسمت على صفر 🙅</td></tr>
+  </table>
+  <div class="tip"><b>💡 الحل للمثال اللي فوق</b><code class="in">print(f"عندي {age} سنة")</code> أو <code class="in">print("عندي " + str(age) + " سنة")</code>. دوس ✏️ عدّل وصلّحه بنفسك!</div>
+</section>
+
+<!-- 18 -->
+<section class="lesson" id="l18" data-title="🧠 اختبر نفسك">
+  <h2><span class="num">18</span> 🧠 اختبر نفسك</h2>
+  <div class="game quiz" id="quiz"></div>
+</section>
+
+<!-- 19 -->
+<section class="lesson" id="l19" data-title="🧪 ملعب بايثون">
+  <h2><span class="num">19</span> 🧪 ملعب بايثون</h2>
+  <p>اكتب أي كود بايثون ودوس ▶️ شغّل. اختار مثال جاهز أو جرّب التحديات.</p>
+  <div class="pg-tools">
+    <button id="pgRun" class="green">▶️ شغّل (Ctrl+Enter)</button>
+    <select id="pgTpl">
+      <option value="">📂 ابدأ بمثال جاهز...</option>
+      <option value="table">جدول الضرب</option>
+      <option value="pyramid">هرم نجوم ⭐</option>
+      <option value="grades">متوسط الدرجات</option>
+      <option value="shop">فاتورة السوبر ماركت</option>
+      <option value="calc">آلة حاسبة (input)</option>
+    </select>
+    <button id="pgClear" class="gray">🗑️ مسح</button>
+    <button id="pgSave" class="gray">💾 حمّل كملف .py</button>
+  </div>
+  <div class="pg-wrap">
+    <div class="pg-pane"><div class="ex-bar code"><span>🐍 اكتب بايثون هنا</span></div><textarea id="pgCode" spellcheck="false"></textarea></div>
+    <div class="pg-pane"><div class="ex-bar con"><span>🖥️ الناتج</span></div><div class="console" id="pgCon"></div></div>
+  </div>
+  <div class="tip"><b>💡</b>زرار Tab بيعمل 4 مسافات. وكلامك بيتحفظ لوحده.</div>
+  <h3 class="sub">🎯 تحديات</h3>
+  <ol class="challenges">
+    <li>اطبع اسمك 10 مرات بلوب. <button class="try" data-c="1">ابدأ</button></li>
+    <li>اعمل فانكشن بتاخد رقم وتقول زوجي ولا فردي. <button class="try" data-c="2">ابدأ</button></li>
+    <li>اجمع الأرقام من 1 لـ 100. <button class="try" data-c="3">ابدأ</button></li>
+    <li>عندك قايمة درجات، اطبع أعلى وأقل درجة (تلميح: max و min). <button class="try" data-c="4">ابدأ</button></li>
+    <li>اقلب كلمة بالمقلوب (تلميح: [::-1]). <button class="try" data-c="5">ابدأ</button></li>
+  </ol>
+  <div class="idea"><b>🚀 خطوتك الجاية</b>مبروك! إنت كده عارف أساسيات البرمجة 🎓. جرّب تعمل برامج صغيرة على جهازك: آلة حاسبة، لعبة أسئلة، أو برنامج يحسب مصروفك. وكل ما تتزنق، اطبع كل حاجة بـ print وشوف إيه اللي بيحصل.</div>
+</section>
+
+</main>
+</div>
+
+<footer>صُنع بحب ❤️ عشان تتعلم بايثون وإنت بتلعب · <a href="mero.html">HTML</a> · <a href="css.html">CSS</a> · <a href="js.html">JavaScript</a></footer>
+<button id="topBtn" title="لفوق" onclick="window.scrollTo({top:0})">↑</button>
+
+<script>
+function $(id){return document.getElementById(id);}
+function esc(s){return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');}
+function hlPy(src){
+  var re=/(#.*$)|([fF]?"(?:\\.|[^"\\\n])*"|[fF]?'(?:\\.|[^'\\\n])*')|\b(def|return|if|elif|else|for|while|in|not|and|or|True|False|None|import|from|as|break|continue|pass|class|try|except|lambda|is)\b|\b(\d+(?:\.\d+)?)\b|\b(print|input|range|len|int|str|float|list|dict|type|round|sum|max|min|abs|sorted|random)\b/gm;
+  var out='',last=0,m;
+  while((m=re.exec(src))){out+=esc(src.slice(last,m.index));var c=m[1]?'c':m[2]?'v':m[3]?'t':m[4]?'e':'a';out+='<span class="'+c+'">'+esc(m[0])+'</span>';last=re.lastIndex;}
+  return out+esc(src.slice(last));
+}
+function dedent(s){
+  s=s.replace(/^\s*\n/,'').replace(/\s+$/,'');
+  var lines=s.split('\n'),min=Infinity;
+  lines.forEach(function(l){if(l.trim()){var n=l.match(/^ */)[0].length;if(n<min)min=n;}});
+  return lines.map(function(l){return l.slice(min===Infinity?0:min);}).join('\n');
+}
+function explain(last){
+  var m;
+  if((m=/NameError: name '(.+?)' is not defined/.exec(last)))return '🤔 «'+m[1]+'» مش موجود! يا إمّا كاتب الاسم غلط (الكابيتال والسمول بيفرقوا)، يا إمّا بتستخدم العلبة قبل ما تعملها، يا إمّا نسيت تحط الكلام بين تنصيص.';
+  if(/IndentationError/.test(last))return '📐 المسافات في أول السطر مش مظبوطة. السطور اللي تحت أي سطر بينتهي بـ : لازم تبدأ بـ 4 مسافات، والسطور اللي جنب بعض لازم نفس المسافة.';
+  if(/SyntaxError/.test(last))return '✏️ غلطة في الكتابة: نسيت : في آخر if أو for أو def؟ قوس ناقص؟ تنصيص مقفلتوش؟ ولا كاتب = واحدة بدل == في المقارنة؟';
+  if(/can only concatenate str/.test(last)||/unsupported operand type\(s\) for \+: 'int' and 'str'/.test(last))return '🧩 بتلزق كلام (str) مع رقم (int) بـ +! بايثون مبتقبلش ده. استخدم f-string: f"... {x} ..." أو حوّل الرقم بـ str(x).';
+  if(/unsupported operand/.test(last))return '🧩 بتعمل عملية حسابية بين نوعين مينفعش (غالبًا كلام ورقم). لو الكلام جاي من input حوّله بـ int().';
+  if(/not supported between instances/.test(last))return '⚖️ بتقارن (> أو <) بين رقم وكلام. حوّل الكلام لرقم بـ int() الأول.';
+  if(/invalid literal for int/.test(last))return '🔢 بتحاول تحوّل حاجة مش رقم لـ int. لازم تكتب أرقام بس.';
+  if(/ZeroDivisionError/.test(last))return '🙅 قسمت على صفر! ده ممنوع في الرياضيات وفي بايثون.';
+  if(/IndexError/.test(last))return '🚂 بتطلب رقم خانة مش موجود في القايمة. افتكر: العد بيبدأ من 0، وآخر خانة رقمها len - 1.';
+  if(/KeyError/.test(last))return '🪪 مفيش مفتاح بالاسم ده في الـ dict. اتأكد من الاسم، أو استخدم .get() عشان ترجع None بدل الغلطة.';
+  if(/AttributeError/.test(last))return '🔧 النوع ده معندوش الأمر اللي بعد النقطة. اتأكد من الاسم (مثلًا append للـ list بس).';
+  if(/TypeError/.test(last))return '🧩 بتستخدم نوع في مكان مش مناسب. اقرا الرسالة الإنجليزي كويس.';
+  return '🐞 فيه غلطة. اقرا آخر سطر في الرسالة، وبص على رقم السطر.';
+}
+
+/* ===== تحميل بايثون (Pyodide) ===== */
+var PY=null,pyLoading=null,QUEUE=Promise.resolve();
+function loadPy(){
+  if(pyLoading)return pyLoading;
+  pyLoading=new Promise(function(res,rej){
+    var s=document.createElement('script');s.src='https://cdn.jsdelivr.net/pyodide/v0.26.4/full/pyodide.js';
+    s.onload=function(){loadPyodide().then(function(py){
+      py.runPython([
+        'import builtins, js',
+        'def _mero_input(prompt=""):',
+        '    r = js.prompt(str(prompt))',
+        '    r = "" if r is None else str(r)',
+        '    print(str(prompt) + r)',
+        '    return r',
+        'builtins.input = _mero_input'].join('\n'));
+      PY=py;res(py);},rej);};
+    s.onerror=function(){rej(new Error('net'));};
+    document.head.appendChild(s);
+  });
+  return pyLoading;
+}
+function addLine(con,cls,text){var e=con.querySelector('.empty');if(e)e.remove();var d=document.createElement('div');if(cls)d.className=cls;d.textContent=text===''?' ':text;con.appendChild(d);}
+function runPy(code,con){
+  con.innerHTML='<div class="empty">⏳ شغّال...</div>';
+  QUEUE=QUEUE.then(function(){
+    return loadPy().then(function(py){
+      con.innerHTML='';
+      py.setStdout({batched:function(s){addLine(con,'',s);}});
+      py.setStderr({batched:function(s){addLine(con,'err',s);}});
+      var ns=py.globals.get('dict')();
+      return py.runPythonAsync(code,{globals:ns}).then(function(){},function(err){
+        var msg=String(err&&err.message||err),lines=msg.trim().split('\n'),last=lines[lines.length-1],ln=null,m,re=/File "<exec>", line (\d+)/g;
+        while((m=re.exec(msg)))ln=m[1];
+        addLine(con,'err','❌ '+last+(ln?'   (سطر '+ln+')':''));
+        var w=document.createElement('div');w.className='why';w.textContent=explain(last);con.appendChild(w);
+      }).then(function(){try{py.runPython('import sys\nsys.stdout.flush()');}catch(e){}ns.destroy();
+        if(!con.children.length)con.innerHTML='<div class="empty">(البرنامج اشتغل بس مطبعش حاجة)</div>';});
+    },function(){con.innerHTML='<div class="empty">❌ بايثون محمّلتش. اتأكد إنك متوصل بالنت واعمل Refresh للصفحة.</div>';});
+  });
+  return QUEUE;
+}
+
+/* ===== صناديق الأمثلة ===== */
+var AUTO=[];
+document.querySelectorAll('.example').forEach(function(box){
+  var s=box.querySelector('script[type="text/plain"]'),original=dedent(s.textContent),auto=!box.hasAttribute('data-noauto');
+  box.innerHTML='<div class="ex-bar code"><span>🐍 الكود</span><span><button class="run">▶️ شغّل</button><button class="ed">✏️ عدّل</button><button class="ghost rs" style="display:none">↩️ الأصلي</button><button class="ghost cp">📋 نسخ</button></span></div>'+
+    '<pre class="code"></pre><textarea class="code" spellcheck="false"></textarea><div class="ex-bar con"><span>🖥️ الناتج</span></div><div class="console"><div class="empty">'+(auto?'⏳ مستني بايثون يحمّل...':'دوس ▶️ شغّل')+'</div></div>';
+  var pre=box.querySelector('pre'),ta=box.querySelector('textarea'),con=box.querySelector('.console');
+  var bRun=box.querySelector('.run'),bEd=box.querySelector('.ed'),bRs=box.querySelector('.rs'),bCp=box.querySelector('.cp');
+  ta.value=original;pre.innerHTML=hlPy(original);
+  bRun.onclick=function(){pre.innerHTML=hlPy(ta.value);runPy(ta.value,con);};
+  bEd.onclick=function(){
+    if(ta.style.display==='block'){ta.style.display='none';pre.style.display='block';pre.innerHTML=hlPy(ta.value);bEd.textContent='✏️ عدّل';}
+    else{ta.style.height=Math.max(pre.offsetHeight,140)+'px';ta.style.display='block';pre.style.display='none';ta.focus();bEd.textContent='✅ خلصت';bRs.style.display='inline-block';}
+  };
+  ta.addEventListener('keydown',function(e){if(e.key==='Enter'&&(e.ctrlKey||e.metaKey)){e.preventDefault();bRun.onclick();}if(e.key==='Tab'){e.preventDefault();var a=ta.selectionStart;ta.value=ta.value.slice(0,a)+'    '+ta.value.slice(ta.selectionEnd);ta.selectionStart=ta.selectionEnd=a+4;}});
+  bRs.onclick=function(){ta.value=original;pre.innerHTML=hlPy(original);bRun.onclick();};
+  bCp.onclick=function(){if(navigator.clipboard)navigator.clipboard.writeText(ta.value).then(function(){bCp.textContent='✔️ اتنسخ';setTimeout(function(){bCp.textContent='📋 نسخ';},1500);});};
+  if(auto)AUTO.push(function(){runPy(ta.value,con);});
+});
+loadPy().then(function(){var st=$('pyStatus');st.className='ready';st.textContent='✅ بايثون جاهزة! دوس ▶️ شغّل على أي كود';setTimeout(function(){st.style.display='none';},4000);AUTO.forEach(function(f){f();});},
+  function(){var st=$('pyStatus');st.className='fail';st.textContent='❌ بايثون محمّلتش (محتاج نت أول مرة). الألعاب شغالة عادي، بس عشان تشغّل الأكواد اتوصل بالنت واعمل Refresh.';
+    document.querySelectorAll('.example .console .empty').forEach(function(e){e.textContent='❌ محتاج نت عشان بايثون تشتغل';});});
+
+/* ===== الفهرس ===== */
+(function(){
+  var toc=$('toc'),secs=document.querySelectorAll('section.lesson');
+  secs.forEach(function(sec,i){var a=document.createElement('a');a.href='#'+sec.id;a.textContent=(i+1)+'. '+sec.dataset.title;toc.appendChild(a);});
+  var links=toc.querySelectorAll('a');
+  window.addEventListener('scroll',function(){var c=0;secs.forEach(function(s,i){if(s.getBoundingClientRect().top<120)c=i;});links.forEach(function(l,i){l.classList.toggle('active',i===c);});});
+})();
+</script>
+
+<script>
+/* ================= الألعاب ================= */
+/* قيمة بايثون بسيطة: نحللها */
+function pyParse(v){
+  v=v.trim();
+  if(/^-?\d+$/.test(v))return {t:'int',v:+v};
+  if(/^-?\d+\.\d*$|^-?\d*\.\d+$/.test(v))return {t:'float',v:+v};
+  if(/^"[^"]*"$|^'[^']*'$/.test(v))return {t:'str',v:v.slice(1,-1)};
+  if(v==='True'||v==='False')return {t:'bool',v:v==='True'};
+  if(/^\[.*\]$/.test(v))return {t:'list',v:v};
+  return null;
+}
+function pyRepr(x){
+  if(x.t==='str')return "'"+x.v+"'";
+  if(x.t==='bool')return x.v?'True':'False';
+  if(x.t==='float')return Number.isInteger(x.v)?x.v.toFixed(1):String(x.v);
+  return String(x.v);
+}
+
+/* ---------- رف العلب ---------- */
+(function(){
+  var vars=[],log=[];
+  function draw(){
+    var sh=$('vShelf');sh.innerHTML='';
+    vars.forEach(function(v){var d=document.createElement('div');d.className='vbox';d.innerHTML='<div class="lid">'+esc(v.name)+'</div><div class="body">'+esc(v.val)+'</div><small>'+v.type+'</small>';sh.appendChild(d);});
+    $('vCode').innerHTML=hlPy(log.join('\n'));
+  }
+  function put(name,val,silent){
+    var msg=$('vMsg');name=name.trim();
+    if(!/^[A-Za-z_][A-Za-z0-9_]*$/.test(name)){msg.innerHTML='<span class="no">❌ الاسم لازم يكون إنجليزي، من غير مسافات أو شَرط، ومايبدأش برقم. استخدم _ مكان المسافة: first_name</span>';return;}
+    if(/^(if|else|elif|for|while|def|return|True|False|None|and|or|not|in|import|class|print)$/.test(name)){msg.innerHTML='<span class="no">❌ «'+name+'» كلمة محجوزة في بايثون، اختار اسم تاني.</span>';return;}
+    var p=pyParse(val);
+    if(!p){msg.innerHTML='<span class="no">❌ لو ده كلام حطه بين تنصيص "..."، ولو رقم اكتبه أرقام بس، أو True / False.</span>';return;}
+    var shown=p.t==='str'?'"'+p.v+'"':pyRepr(p),ex=vars.filter(function(x){return x.name===name;})[0];
+    log.push(name+' = '+shown);
+    if(ex){var old=ex.val;ex.val=shown;ex.type="<class '"+p.t+"'>";if(!silent)msg.innerHTML='<span class="ok">♻️ العلبة '+name+' كان فيها '+esc(old)+'، اترمى وبقى فيها '+esc(shown)+'</span>';}
+    else{vars.push({name:name,val:shown,type:"<class '"+p.t+"'>"});if(!silent)msg.innerHTML='<span class="ok">✅ اتعملت علبة '+name+' ونوع اللي جواها '+p.t+'</span>';}
+    draw();
+  }
+  $('vMake').onclick=function(){put($('vName').value,$('vVal').value);};
+  put('age','25',true);put('name','"مروة"',true);put('is_happy','True',true);draw();
+})();
+
+/* ---------- خمّن النوع ---------- */
+(function(){
+  var Q=[['42','int'],['"42"','str'],['3.14','float'],['True','bool'],['"True"','str'],['[1, 2, 3]','list'],['{"name": "علي"}','dict'],['0.5','float'],['-7','int'],["'مرحبا'",'str'],['False','bool'],['[ ]','list'],['{ }','dict'],['"3.14"','str'],['10.0','float'],['["تفاح", "موز"]','list'],['2026','int']];
+  var T={int:'🔢 int',float:'🔢 float',str:'📝 str',bool:'✅ bool',list:'🚂 list',dict:'🪪 dict'};
+  var W={int:'رقم من غير علامة عشرية = int.',float:'لو فيه نقطة عشرية (حتى 10.0) يبقى float.',str:'أي حاجة بين تنصيص تبقى str، حتى لو شكلها رقم أو True!',bool:'True و False (أول حرف كابيتال ومن غير تنصيص) = bool.',list:'الأقواس المربعة [ ] = list.',dict:'الأقواس المعكوفة { } = dict.'};
+  var cur,score=0,total=0,last=-1,lock=false;
+  function next(){var i;do{i=Math.floor(Math.random()*Q.length);}while(i===last);last=i;cur=Q[i];$('tyVal').textContent=cur[0];$('tyMsg').textContent='';lock=false;
+    var ch=$('tyCh');ch.innerHTML='';Object.keys(T).forEach(function(k){var b=document.createElement('button');b.textContent=T[k];b.onclick=function(){answer(k,b);};ch.appendChild(b);});}
+  function answer(k,b){
+    if(lock)return;lock=true;total++;
+    if(k===cur[1]){score++;b.className='right';$('tyMsg').innerHTML='<span class="ok">🎉 صح! '+W[k]+'</span>';}
+    else{b.className='wrong';[].forEach.call($('tyCh').children,function(x){if(x.textContent===T[cur[1]])x.className='right';});$('tyMsg').innerHTML='<span class="no">❌ لأ، ده '+cur[1]+'. '+W[cur[1]]+'</span>';}
+    $('tyScore').textContent=score+' / '+total;setTimeout(next,k===cur[1]?1100:2600);
+  }
+  next();
+})();
+
+/* ---------- الآلة الحاسبة (بقواعد بايثون) ---------- */
+(function(){
+  function num(x){return x.t==='int'||x.t==='float'||x.t==='bool';}
+  function nv(x){return x.t==='bool'?(x.v?1:0):x.v;}
+  function nt(a,b){return (a.t==='float'||b.t==='float')?'float':'int';}
+  function tn(x){return x.t;}
+  function calc(a,op,b){
+    if(op==='=='){return {r:{t:'bool',v:(num(a)&&num(b))?nv(a)===nv(b):(a.t===b.t&&a.v===b.v)}};}
+    if(op==='>'||op==='<'){
+      if(num(a)&&num(b))return {r:{t:'bool',v:op==='>'?nv(a)>nv(b):nv(a)<nv(b)}};
+      if(a.t==='str'&&b.t==='str')return {r:{t:'bool',v:op==='>'?a.v>b.v:a.v<b.v}};
+      return {e:"TypeError: '"+op+"' not supported between instances of '"+tn(a)+"' and '"+tn(b)+"'"};
+    }
+    if(op==='+'){
+      if(num(a)&&num(b))return {r:{t:nt(a,b),v:nv(a)+nv(b)}};
+      if(a.t==='str'&&b.t==='str')return {r:{t:'str',v:a.v+b.v}};
+      if(a.t==='str')return {e:'TypeError: can only concatenate str (not "'+tn(b)+'") to str'};
+      return {e:"TypeError: unsupported operand type(s) for +: '"+tn(a)+"' and '"+tn(b)+"'"};
+    }
+    if(op==='*'){
+      if(num(a)&&num(b))return {r:{t:nt(a,b),v:nv(a)*nv(b)}};
+      if(a.t==='str'&&b.t==='int')return {r:{t:'str',v:a.v.repeat(Math.max(0,Math.min(b.v,50)))}};
+      if(b.t==='str'&&a.t==='int')return {r:{t:'str',v:b.v.repeat(Math.max(0,Math.min(a.v,50)))}};
+      return {e:"TypeError: can't multiply sequence by non-int of type '"+(a.t==='str'?tn(b):tn(a))+"'"};
+    }
+    if(!num(a)||!num(b))return {e:"TypeError: unsupported operand type(s) for "+op+": '"+tn(a)+"' and '"+tn(b)+"'"};
+    var x=nv(a),y=nv(b);
+    if((op==='/'||op==='//'||op==='%')&&y===0)return {e:'ZeroDivisionError: division by zero'};
+    if(op==='-')return {r:{t:nt(a,b),v:x-y}};
+    if(op==='/')return {r:{t:'float',v:x/y}};
+    if(op==='//')return {r:{t:nt(a,b),v:Math.floor(x/y)}};
+    if(op==='%')return {r:{t:nt(a,b),v:((x%y)+y)%y}};
+    if(op==='**')return {r:{t:(nt(a,b)==='int'&&y<0)?'float':nt(a,b),v:Math.pow(x,y)}};
+  }
+  function upd(){
+    var A=$('caA').value.trim(),B=$('caB').value.trim(),op=$('caOp').value,a=pyParse(A),b=pyParse(B),msg=$('caMsg');
+    $('caCode').innerHTML=hlPy('print('+A+' '+op+' '+B+')');
+    if(!a||!b||a.t==='list'||b.t==='list'){msg.innerHTML='<span class="no">❌ اكتب رقم (زي 7 أو 2.5) أو كلام بين تنصيص (زي "ها") أو True/False.</span>';return;}
+    var res=calc(a,op,b);
+    if(res.e){$('caCode').innerHTML+='\n<span class="err" style="color:#fca5a5"># ❌ '+esc(res.e)+'</span>';
+      msg.innerHTML='<span class="no">'+(/concatenate|for \+/.test(res.e)?'💥 بايثون زعلت! مينفعش تلزق كلام مع رقم بـ + (في JavaScript كانت بتلزق عادي، بس بايثون صارمة). حوّل بـ str() أو int().':/Zero/.test(res.e)?'🙅 القسمة على صفر ممنوعة!':'💥 العملية دي مينفعش بين '+a.t+' و '+b.t+'.')+'</span>';return;}
+    var out=res.r.t==='str'?res.r.v:pyRepr(res.r);
+    $('caCode').innerHTML+='\n<span class="c"># ➜ '+esc(out)+'</span>';
+    var t='';
+    if(op==='*'&&(a.t==='str'||b.t==='str'))t='🪄 سحر بايثون: كلام × رقم = الكلام يتكرر!';
+    else if(op==='+'&&a.t==='str')t='🔗 كلام + كلام = يتلزقوا في بعض.';
+    else if(op==='/')t='➗ القسمة / دايمًا بتطلع float (فيها .0) حتى لو مفيش كسور.';
+    else if(op==='//')t='✂️ // = قسمة وبترمي الكسر خالص.';
+    else if(op==='%')t='🪙 % = باقي القسمة. لو قسمت '+A+' على '+B+' يفضل كام.';
+    else if(op==='**')t='⚡ ** = أُس. يعني '+A+' مضروبة في نفسها '+B+' مرات.';
+    else if(op==='==')t=(a.t!==b.t&&!(num(a)&&num(b)))?'⚖️ في بايثون 5 == "5" بتطلع False، لأن واحد رقم والتاني كلام.':'⚖️ == بتسأل: هما متساويين؟ وبترد True أو False.';
+    else t='✅ حساب عادي. النوع: '+res.r.t;
+    msg.textContent=t;
+  }
+  ['caA','caB','caOp'].forEach(function(i){$(i).addEventListener('input',upd);$(i).addEventListener('change',upd);});upd();
+})();
+
+/* ---------- المقص (Slicing) ---------- */
+(function(){
+  function sl(arr,a,b,c){
+    var n=arr.length,step=c===''?1:parseInt(c,10),idx=[];
+    if(isNaN(step))return {e:'اكتب أرقام بس'};if(step===0)return {e:'ValueError: slice step cannot be zero'};
+    function g(v){if(v==='')return null;var x=parseInt(v,10);return isNaN(x)?NaN:x;}
+    var s=g(a),t=g(b);if(isNaN(s)||isNaN(t))return {e:'اكتب أرقام بس'};
+    if(step>0){s=s===null?0:s<0?Math.max(0,s+n):Math.min(s,n);t=t===null?n:t<0?Math.max(0,t+n):Math.min(t,n);for(var i=s;i<t;i+=step)idx.push(i);}
+    else{s=s===null?n-1:s<0?s+n:Math.min(s,n-1);t=t===null?-1:t<0?Math.max(-1,t+n):Math.min(t,n-1);for(var j=s;j>t;j+=step)if(j>=0)idx.push(j);}
+    return {idx:idx};
+  }
+  function upd(){
+    var w=$('slW').value,arr=Array.from(w),A=$('slA').value.trim(),B=$('slB').value.trim(),C=$('slC').value.trim(),r=sl(arr,A,B,C);
+    var box=$('slChars');box.innerHTML='';
+    arr.forEach(function(ch,i){var d=document.createElement('div');d.className='ch'+(r.idx&&r.idx.indexOf(i)>-1?' sel':'');d.innerHTML='<div class="p">'+i+'</div><div class="b">'+esc(ch)+'</div><div class="n">'+(i-arr.length)+'</div>';box.appendChild(d);});
+    var expr='word['+A+':'+B+(C!==''?':'+C:'')+']';
+    if(r.e){$('slOut').innerHTML=hlPy(expr)+'  <span style="color:#fca5a5">❌ '+esc(r.e)+'</span>';$('slMsg').textContent='';return;}
+    var res=r.idx.map(function(i){return arr[i];}).join('');
+    $('slOut').innerHTML=hlPy(expr)+'  ➜  <span class="v">\''+esc(res)+'\'</span>';
+    $('slMsg').innerHTML=res===''?'🤷 الناتج فاضي! يمكن البداية بعد النهاية؟':(C==='-1'&&A===''&&B===''?'🔄 [::-1] = اقلب الكلمة كلها!':'✂️ قصّينا '+r.idx.length+' حرف. لاحظ إن حرف رقم '+(B||'النهاية')+' نفسه مش داخل.');
+  }
+  ['slW','slA','slB','slC'].forEach(function(i){$(i).addEventListener('input',upd);});upd();
+})();
+
+/* ---------- بوّاب الملاهي (if) ---------- */
+(function(){
+  function upd(){
+    var age=+$('ifAge').value,h=+$('ifH').value,t=$('ifTicket').checked;$('ifAgeV').textContent=age;$('ifHV').textContent=h;
+    var c1=!t,c2=h<120,c3=age>=60,br=c1?1:c2?2:c3?3:4;
+    function tag(x){return '<span class="tag '+(x?'T':'F')+'">'+(x?'True ✔':'False ✘')+'</span>';}
+    function L(txt,on){return '<span class="cl '+(on===true?'on':on===false?'off':'')+'">'+txt+'</span>';}
+    $('ifCode').innerHTML=L(hlPy('age = '+age))+L(hlPy('height = '+h))+L(hlPy('has_ticket = '+(t?'True':'False')))+L('')+
+      L(hlPy('if not has_ticket:')+tag(c1),br===1)+L(hlPy('    print("🚫 روح اقطع تذكرة الأول")'),br===1)+
+      L(hlPy('elif height < 120:')+(c1?'':tag(c2)),br===2)+L(hlPy('    print("👶 قصير على اللعبة دي، روح المراجيح")'),br===2)+
+      L(hlPy('elif age >= 60:')+(c1||c2?'':tag(c3)),br===3)+L(hlPy('    print("👴 اتفضل يا حاج، بس براحة على قلبك")'),br===3)+
+      L(hlPy('else:'),br===4)+L(hlPy('    print("🎢 اركب واستمتع!")'),br===4);
+    $('ifGate').textContent=['','🚫 روح اقطع تذكرة الأول','👶 قصير على اللعبة دي، روح المراجيح','👴 اتفضل يا حاج، بس براحة على قلبك','🎢 اركب واستمتع!'][br];
+  }
+  ['ifAge','ifH','ifTicket'].forEach(function(i){$(i).addEventListener('input',upd);$(i).addEventListener('change',upd);});upd();
+})();
+
+/* ---------- صلّح المسافات ---------- */
+(function(){
+  var L=[
+    {goal:'🎯 خلّي «كبير» تتطبع بس لو السن 18 أو أكتر.',lines:[['age = 20',0],['if age >= 18:',0],['print("كبير 💪")',1]],out:'كبير 💪'},
+    {goal:'🎯 اطبع الأرقام 3 مرات، وبعدين «خلصت» مرة واحدة بس في الآخر.',lines:[['for i in range(3):',0],['print(i)',1],['print("خلصت")',0]],out:'0\n1\n2\nخلصت'},
+    {goal:'🎯 فانكشن بتسلّم: لو الاسم مروة تقول «يا ملكة»، غير كده سلام عادي.',lines:[['def greet(name):',0],['if name == "مروة":',1],['print("أهلًا يا ملكة 👑")',2],['else:',1],['print("أهلًا يا", name)',2],['greet("مروة")',0]],out:'أهلًا يا ملكة 👑'},
+    {goal:'🎯 اجمع الأرقام الزوجية بس من 1 لـ 6 واطبع المجموع في الآخر.',lines:[['total = 0',0],['for n in range(1, 7):',0],['if n % 2 == 0:',1],['total += n',2],['print(total)',0]],out:'12'}
+  ];
+  var lvl=0,cur=[];
+  function build(){var l=L[lvl];cur=l.lines.map(function(){return 0;});$('inLvl').textContent='مستوى '+(lvl+1)+' من '+L.length;$('inGoal').textContent=l.goal;$('inMsg').textContent='';$('inOut').style.display='none';$('inNext').disabled=true;draw();}
+  function draw(marks){
+    var box=$('inRows');box.innerHTML='';
+    L[lvl].lines.forEach(function(ln,i){
+      var r=document.createElement('div');r.className='ind-row'+(marks?(marks[i]?' good':' bad'):'');
+      var minus=document.createElement('button');minus.textContent='⬅️';minus.title='رجّع لورا';minus.onclick=function(){if(cur[i]>0){cur[i]--;draw();}};
+      var plus=document.createElement('button');plus.textContent='➡️';plus.title='زق لجوه';plus.onclick=function(){if(cur[i]<3){cur[i]++;draw();}};
+      var c=document.createElement('code');c.innerHTML='<span class="dots">'+'····'.repeat(cur[i])+'</span>'+hlPy(ln[0]);
+      r.appendChild(minus);r.appendChild(plus);r.appendChild(c);box.appendChild(r);
+    });
+  }
+  $('inCheck').onclick=function(){
+    var l=L[lvl],marks=l.lines.map(function(x,i){return cur[i]===x[1];}),ok=marks.every(Boolean);draw(marks);
+    var o=$('inOut');o.style.display='block';
+    if(ok){o.innerHTML='';o.textContent=l.out;$('inMsg').innerHTML='<span class="ok">🎉 مظبوط! المسافات صح والكود اشتغل.</span>'+(lvl===L.length-1?'<br><span class="ok">🏆 خلّصت كل المستويات! إنت كده فاهم أهم قاعدة في بايثون.</span>':'');$('inNext').disabled=lvl===L.length-1;}
+    else{
+      var first=marks.indexOf(false),prev=first>0?l.lines[first-1][0]:'',hint=/:$/.test(prev)&&cur[first]<=cur[first-1]?'السطر اللي قبله بينتهي بـ : يبقى ده لازم يتزق لجوه.':'السطر ده مكانه غلط: فكّر هو تبع مين؟';
+      o.innerHTML='<div class="err">❌ IndentationError (سطر '+(first+1)+')</div>';$('inMsg').innerHTML='<span class="no">السطور اللي عليها أحمر مسافاتها غلط. '+hint+'</span>';}
+  };
+  $('inNext').onclick=function(){lvl++;build();};build();
+})();
+
+/* ---------- الروبوت ---------- */
+(function(){
+  var star=5,pos=0,busy=false,score=0;
+  function draw(trail){var tr=$('rbTrack');tr.innerHTML='';for(var i=0;i<12;i++){var c=document.createElement('div');c.className='cell'+(trail&&i<pos&&i>0?' trail':'');c.innerHTML=(i===pos?'🤖':i===star?'⭐':'')+'<small>'+i+'</small>';tr.appendChild(c);}}
+  function code(){$('rbCode').innerHTML=hlPy('for i in range('+$('rbN').value+'):\n    robot.move()    # امشي خطوة');}
+  function newStar(){star=2+Math.floor(Math.random()*10);pos=0;$('rbMsg').textContent='';draw();}
+  $('rbN').addEventListener('input',code);
+  $('rbGo').onclick=function(){
+    if(busy)return;busy=true;pos=0;draw();var n=Math.max(0,Math.min(11,+$('rbN').value||0)),i=0;
+    (function step(){
+      if(i>=n){busy=false;
+        if(pos===star){score++;$('rbScore').textContent='النجوم: '+score;$('rbMsg').innerHTML='<span class="ok">🎉 وصل! range('+n+') لفّت '+n+' لفات (i من 0 لـ '+(n-1)+'). نجمة جديدة جاية...</span>';setTimeout(newStar,1700);}
+        else $('rbMsg').innerHTML='<span class="no">'+(pos<star?'😅 ناقصه '+(star-pos)+' خطوة!':'🙈 عدّاها بـ '+(pos-star)+' خطوة!')+'</span>';return;}
+      $('rbMsg').textContent='🔁 لفة: i = '+i;i++;pos++;draw(true);setTimeout(step,380);
+    })();
+  };
+  $('rbNew').onclick=newStar;code();newStar();
+})();
+
+/* ---------- مولّد range ---------- */
+(function(){
+  function upd(){
+    var s=+$('rgS').value,e=+$('rgE').value,p=+$('rgP').value,out=$('rgOut'),msg=$('rgMsg'),a=[];out.innerHTML='';
+    if(p===0){msg.innerHTML='<span class="no">❌ ValueError: range() arg 3 must not be zero (القفزة مينفعش تبقى صفر)</span>';return;}
+    for(var i=s;(p>0?i<e:i>e)&&a.length<60;i+=p)a.push(i);
+    a.forEach(function(x){var b=document.createElement('span');b.textContent=x;out.appendChild(b);});
+    msg.innerHTML=a.length?'list(range('+s+', '+e+', '+p+')) ➜ <b>'+a.length+'</b> رقم'+(a.length>=60?' (وقفنا عند 60)':''):'🤷 مفيش ولا رقم! جرّب تخلّي البداية أصغر من النهاية (أو قفزة سالبة لو عايز تعدّ لورا).';
+  }
+  ['rgS','rgE','rgP'].forEach(function(i){$(i).addEventListener('input',upd);});upd();
+})();
+
+/* ---------- القطر ---------- */
+(function(){
+  var arr=['🍎','🍌','🍇'],log=['train = ["🍎", "🍌", "🍇"]'],hl=null;
+  function draw(){
+    var t=$('trTrain');t.innerHTML='';
+    arr.forEach(function(x,i){var w=document.createElement('div');w.className='wagon'+(i===hl?' hl':'');w.innerHTML='<div class="w">'+x+'</div><div class="wheels">●●</div><div class="ix"><b>['+i+']</b><br><i>['+(i-arr.length)+']</i></div>';t.appendChild(w);});
+    var e=document.createElement('div');e.className='engine';e.textContent='🚂';e.style.transform='scaleX(-1)';t.appendChild(e);
+    $('trLen').textContent='len(train) = '+arr.length;$('trLog').innerHTML=hlPy(log.join('\n'));$('trLog').scrollTop=1e5;
+  }
+  document.querySelectorAll('#gTrain [data-op]').forEach(function(b){b.onclick=function(){
+    var op=b.dataset.op,it=$('trItem').value;hl=null;
+    if(op==='append'||op==='insert'){if(arr.length>=9){log.push('# 🚫 الشاشة اتملت 😅');draw();return;}
+      if(op==='append'){arr.push(it);log.push('train.append("'+it+'")');}else{arr.unshift(it);log.push('train.insert(0, "'+it+'")');}}
+    else{if(!arr.length){log.push('train.'+(op==='pop'?'pop()':'pop(0)'));log.push('# ❌ IndexError: pop from empty list (القطر فاضي!)');draw();return;}
+      var r=op==='pop'?arr.pop():arr.shift();log.push('train.'+(op==='pop'?'pop()':'pop(0)')+'    # ➜ طلّع "'+r+'"');}
+    draw();
+  };});
+  $('trGet').onclick=function(){var i=parseInt($('trIx').value,10)||0,real=i<0?i+arr.length:i;
+    log.push('print(train['+i+'])');
+    if(real<0||real>=arr.length){hl=null;log.push('# ❌ IndexError: list index out of range (مفيش عربية بالرقم ده)');}
+    else{hl=real;log.push('# ➜ '+arr[real]+(i<0?'   (السالب بيعد من الآخر)':''));}
+    draw();};
+  draw();
+})();
+
+/* ---------- البطاقة ---------- */
+(function(){
+  function upd(){
+    var o={name:$('obName').value,age:+$('obAge').value,city:$('obCity').value,is_student:$('obStu').checked};
+    $('obCode').innerHTML=hlPy('person = {\n    "name": "'+o.name+'",\n    "age": '+o.age+',\n    "city": "'+o.city+'",\n    "is_student": '+(o.is_student?'True':'False')+'\n}');
+    $('obCard').innerHTML='<div class="av">'+(o.is_student?'🧑‍🎓':'🧑‍💼')+'</div><div>الاسم: <b>'+esc(o.name)+'</b></div><div>السن: <b>'+o.age+'</b></div><div>المدينة: <b>'+esc(o.city)+'</b></div><div>طالب؟ <b>'+(o.is_student?'آه':'لأ')+'</b></div>';
+    var k=$('obKey').value,how=$('obHow').value,v=o[k],msg=$('obMsg');
+    if(v===undefined){
+      if(how==='br'){$('obAns').textContent='❌ KeyError';msg.innerHTML='<span class="no">💥 مفيش مفتاح اسمه "phone"، فبايثون طلّعت غلطة KeyError. جرّب .get() بدلها.</span>';}
+      else{$('obAns').textContent='None';msg.innerHTML='<span class="ok">😌 .get() أذكى: لو المفتاح مش موجود بترجع None (لا شيء) من غير ما البرنامج يقع.</span>';}
+    }else{$('obAns').textContent=typeof v==='string'?"'"+v+"'":typeof v==='boolean'?(v?'True':'False'):String(v);msg.textContent='';}
+  }
+  ['obName','obAge','obCity','obStu','obKey','obHow'].forEach(function(i){$(i).addEventListener('input',upd);$(i).addEventListener('change',upd);});upd();
+})();
+
+/* ---------- مكنة العصير ---------- */
+(function(){
+  function code(){var f=$('juF').value.split('|'),n=$('juN').value;$('juIn').textContent=f[0];
+    $('juCode').innerHTML=hlPy('def make_juice(fruit, cups):\n    return "🥤" * cups + " عصير " + fruit\n\nresult = make_juice("'+f[1]+'", '+n+')\nprint(result)');}
+  $('juGo').onclick=function(){
+    var f=$('juF').value.split('|'),n=Math.max(1,Math.min(6,+$('juN').value||1)),b=$('juBox');$('juOut').textContent='⏳';b.classList.add('work');
+    setTimeout(function(){b.classList.remove('work');$('juOut').textContent='🥤'.repeat(n);
+      $('juMsg').innerHTML='<span class="ok">return ➜ \''+'🥤'.repeat(n)+' عصير '+f[1]+'\'</span><br><small style="font-weight:400">«'+f[1]+'» دخلت في fruit، و '+n+' دخلت في cups، والمكنة رجّعت النتيجة بـ return واتحطت في result.</small>';},1000);
+  };
+  ['juF','juN'].forEach(function(i){$(i).addEventListener('input',code);$(i).addEventListener('change',code);});code();
+})();
+
+/* ---------- خمّن الناتج ---------- */
+(function(){
+  var Q=[
+    {c:'print(2 + 3 * 2)',o:['10','8','12'],a:1,w:'الضرب قبل الجمع زي الرياضيات: 3×2=6 وبعدين +2 = 8.'},
+    {c:'print("ها" * 3)',o:['ها3','هاهاها','Error'],a:1,w:'كلام × رقم = يتكرر.'},
+    {c:'x = 5\nx = x + 1\nprint(x)',o:['5','6','x + 1'],a:1,w:'خدنا 5 وزودنا 1 ورجعناها في نفس العلبة.'},
+    {c:'print(10 / 2)',o:['5','5.0','2'],a:1,w:'/ دايمًا بتطلع float.'},
+    {c:'for i in range(3):\n    print(i)',o:['1\n2\n3','0\n1\n2','0\n1\n2\n3'],a:1,w:'range(3) = 0، 1، 2 (مبتوصلش 3).'},
+    {c:'name = "Ali"\nprint(f"Hi {name}")',o:['Hi {name}','Hi Ali','Hi name'],a:1,w:'الـ f بتخلي { } تتبدل بقيمة المتغير.'},
+    {c:'nums = [10, 20, 30]\nprint(nums[-1])',o:['10','30','Error'],a:1,w:'-1 = آخر واحد.'},
+    {c:'print(7 // 2, 7 % 2)',o:['3.5 0','3 1','3 1.5'],a:1,w:'7 // 2 = 3 (من غير كسر)، والباقي 1.'},
+    {c:'print("5" + "5")',o:['10','55','Error'],a:1,w:'دول كلام مش أرقام، فاتلزقوا.'},
+    {c:'age = 15\nif age >= 18:\n    print("كبير")\nprint("خلصنا")',o:['كبير\nخلصنا','خلصنا','كبير'],a:1,w:'الشرط False فـ «كبير» اتعدّت، بس «خلصنا» برّه الـ if فاتطبعت.'},
+    {c:'word = "Python"\nprint(word[0:2])',o:['Py','Pyt','yt'],a:0,w:'من 0 لحد قبل 2 = حرفين: P و y.'},
+    {c:'print(len([1, 2, 3, 4]))',o:['3','4','10'],a:1,w:'len بتعد العناصر = 4.'}
+  ];
+  var i=0,score=0;
+  function show(){
+    if(i>=Q.length){$('ggN').textContent='🏁 خلصت!';$('ggCode').textContent='النتيجة: '+score+' من '+Q.length;$('ggCh').innerHTML='';$('ggMsg').innerHTML='<button class="btn">🔁 من الأول</button>';$('ggMsg').querySelector('button').onclick=function(){i=0;score=0;show();};return;}
+    var q=Q[i],lock=false;$('ggN').textContent='سؤال '+(i+1)+' من '+Q.length;$('ggScore').textContent='النقط: '+score;$('ggCode').innerHTML=hlPy(q.c);$('ggMsg').textContent='';
+    var ch=$('ggCh');ch.innerHTML='';
+    q.o.forEach(function(o,k){var b=document.createElement('button');b.textContent=o;b.onclick=function(){
+      if(lock)return;lock=true;
+      if(k===q.a){score++;b.className='right';$('ggMsg').innerHTML='<span class="ok">✅ صح! '+q.w+'</span>';}
+      else{b.className='wrong';ch.children[q.a].className='right';$('ggMsg').innerHTML='<span class="no">❌ لأ. '+q.w+'</span>';}
+      var n=document.createElement('button');n.className='btn';n.textContent='➡️ اللي بعده';n.style.marginTop='8px';n.onclick=function(){i++;show();};$('ggMsg').appendChild(document.createElement('br'));$('ggMsg').appendChild(n);
+    };ch.appendChild(b);});
+  }
+  show();
+})();
+
+/* ---------- الاختبار ---------- */
+(function(){
+  var Q=[
+    {q:'إزاي تطبع «أهلًا» في بايثون؟',o:['<code>console.log("أهلًا")</code>','<code>print("أهلًا")</code>','<code>echo أهلًا</code>'],a:1,w:'print وبس.'},
+    {q:'إزاي تعمل متغير اسمه x وجواه 10؟',o:['<code>let x = 10</code>','<code>x = 10</code>','<code>10 = x</code>'],a:1,w:'في بايثون الاسم = القيمة، من غير let.'},
+    {q:'<code>input()</code> بترجع نوع إيه؟',o:['int دايمًا','str دايمًا','على حسب اللي اتكتب'],a:1,w:'دايمًا str، وعشان كده بنحوّل بـ int().'},
+    {q:'إيه اللي ناقص هنا؟ <code>if x &gt; 5</code>',o:['النقطتين <code>:</code> في الآخر','فاصلة منقوطة','أقواس معكوفة'],a:0,w:'if و for و def لازم ينتهوا بـ :'},
+    {q:'السطور اللي جوه الـ if بتبدأ بإيه؟',o:['<code>{</code>','4 مسافات','<code>-</code>'],a:1,w:'المسافات (Indentation) هي اللي بتقول السطر تبع مين.'},
+    {q:'<code>range(4)</code> بتطلع إيه؟',o:['1, 2, 3, 4','0, 1, 2, 3','0, 1, 2, 3, 4'],a:1,w:'من 0 ومبتوصلش 4.'},
+    {q:'عشان تزوّد حاجة في آخر list بتستخدم؟',o:['<code>.add()</code>','<code>.push()</code>','<code>.append()</code>'],a:2,w:'append في بايثون (push دي في JavaScript).'},
+    {q:'<code>True</code> بتتكتب إزاي صح؟',o:['true','True','TRUE'],a:1,w:'أول حرف كابيتال.'},
+    {q:'كلمة إيه بنبدأ بيها الفانكشن؟',o:['function','def','fun'],a:1,w:'def = define.'},
+    {q:'<code>print("عندي " + 5)</code> هيحصل إيه؟',o:['عندي 5','TypeError','عندي5'],a:1,w:'مينفعش تلزق str مع int. استخدم f-string.'}
+  ];
+  var el=$('quiz'),i=0,score=0;
+  function show(){
+    if(i>=Q.length){el.innerHTML='<div class="game-h">🏁 خلصت!</div><p style="font-size:1.3rem">نتيجتك: <b>'+score+' من '+Q.length+'</b> '+(score===Q.length?'🏆 مبرمج بايثون رسمي!':score>=7?'🔥 ممتاز!':'💪 كويس، راجع واعيد.')+'</p><button class="btn">🔁 من الأول</button>';el.querySelector('button').onclick=function(){i=0;score=0;show();};return;}
+    var q=Q[i];el.innerHTML='<div class="game-h">سؤال '+(i+1)+' من '+Q.length+' <span class="badge">النقط: '+score+'</span></div><div class="bar"><i style="width:'+(i/Q.length*100)+'%"></i></div><div class="q">'+q.q+'</div>'+q.o.map(function(o,k){return '<button class="opt" data-k="'+k+'">'+o+'</button>';}).join('')+'<div class="msg"></div>';
+    var done=false;el.querySelectorAll('.opt').forEach(function(b){b.onclick=function(){if(done)return;done=true;var k=+b.dataset.k;
+      if(k===q.a){score++;b.classList.add('right');el.querySelector('.msg').innerHTML='<span class="ok">✅ صح! '+q.w+'</span>';}
+      else{b.classList.add('wrong');el.querySelectorAll('.opt')[q.a].classList.add('right');el.querySelector('.msg').innerHTML='<span class="no">❌ لأ. '+q.w+'</span>';}
+      var n=document.createElement('button');n.className='btn';n.textContent='➡️ اللي بعده';n.onclick=function(){i++;show();};el.appendChild(n);};});
+  }
+  show();
+})();
+
+/* ---------- الملعب ---------- */
+(function(){
+  var code=$('pgCode'),con=$('pgCon'),KEY='mero-py-playground';
+  var T={
+    table:'n = 7\nfor i in range(1, 11):\n    print(f"{n} × {i} = {n * i}")',
+    pyramid:'rows = 5\nfor i in range(1, rows + 1):\n    spaces = " " * (rows - i)\n    stars = "⭐" * i\n    print(spaces + stars)',
+    grades:'grades = [85, 92, 78, 95, 60]\n\ntotal = sum(grades)\naverage = total / len(grades)\n\nprint("الدرجات:", grades)\nprint("المجموع:", total)\nprint("المتوسط:", round(average, 1))\nprint("أعلى درجة:", max(grades))\n\nif average >= 85:\n    print("🏆 ممتاز")\nelif average >= 65:\n    print("👍 جيد")\nelse:\n    print("📚 محتاج تذاكر")',
+    shop:'cart = {\n    "عيش": 5,\n    "لبن": 30,\n    "جبنة": 60,\n    "شاي": 25\n}\n\ntotal = 0\nfor item, price in cart.items():\n    print(f"{item}: {price} جنيه")\n    total += price\n\nprint("-" * 20)\nprint(f"الإجمالي: {total} جنيه")\nif total > 100:\n    print("🎁 مبروك! خصم 10%:", total * 0.9)',
+    calc:'a = float(input("الرقم الأول: "))\nop = input("العملية (+ - * /): ")\nb = float(input("الرقم التاني: "))\n\nif op == "+":\n    print("النتيجة:", a + b)\nelif op == "-":\n    print("النتيجة:", a - b)\nelif op == "*":\n    print("النتيجة:", a * b)\nelif op == "/":\n    if b == 0:\n        print("🙅 مينفعش تقسم على صفر")\n    else:\n        print("النتيجة:", a / b)\nelse:\n    print("🤔 عملية مش معروفة")'
+  };
+  var C={
+    '1':'name = "اكتب اسمك"\n\nfor i in range(???):\n    print(name)',
+    '2':'def even_or_odd(n):\n    # لو باقي قسمة n على 2 = 0 يبقى زوجي\n    pass\n\neven_or_odd(4)\neven_or_odd(7)',
+    '3':'total = 0\nfor i in range(1, ???):\n    total += i\nprint(total)   # المفروض 5050',
+    '4':'grades = [70, 95, 60, 88]\n\n# اطبع أعلى وأقل درجة\n',
+    '5':'word = "Python"\n\n# اطبع الكلمة بالمقلوب\n'
+  };
+  function run(){runPy(code.value,con);try{localStorage.setItem(KEY,code.value);}catch(e){}}
+  function load(v){code.value=v;code.focus();try{localStorage.setItem(KEY,v);}catch(e){}if(!/input\(/.test(v))run();else con.innerHTML='<div class="empty">الكود ده فيه input، دوس ▶️ شغّل لما تبقى جاهز</div>';}
+  var saved=null;try{saved=localStorage.getItem(KEY);}catch(e){}
+  code.value=saved&&saved.trim()?saved:T.table;
+  con.innerHTML='<div class="empty">دوس ▶️ شغّل</div>';
+  code.addEventListener('keydown',function(e){
+    if(e.key==='Tab'){e.preventDefault();var a=code.selectionStart;code.value=code.value.slice(0,a)+'    '+code.value.slice(code.selectionEnd);code.selectionStart=code.selectionEnd=a+4;}
+    if(e.key==='Enter'&&(e.ctrlKey||e.metaKey)){e.preventDefault();run();}
+  });
+  $('pgRun').onclick=run;
+  $('pgClear').onclick=function(){if(confirm('متأكد إنك عايز تمسح؟')){code.value='';con.innerHTML='';}};
+  $('pgTpl').onchange=function(){if(this.value){load(T[this.value]);this.value='';}};
+  document.querySelectorAll('.challenges .try').forEach(function(b){b.onclick=function(){load(C[b.dataset.c]);code.scrollIntoView({behavior:'smooth',block:'center'});};});
+  $('pgSave').onclick=function(){var a=document.createElement('a');a.href=URL.createObjectURL(new Blob([code.value],{type:'text/x-python;charset=utf-8'}));a.download='my_code.py';document.body.appendChild(a);a.click();a.remove();};
+})();
+</script>
+
+<script>
+/* بيشغّل كود بايثون ويرجّع اللي اتطبع (للتأكد من حل التاسك) */
+window.pyCapture = function (code) {
+  var p = QUEUE.then(function () {
+    return loadPy().then(function (py) {
+      var out = [], err = null;
+      py.setStdout({ batched: function (s) { out.push(s); } });
+      py.setStderr({ batched: function (s) { out.push(s); } });
+      var ns = py.globals.get('dict')();
+      return py.runPythonAsync(code, { globals: ns }).catch(function (e) {
+        var m = String(e && e.message || e).trim().split('\n'); err = m[m.length - 1];
+      }).then(function () {
+        try { py.runPython('import sys\nsys.stdout.flush()'); } catch (e) {}
+        ns.destroy(); return { out: out.join('\n'), err: err };
+      });
+    }, function () { return { offline: true }; });
+  });
+  QUEUE = p.then(function () {}, function () {});
+  return p;
+};
+
+/* ===== تاسكات الدروس: كل درس مقفول لحد ما تحل تاسك اللي قبله ===== */
+function __has(c, s) { return c.lines.some(function (l) { return l.indexOf(s) > -1; }); }
+window.LESSON_TASKS = { page: 'python', mode: 'py',
+exam: [
+  { q: 'إزاي تطبع كلمة أهلًا في بايثون؟', o: ['<code>console.log("أهلًا")</code>', '<code>print("أهلًا")</code>', '<code>echo أهلًا</code>'], a: 1 },
+  { q: '<code>input()</code> بترجّع نوع إيه دايمًا؟', o: ['int', 'str', 'bool'], a: 1 },
+  { q: 'إيه اللي ناقص هنا؟ <code>if age &gt; 18</code>', o: ['<code>:</code> في الآخر', '<code>;</code> في الآخر', '<code>{ }</code>'], a: 0 },
+  { q: 'السطور اللي <b>جوه</b> الـ if بتبدأ بإيه؟', o: ['قوس <code>{</code>', '4 مسافات', 'شرطة <code>-</code>'], a: 1 },
+  { q: '<code>range(4)</code> بتطلّع إيه؟', o: ['1, 2, 3, 4', '0, 1, 2, 3', '0, 1, 2, 3, 4'], a: 1 },
+  { q: '<code>print(7 // 2)</code> بيطبع كام؟', o: ['3.5', '3', '1'], a: 1 },
+  { q: 'عشان تزوّد حاجة في <b>آخر</b> list؟', o: ['<code>.push()</code>', '<code>.add()</code>', '<code>.append()</code>'], a: 2 },
+  { q: 'لو <code>person = {"name": "مروة"}</code> إزاي تجيب الاسم؟', o: ['<code>person["name"]</code>', '<code>person.name()</code>', '<code>name[person]</code>'], a: 0 },
+  { q: 'الفانكشن في بايثون بتبدأ بكلمة؟', o: ['<code>function</code>', '<code>def</code>', '<code>func</code>'], a: 1 },
+  { q: '<code>print("عندي " + 5)</code> هيحصل إيه؟', o: ['يطبع عندي 5', 'TypeError (مينفعش تلزق كلام مع رقم)', 'يطبع عندي5'], a: 1 }
+],
+tasks: {
+  l1: { q: 'أول تاسك سهل خالص 😊: خلّي البرنامج يطبع <b>أنا بتعلم بايثون</b>.<br>اكتب الكلام بين علامتين التنصيص <code>" "</code>.',
+    start: 'print("")', hint: 'print("أنا بتعلم بايثون")', sol: 'print("أنا بتعلم بايثون")',
+    check: function (c) { return __has(c, 'بتعلم بايثون') || 'البرنامج لسه مطبعش «أنا بتعلم بايثون».'; } },
+  l2: { q: 'لو عندك ملف اسمه <code>hello.py</code>، تكتب إيه في الـ Terminal عشان تشغّله؟ اكتب الأمر بس.',
+    noRun: true, start: '', hint: 'كلمة python وبعدها مسافة واسم الملف.', sol: 'python hello.py',
+    check: function (c) { return /^\s*(python3?|py)\s+hello\.py\s*$/i.test(c.code) || 'الأمر شكله كده: python اسم_الملف'; } },
+  l3: { q: 'اطبع 3 سطور:<br>1️⃣ اسمك.<br>2️⃣ ناتج <code>6 * 7</code> (خلّي بايثون هي اللي تحسب).<br>3️⃣ كلمة <b>هاي</b> متكررة 3 مرات باستخدام <code>*</code>.',
+    start: '', hint: 'print("مروة")<br>print(6 * 7)<br>print("هاي" * 3)', sol: 'print("مروة")\nprint(6 * 7)\nprint("هاي" * 3)',
+    check: function (c) { if (c.lines.length < 3) return 'محتاج 3 سطور print.'; if (!c.has(/6\s*\*\s*7/) || c.lines.indexOf('42') < 0) return 'اكتب 6 * 7 من غير تنصيص، والمفروض تطلع 42.'; return __has(c, 'هايهايهاي') || 'استخدم "هاي" * 3'; } },
+  l4: { q: 'اعمل علبة اسمها <code>city</code> وحط جواها اسم مدينتك. وبعدين اطبع: <code>print("أنا من", city)</code>.',
+    start: '', hint: 'city = "القاهرة"<br>print("أنا من", city)', sol: 'city = "القاهرة"\nprint("أنا من", city)',
+    check: function (c) { if (!c.has(/^\s*city\s*=/m)) return 'اعمل العلبة: city = "..."'; if (!c.has(/print\([^)]*city/)) return 'اطبع city جوه print.'; return (__has(c, 'أنا من') && c.lines[0].replace('أنا من', '').trim().length > 0) || 'لازم يطبع «أنا من» وبعدها المدينة.'; } },
+  l5: { q: 'اطبع النوع بتاع التلاتة دول بـ <code>type()</code>: <code>5</code> و <code>5.5</code> و <code>"5"</code>.',
+    start: 'print(type(5))\n', hint: 'print(type(5.5)) و print(type("5"))', sol: 'print(type(5))\nprint(type(5.5))\nprint(type("5"))',
+    check: function (c) { var m = ['int', 'float', 'str'].filter(function (t) { return !__has(c, "<class '" + t + "'>"); }); return !m.length || ('لسه ناقص: ' + m.join(' و ')); } },
+  l6: { q: 'معاك <code>money = 25</code> جنيه، والكيكة بـ <code>price = 7</code>.<br>اطبع: <b>عدد الكيك</b> اللي تقدر تجيبه (بـ <code>//</code>)، وبعدين <b>الفكة</b> اللي هتفضل (بـ <code>%</code>).',
+    start: 'money = 25\nprice = 7\n', hint: 'print(money // price)<br>print(money % price)', sol: 'money = 25\nprice = 7\nprint(money // price)\nprint(money % price)',
+    check: function (c) { if (!c.has(/\/\//) || !c.has(/%/)) return 'استخدم // و %'; return (c.lines.indexOf('3') > -1 && c.lines.indexOf('4') > -1) || 'المفروض يطلع 3 كيكات والفكة 4.'; } },
+  l7: { q: 'عندك <code>age = "25"</code> (ده <b>كلام</b> زي اللي بيرجع من input). حوّله لرقم بـ <code>int()</code>، وزوّد عليه 5، واطبع الناتج.',
+    start: 'age = "25"\n', hint: 'print(int(age) + 5)', sol: 'age = "25"\nprint(int(age) + 5)',
+    check: function (c) { if (!c.has(/int\(/)) return 'لازم تستخدم int()'; return c.lines.indexOf('30') > -1 || 'الناتج المفروض 30.'; } },
+  l8: { q: 'عندك <code>word = "Programming"</code>.<br>اطبع <b>أول 3 حروف</b> بالتقطيع <code>[ : ]</code>، وبعدين اطبع <b>عدد الحروف</b> بـ <code>len</code>.',
+    start: 'word = "Programming"\n', hint: 'print(word[0:3])<br>print(len(word))', sol: 'word = "Programming"\nprint(word[0:3])\nprint(len(word))',
+    check: function (c) { if (c.lines.indexOf('Pro') < 0) return 'أول 3 حروف المفروض تطلع Pro.'; return c.lines.indexOf('11') > -1 || 'عدد الحروف المفروض 11.'; } },
+  l9: { q: 'عندك <code>temp = 35</code>. لو الحرارة <b>أكبر من 30</b> اطبع <b>حر 🔥</b>، غير كده اطبع <b>جو حلو</b>.<br>متنساش <code>:</code> والمسافات! <small>(هنجرّب بـ 35 وبـ 20)</small>',
+    start: 'temp = 35\n', hint: 'if temp > 30:<br>&nbsp;&nbsp;&nbsp;&nbsp;print("حر 🔥")<br>else:<br>&nbsp;&nbsp;&nbsp;&nbsp;print("جو حلو")',
+    sol: 'temp = 35\n\nif temp > 30:\n    print("حر 🔥")\nelse:\n    print("جو حلو")',
+    check: function (c) { if (!__has(c, 'حر')) return 'بحرارة 35 المفروض يطبع «حر 🔥».';
+      return c.run(c.code.replace(/temp\s*=\s*\d+/, 'temp = 20')).then(function (d) { return (__has(d, 'جو حلو') && !__has(d, 'حر')) || 'جرّبنا بـ 20 ومطبعش «جو حلو» لوحدها. راجع الـ else.'; }); } },
+  l10: { q: 'الكود ده <b>مسافاته غلط</b> 📐. صلّحه عشان يطبع «سطر» 3 مرات، وبعدين «خلصت» <b>مرة واحدة بس</b> في الآخر.',
+    start: 'for i in range(3):\nprint("سطر", i)\nprint("خلصت")', hint: 'السطر اللي بعد : لازم 4 مسافات. و print("خلصت") يفضل في أول السطر.',
+    sol: 'for i in range(3):\n    print("سطر", i)\nprint("خلصت")',
+    check: function (c) { return c.lines.join('|') === 'سطر 0|سطر 1|سطر 2|خلصت' || 'المفروض يطبع: سطر 0، سطر 1، سطر 2، وبعدين خلصت مرة واحدة.'; } },
+  l11: { q: 'اطبع الأرقام <b>الزوجية</b> من 2 لـ 10 (2، 4، 6، 8، 10) باستخدام <code>for</code> و <code>range</code>.',
+    start: '', hint: 'range(2, 11, 2) = من 2 لحد قبل 11 بقفزة 2', sol: 'for i in range(2, 11, 2):\n    print(i)',
+    check: function (c) { if (!c.has(/range\(/)) return 'استخدم range.'; return c.lines.join(',') === '2,4,6,8,10' || 'اللي طبعته: ' + c.lines.join('، ') + ' والمفروض 2,4,6,8,10'; } },
+  l12: { q: 'اعمل list اسمها <code>pets</code> فيها حيوانين، وزوّد حيوان تالت بـ <code>append</code>، واطبع عددهم بـ <code>len(pets)</code>.',
+    start: '', hint: 'pets = ["قطة", "كلب"]<br>pets.append("عصفورة")<br>print(len(pets))', sol: 'pets = ["قطة", "كلب"]\npets.append("عصفورة")\nprint(len(pets))',
+    check: function (c) { if (!c.has(/pets\s*=\s*\[/)) return 'اعمل pets = [ ... ]'; if (!c.has(/pets\.append\(/)) return 'استخدم pets.append(...)'; return c.lines[c.lines.length - 1] === '3' || 'العدد المفروض 3.'; } },
+  l13: { q: 'اعمل dict اسمه <code>book</code> فيه مفتاحين: <code>"title"</code> (اسم الكتاب) و <code>"pages"</code> (عدد الصفحات). واطبع <code>book["title"]</code>.',
+    start: '', hint: 'book = {"title": "...", "pages": 200}<br>print(book["title"])', sol: 'book = {\n    "title": "بايثون للمبتدئين",\n    "pages": 200\n}\nprint(book["title"])',
+    check: function (c) { if (!c.has(/book\s*=\s*\{/)) return 'اعمل book = { ... }'; if (!c.has(/["']pages["']\s*:/)) return 'ناقص مفتاح "pages".'; if (!c.has(/book\[\s*["']title["']\s*\]/)) return 'اطبع book["title"]'; return c.lines.length > 0 || 'مفيش حاجة اتطبعت.'; } },
+  l14: { q: 'اعمل مكنة <code>def</code> اسمها <code>square</code> بتاخد رقم وبترجّع <b>الرقم في نفسه</b> بـ <code>return</code>. واطبع <code>square(5)</code>.',
+    start: '', hint: 'def square(n):<br>&nbsp;&nbsp;&nbsp;&nbsp;return n * n<br><br>print(square(5))', sol: 'def square(n):\n    return n * n\n\nprint(square(5))',
+    check: function (c) { if (!c.has(/def\s+square/)) return 'اسم الفانكشن لازم square.'; if (!c.has(/return/)) return 'لازم تستخدم return.'; if (c.lines.indexOf('25') < 0) return 'square(5) المفروض 25.';
+      return c.run(c.code + '\nprint("##", square(9))').then(function (d) { return __has(d, '## 81') || 'جرّبنا square(9) ومطلعش 81.'; }); } },
+  l15: { q: 'اعمل زهر 🎲: هات مكتبة <code>random</code> بـ <code>import</code>، واطبع رقم عشوائي من 1 لـ 6 بـ <code>random.randint</code>.',
+    start: '', hint: 'import random<br>print(random.randint(1, 6))', sol: 'import random\n\ndice = random.randint(1, 6)\nprint(dice)',
+    check: function (c) { if (!c.has(/import\s+random/)) return 'ناقص import random'; if (!c.has(/randint\(\s*1\s*,\s*6\s*\)/)) return 'استخدم random.randint(1, 6)'; var n = Number(c.lines[c.lines.length - 1]); return (Number.isInteger(n) && n >= 1 && n <= 6) || 'لازم يطبع الرقم.'; } },
+  l16: { q: 'اكتب كود يطبع كلمة <code>Python</code> <b>بالمقلوب</b> (nohtyP). <small>(افتكر لعبة المقص ✂️)</small>',
+    start: 'word = "Python"\n', hint: 'print(word[::-1])', sol: 'word = "Python"\nprint(word[::-1])',
+    check: function (c) { if (!c.has(/word/)) return 'استخدم المتغير word.'; return c.lines.indexOf('nohtyP') > -1 || 'المفروض يطبع nohtyP.'; } },
+  l17: { q: 'الكود ده فيه <b>غلطتين</b> 🐞. صلّحهم عشان يطبع <b>عندي 20 سنة</b> وبعدين <b>كبير</b>.',
+    start: 'age = 20\nprint("عندي " + age + " سنة")\n\nif age > 18\n    print("كبير")', hint: '1) استخدم f-string: f"عندي {age} سنة"  2) ناقص : في آخر سطر الـ if',
+    sol: 'age = 20\nprint(f"عندي {age} سنة")\n\nif age > 18:\n    print("كبير")',
+    check: function (c) { return (c.lines[0] === 'عندي 20 سنة' && c.lines[1] === 'كبير') || 'لازم يطبع «عندي 20 سنة» وبعدين «كبير».'; } },
+  l18: { q: 'التاسك الأخير 🏁: اعمل def اسمها <code>is_even</code> بتاخد رقم وترجّع <code>True</code> لو زوجي و <code>False</code> لو فردي.<br><small>(تلميح: الزوجي باقي قسمته على 2 = 0)</small>',
+    start: 'def is_even(n):\n    \n\nprint(is_even(4))\nprint(is_even(7))', hint: 'return n % 2 == 0',
+    sol: 'def is_even(n):\n    return n % 2 == 0\n\nprint(is_even(4))\nprint(is_even(7))',
+    check: function (c) { return c.run(c.code + '\nprint("##", is_even(10), is_even(3), is_even(0))').then(function (d) { return __has(d, '## True False True') || 'جرّبنا is_even على أرقام تانية ومطلعتش صح.'; }); } }
+}};
+</script>
+<script src="progress.js"></script>
+</body>
+</html>

@@ -1,0 +1,1241 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>تعلّم CSS من الصفر - بالألعاب</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;800&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#f6f7fb; --card:#ffffff; --ink:#1f2937; --muted:#6b7280;
+    --brand:#db2777; --brand2:#7c3aed; --line:#e5e7eb; --soft:#fdf2f8;
+    --code-bg:#1e1e2e; --code-ink:#e5e7eb;
+    --tip:#ecfdf5; --tip-line:#10b981; --warn:#fff7ed; --warn-line:#f97316;
+  }
+  *{box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  body{margin:0;font-family:"Cairo",Tahoma,"Segoe UI",Arial,sans-serif;background:var(--bg);color:var(--ink);line-height:1.9;font-size:17px}
+  header.hero{background:linear-gradient(135deg,var(--brand),var(--brand2));color:#fff;padding:40px 20px 56px;text-align:center}
+  header.hero h1{margin:0 0 8px;font-size:2.4rem;font-weight:800}
+  header.hero p{margin:0 auto;max-width:760px;font-size:1.15rem;opacity:.95}
+  .pages{display:flex;justify-content:center;gap:8px;flex-wrap:wrap;margin-bottom:18px}
+  .pages a{color:#fff;text-decoration:none;border:1px solid rgba(255,255,255,.5);border-radius:999px;padding:2px 14px;font-size:.95rem}
+  .pages a.on{background:#fff;color:var(--brand);font-weight:800}
+  .layout{display:grid;grid-template-columns:270px 1fr;gap:24px;max-width:1250px;margin:-30px auto 40px;padding:0 16px}
+  nav.toc{position:sticky;top:12px;align-self:start;background:var(--card);border-radius:16px;padding:16px;box-shadow:0 4px 18px rgba(0,0,0,.06);max-height:calc(100vh - 24px);overflow:auto}
+  nav.toc h3{margin:0 0 8px;font-size:1.05rem;color:var(--brand)}
+  nav.toc a{display:block;padding:5px 10px;border-radius:8px;color:var(--ink);text-decoration:none;font-size:.93rem}
+  nav.toc a:hover,nav.toc a.active{background:var(--soft);color:var(--brand)}
+  main{min-width:0}
+  section.lesson{background:var(--card);border-radius:18px;padding:26px 28px;margin-bottom:22px;box-shadow:0 4px 18px rgba(0,0,0,.05)}
+  section.lesson h2{margin:0 0 12px;font-size:1.6rem;display:flex;align-items:center;gap:12px}
+  .num{background:var(--brand);color:#fff;border-radius:12px;min-width:42px;height:42px;display:inline-flex;align-items:center;justify-content:center;font-size:1.1rem}
+  h3.sub{color:var(--brand);margin:22px 0 6px;font-size:1.2rem}
+  code.in{background:var(--soft);color:#9d174d;padding:1px 7px;border-radius:6px;font-family:Consolas,"Courier New",monospace;direction:ltr;unicode-bidi:embed;font-size:.92em}
+  .tip,.warn,.idea{border-right:5px solid var(--tip-line);background:var(--tip);padding:12px 16px;border-radius:10px;margin:14px 0}
+  .warn{border-color:var(--warn-line);background:var(--warn)}
+  .idea{border-color:var(--brand2);background:#f5f3ff}
+  .tip b:first-child,.warn b:first-child,.idea b:first-child{display:block}
+  table.ref{width:100%;border-collapse:collapse;margin:10px 0;font-size:.95rem}
+  table.ref th,table.ref td{border:1px solid var(--line);padding:8px 10px;text-align:right;vertical-align:top}
+  table.ref th{background:var(--soft);color:var(--brand)}
+  table.ref td:first-child{direction:ltr;text-align:left;font-family:Consolas,monospace;color:#7c3aed;white-space:nowrap}
+  .example{margin:16px 0;border:1px solid var(--line);border-radius:14px;overflow:hidden}
+  .ex-bar{display:flex;justify-content:space-between;align-items:center;padding:8px 14px;font-weight:700;font-size:.95rem;gap:8px;flex-wrap:wrap}
+  .ex-bar.code{background:#2a2a3d;color:#f9a8d4}
+  .ex-bar.res{background:#fdf2f8;color:#9d174d;border-top:1px solid var(--line)}
+  .ex-bar button{font-family:inherit;font-size:.85rem;border:0;border-radius:8px;padding:4px 12px;cursor:pointer;background:var(--brand);color:#fff;margin-inline-start:6px}
+  .ex-bar button.ghost{background:#3f3f5a}
+  pre.code{margin:0;background:var(--code-bg);color:var(--code-ink);padding:16px;direction:ltr;text-align:left;overflow:auto;font-family:Consolas,"Courier New",monospace;font-size:15px;line-height:1.7;white-space:pre}
+  textarea.code{display:none;width:100%;min-height:200px;margin:0;border:0;background:#111827;color:#fde68a;padding:16px;direction:ltr;text-align:left;font-family:Consolas,monospace;font-size:15px;line-height:1.7;resize:vertical;outline:none}
+  .t{color:#f472b6}.a{color:#93c5fd}.v{color:#86efac}.c{color:#9ca3af;font-style:italic}.e{color:#fbbf24}.s{color:#fda4af;font-weight:700}
+  iframe.result{display:block;width:100%;border:0;background:#fff;min-height:60px}
+  footer{text-align:center;color:var(--muted);padding:20px 10px 40px}
+  .anatomy{direction:ltr;text-align:center;font-family:Consolas,monospace;font-size:1.3rem;background:#0f172a;color:#fff;padding:18px;border-radius:12px;margin:12px 0;line-height:2.2}
+  .anatomy span{padding:3px 8px;border-radius:6px}
+  .lbls{display:flex;justify-content:center;gap:12px;flex-wrap:wrap;font-size:.95rem}
+  .lbls span{padding:2px 10px;border-radius:8px}
+  #topBtn{position:fixed;left:18px;bottom:18px;background:var(--brand);color:#fff;border:0;border-radius:50%;width:48px;height:48px;font-size:22px;cursor:pointer;box-shadow:0 6px 16px rgba(219,39,119,.4);z-index:50}
+
+  /* ===== games ===== */
+  .game{border:2px solid #f9a8d4;background:linear-gradient(180deg,#fdf2f8,#fff 60%);border-radius:18px;padding:16px 18px;margin:18px 0}
+  .game-h{display:flex;align-items:center;gap:10px;font-weight:800;font-size:1.2rem;color:var(--brand);margin-bottom:4px;flex-wrap:wrap}
+  .badge{background:#f59e0b;color:#fff;border-radius:999px;padding:0 12px;font-size:.8rem}
+  .ctrl{display:grid;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));gap:8px 18px;margin:10px 0}
+  .ctrl label{display:flex;flex-direction:column;font-size:.92rem;font-weight:600}
+  .ctrl select,.ctrl input[type=text]{font-family:inherit;font-size:.95rem;padding:5px 8px;border-radius:8px;border:1px solid var(--line)}
+  input[type=range]{width:100%;accent-color:var(--brand)}
+  .codeview{direction:ltr;text-align:left;background:#0f172a;color:#e2e8f0;font-family:Consolas,monospace;padding:10px 14px;border-radius:10px;white-space:pre;overflow:auto;font-size:14px;line-height:1.7;margin:8px 0}
+  .codeview .p{color:#93c5fd}.codeview .v{color:#86efac}.codeview .s{color:#f9a8d4}
+  .btn{font-family:inherit;border:0;border-radius:10px;padding:7px 16px;cursor:pointer;background:var(--brand);color:#fff;font-size:.95rem;margin:3px}
+  .btn.alt{background:var(--brand2)} .btn.gray{background:#64748b}
+  .btn:disabled{opacity:.45;cursor:default}
+  .msg{margin-top:8px;font-weight:700;min-height:1.6em}
+  .ok{color:#059669}.no{color:#dc2626}
+  .stage{background:#fff;border:1px dashed #cbd5e1;border-radius:12px;padding:14px;overflow:hidden}
+  .seg{display:flex;flex-wrap:wrap;gap:6px;margin:8px 0}
+  .seg button{font-family:Consolas,monospace;border:2px solid var(--line);background:#fff;border-radius:10px;padding:4px 12px;cursor:pointer;font-size:.95rem}
+  .seg button.on{border-color:var(--brand);background:var(--soft);color:var(--brand);font-weight:700}
+  .pill{display:inline-block;background:#fff;border:1px solid var(--line);border-radius:999px;padding:0 12px;font-size:.9rem;margin:2px}
+
+  /* color game */
+  .cm-row{display:flex;gap:24px;justify-content:center;text-align:center;flex-wrap:wrap}
+  .sw{width:130px;height:110px;border-radius:16px;border:3px solid #fff;box-shadow:0 4px 14px rgba(0,0,0,.15)}
+  /* box model */
+  .bm-wrap{display:inline-block;background:repeating-linear-gradient(45deg,#fed7aa,#fed7aa 8px,#ffedd5 8px,#ffedd5 16px)}
+  .bm-box{background:#bbf7d0;border-style:solid;border-color:#334155}
+  .bm-content{background:#93c5fd;height:54px;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:.9rem}
+  .legend span{display:inline-flex;align-items:center;gap:6px;margin-inline-end:14px;font-size:.92rem}
+  .legend i{width:16px;height:16px;border-radius:4px;display:inline-block}
+  /* selector game */
+  .sg-page{direction:rtl}
+  .sg-page *{display:block;border:2px solid #cbd5e1;border-radius:10px;padding:4px 10px 6px;margin:6px 0;background:#fff;cursor:pointer;transition:.15s}
+  .sg-page .lbl{display:block;border:0;padding:0;margin:0 0 2px;background:none;font-family:Consolas,monospace;font-size:.8rem;color:#7c3aed;direction:ltr;text-align:left;cursor:pointer}
+  .sg-page .lbl .chip{display:inline-block;border:0;margin:0 4px 0 0;padding:0 9px;border-radius:999px;font-size:.8rem;font-weight:700;cursor:pointer}
+  .sg-page .lbl .ch-tag{background:#ede9fe;color:#5b21b6}
+  .sg-page .lbl .ch-cls{background:#ffedd5;color:#9a3412}
+  .sg-page .lbl .ch-id{background:#dbeafe;color:#1e40af}
+  .sg-page ul{padding-right:10px}
+  .sg-page .picked{background:#fde68a;border-color:#f59e0b}
+  .sg-page .right{background:#bbf7d0;border-color:#10b981}
+  .sg-page .missed{background:#fecaca;border-color:#ef4444;border-style:dashed}
+  .sg-sel{direction:ltr;display:inline-block;font-family:Consolas,monospace;font-size:1.4rem;background:#0f172a;color:#f9a8d4;padding:4px 18px;border-radius:10px}
+  /* flex game */
+  .fg-board{position:relative;height:270px;border-radius:14px;background:repeating-linear-gradient(0deg,#475569,#475569 2px,#334155 2px,#334155 40px);direction:ltr;overflow:hidden}
+  .fg-layer{position:absolute;inset:0;padding:10px;display:flex}
+  .fg-spot{width:58px;height:58px;border:3px dashed;border-radius:12px;margin:4px;flex:none}
+  .fg-car{width:58px;height:58px;border-radius:12px;margin:4px;display:flex;align-items:center;justify-content:center;font-size:30px;flex:none;transition:all .45s ease;box-shadow:0 3px 8px rgba(0,0,0,.4)}
+  .fg-ctrl{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:8px;margin:10px 0}
+  .fg-ctrl label{font-family:Consolas,monospace;direction:ltr;text-align:left;font-weight:700;font-size:.9rem;display:flex;flex-direction:column}
+  .fg-ctrl select{font-family:Consolas,monospace;font-size:.95rem;padding:5px;border-radius:8px;border:1px solid var(--line)}
+  .lv{display:flex;gap:4px;flex-wrap:wrap;margin:6px 0}
+  .lv span{width:28px;height:28px;border-radius:8px;background:#e5e7eb;display:inline-flex;align-items:center;justify-content:center;font-size:.85rem;font-weight:700}
+  .lv span.done{background:#10b981;color:#fff}.lv span.cur{background:var(--brand);color:#fff}
+  /* display, grid, position */
+  .dp-box{background:#c4b5fd;border:2px solid #7c3aed;padding:6px 12px;margin:4px;border-radius:8px;font-weight:700}
+  .gr-item{background:linear-gradient(135deg,#f472b6,#a78bfa);color:#fff;border-radius:10px;padding:14px;text-align:center;font-weight:800}
+  .ps-parent{position:relative;height:220px;background:#f1f5f9;border:2px dashed #64748b;border-radius:12px;padding:10px;overflow:hidden}
+  .ps-b{width:90px;height:50px;border-radius:8px;display:inline-flex;align-items:center;justify-content:center;font-weight:700;margin:4px;color:#fff;background:#94a3b8;vertical-align:top}
+  .ps-b.me{background:#e11d48;transition:all .3s}
+  /* anim */
+  .an-stage{height:180px;display:flex;align-items:center;justify-content:center;font-size:70px;background:#fff;border-radius:12px;border:1px dashed #cbd5e1;overflow:hidden}
+  @keyframes bounce{0%,100%{transform:translateY(0)}50%{transform:translateY(-50px)}}
+  @keyframes spin{from{transform:rotate(0)}to{transform:rotate(360deg)}}
+  @keyframes pulse{0%,100%{transform:scale(1)}50%{transform:scale(1.4)}}
+  @keyframes shake{0%,100%{transform:translateX(0)}25%{transform:translateX(-20px)}75%{transform:translateX(20px)}}
+  @keyframes slide{0%{transform:translateX(-140px)}100%{transform:translateX(140px)}}
+  .hv-btn{font-family:inherit;font-size:1.1rem;border:0;border-radius:12px;padding:12px 26px;background:#7c3aed;color:#fff;cursor:pointer}
+  /* quiz */
+  .quiz .q{font-weight:800;font-size:1.1rem;margin:6px 0 10px}
+  .quiz .opt{display:block;width:100%;text-align:right;margin:6px 0;padding:10px 14px;border:2px solid var(--line);border-radius:12px;background:#fff;cursor:pointer;font-family:inherit;font-size:1rem}
+  .quiz .opt:hover{border-color:var(--brand)}
+  .quiz .opt.right{border-color:#10b981;background:#ecfdf5}.quiz .opt.wrong{border-color:#ef4444;background:#fef2f2}
+  .quiz .opt code{direction:ltr;unicode-bidi:embed;font-family:Consolas,monospace}
+  .bar{height:10px;background:#e5e7eb;border-radius:9px;overflow:hidden;margin:6px 0}
+  .bar i{display:block;height:100%;background:linear-gradient(90deg,var(--brand),var(--brand2));transition:width .3s}
+  /* playground */
+  .pg-tools{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin:14px 0}
+  .pg-tools button,.challenges .try{font-family:inherit;border:0;border-radius:10px;padding:7px 16px;cursor:pointer;background:var(--brand);color:#fff;font-size:.95rem}
+  .pg-tools button.gray{background:#64748b}
+  .pg-tools select{font-family:inherit;font-size:.95rem;padding:6px 10px;border-radius:10px;border:1px solid var(--line)}
+  .pg-wrap{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+  .pg-pane{border:1px solid var(--line);border-radius:14px;overflow:hidden;display:flex;flex-direction:column}
+  #pgCode{flex:1;min-height:420px;width:100%;border:0;background:#111827;color:#fde68a;padding:16px;direction:ltr;text-align:left;font-family:Consolas,"Courier New",monospace;font-size:15px;line-height:1.7;resize:vertical;outline:none;tab-size:2}
+  #pgOut{flex:1;min-height:420px;width:100%;border:0;background:#fff}
+  .challenges li{margin:8px 0}
+  .challenges .try{padding:2px 12px;font-size:.85rem;margin-inline-start:8px;background:var(--brand2)}
+  @media (max-width:900px){.pg-wrap{grid-template-columns:1fr}.layout{grid-template-columns:1fr}nav.toc{position:static;max-height:none}section.lesson{padding:20px 16px}}
+</style>
+</head>
+<body>
+
+<header class="hero">
+  <div class="pages">
+    <a href="mero.html">🌐 HTML</a><a href="css.html" class="on">🎨 CSS</a><a href="js.html">⚡ JavaScript</a><a href="python.html">🐍 Python</a>
+  </div>
+  <h1>🎨 تعلّم CSS من الصفر... وإنت بتلعب!</h1>
+  <p>الصفحة دي معمولة لأي حد <b>مالوش أي علاقة بالبرمجة خالص</b>. هنشرح كل حاجة بالراحة وبأمثلة من الحياة. وفي كل درس فيه <b>🎮 لعبة</b> تحرّك فيها حاجات وتشوف إيه اللي بيحصل بعينك، من غير ما تحفظ حاجة.</p>
+</header>
+
+<div class="layout">
+<nav class="toc" id="toc"><h3>📚 الفهرس</h3></nav>
+<main>
+
+<!-- 1 -->
+<section class="lesson" id="l1" data-title="يعني إيه CSS؟">
+  <h2><span class="num">1</span> يعني إيه CSS؟ 🤔</h2>
+  <p>فاكر لما قلنا إن الموقع زي البيت؟</p>
+  <ul>
+    <li><b>HTML</b> = الطوب والحيطان 🧱 (فيه عنوان، فيه كلام، فيه زرار).</li>
+    <li><b>CSS</b> = <b>الدهان والديكور والعفش</b> 🎨 (لون الحيطة إيه؟ الكنبة فين؟ الإضاءة شكلها إيه؟).</li>
+  </ul>
+  <p>يعني CSS مبتضيفش حاجات جديدة للصفحة، هي بس <b>بتحلّي</b> الحاجات الموجودة: تلوّنها، تكبّرها، تحركها، ترتبها جنب بعض.</p>
+  <p>اسمها اختصار لـ <b>C</b>ascading <b>S</b>tyle <b>S</b>heets، يعني تقريبًا «ورقة التنسيقات». متشغلش بالك بالاسم 😄.</p>
+
+  <div class="game" id="gBefore">
+    <div class="game-h">🎮 جرّب: شيل الـ CSS وشوف المصيبة <span class="badge">دوس على الزرار</span></div>
+    <p>دي نفس الصفحة بالظبط، نفس الـ HTML. الفرق الوحيد إن فيه CSS أو مفيش.</p>
+    <button class="btn" id="bfToggle">🪄 شيل الـ CSS</button>
+    <iframe class="result" id="bfFrame" style="height:260px;border:1px solid var(--line);border-radius:12px;margin-top:8px"></iframe>
+    <div class="msg" id="bfMsg">✨ دلوقتي الصفحة بالـ CSS: حلوة ومتظبطة.</div>
+  </div>
+  <div class="tip"><b>💡 خليك فاكر</b>HTML بيقول «فيه إيه في الصفحة». CSS بيقول «الحاجات دي شكلها عامل إزاي».</div>
+  <h3 class="sub">📖 قاموس الكلمات الصعبة (ارجع له في أي وقت)</h3>
+  <table class="ref">
+    <tr><th>الكلمة</th><th>معناها ببساطة</th></tr>
+    <tr><td>عنصر / وسم</td><td>أي حاجة في الصفحة: عنوان، فقرة، صورة، زرار. وليه نوع زي <code class="in">h1</code> (عنوان) و <code class="in">p</code> (فقرة).</td></tr>
+    <tr><td>class</td><td>زي <b>تيشيرت</b> بتلبّسه لحاجة في HTML عشان تعرف تلوّنها بعدين. ممكن حاجات كتير تلبس نفس التيشيرت.</td></tr>
+    <tr><td>id</td><td>زي <b>اسم الشخص</b>. لحاجة واحدة بس في الصفحة.</td></tr>
+    <tr><td>Selector</td><td>الكلمة اللي بتقول بيها «عايز ألوّن مين».</td></tr>
+    <tr><td>Property</td><td>عايز تغيّر <b>إيه</b>؟ اللون؟ الحجم؟ (زي <code class="in">color</code>)</td></tr>
+    <tr><td>Value</td><td>تخلّيه <b>إيه</b>؟ أحمر؟ كبير؟ (زي <code class="in">red</code>)</td></tr>
+    <tr><td>px</td><td>وحدة قياس على الشاشة، زي السنتي بس صغيرة جدًا. 16px = حجم الكلام العادي.</td></tr>
+  </table>
+</section>
+
+<!-- 2 -->
+<section class="lesson" id="l2" data-title="إزاي بنكتب CSS؟">
+  <h2><span class="num">2</span> إزاي بنكتب CSS؟ (القاعدة الذهبية ✍️)</h2>
+  <p>كل كلام CSS ماشي على شكل واحد بس، زي ما تكون بتدّي أمر لنقّاش:</p>
+  <p style="text-align:center;font-size:1.2rem">«يا أسطى، <b style="color:#db2777">العناوين</b> ← خلّي <b style="color:#2563eb">لونها</b> ← <b style="color:#059669">أحمر</b>»</p>
+  <div class="anatomy">
+    <span style="background:#be185d">h1</span> <span style="background:#334155">{</span>
+    <span style="background:#1d4ed8">color</span><span style="background:#334155">:</span> <span style="background:#047857">red</span><span style="background:#334155">;</span>
+    <span style="background:#334155">}</span>
+  </div>
+  <div class="lbls">
+    <span style="background:#fce7f3">🎯 h1 = مين؟ (Selector)</span>
+    <span style="background:#dbeafe">🔧 color = نغيّر إيه؟ (Property)</span>
+    <span style="background:#d1fae5">🎨 red = نخليه إيه؟ (Value)</span>
+    <span style="background:#f1f5f9">{ } ; = الأقواس وفاصلة منقوطة</span>
+  </div>
+  <p>يعني: <b>مين</b> ← <b>نغيّر إيه</b> ← <b>نخليه إيه</b>. وبس كده! كل CSS في الدنيا كده.</p>
+  <div class="warn"><b>⚠️ أهم 3 حاجات متنساهمش</b>
+    1) بين الخاصية والقيمة نقطتين <code class="in">:</code><br>
+    2) بعد كل سطر فاصلة منقوطة <code class="in">;</code> (زي النقطة في آخر الجملة)<br>
+    3) الكلام كله بيتكتب جوه أقواس معكوفة <code class="in">{ }</code>
+  </div>
+
+  <h3 class="sub">فين بنكتب الـ CSS؟ (3 أماكن)</h3>
+  <p><b>1) جوه الـ HTML في وسم <code class="in">&lt;style&gt;</code></b> (ده اللي هنستخدمه في الشرح):</p>
+  <div class="example"><script type="text/html">
+<style>
+  h1 {
+    color: red;
+  }
+  p {
+    color: blue;
+    font-size: 22px;
+  }
+</style>
+
+<h1>أنا عنوان أحمر</h1>
+<p>وأنا فقرة زرقا وكبيرة</p>
+  </script></div>
+  <p><b>2) جوه الوسم نفسه</b> بخاصية <code class="in">style</code> (للحاجات السريعة بس):</p>
+  <div class="example"><script type="text/html">
+<p style="color: green; font-size: 24px;">أنا فقرة خضرا</p>
+<p>وأنا فقرة عادية</p>
+  </script></div>
+  <p><b>3) في ملف لوحده</b> اسمه مثلًا <code class="in">style.css</code> وتربطه بالصفحة (ده الأحسن في المواقع الحقيقية):</p>
+  <pre class="code">&lt;head&gt;
+  &lt;link rel="stylesheet" href="style.css"&gt;
+&lt;/head&gt;</pre>
+  <div class="tip"><b>💡 ليه ملف لوحده أحسن؟</b>عشان لو عندك 50 صفحة، تغيّر اللون في ملف واحد، يتغيّر في الـ 50 صفحة مرة واحدة. 😎</div>
+  <h3 class="sub">التعليقات في CSS</h3>
+  <p>عشان تكتب ملاحظة لنفسك ومتأثرش على حاجة: <code class="in">/* ده تعليق */</code></p>
+</section>
+
+<!-- 3 -->
+<section class="lesson" id="l3" data-title="المحدِّدات: بنكلم مين؟">
+  <h2><span class="num">3</span> المحدِّدات (Selectors): لوّن مين؟ 🎯</h2>
+  <p>قبل ما تلوّن أي حاجة، لازم تقول لـ CSS: <b>«أنا عايز ألوّن مين بالظبط؟»</b>. الكلمة اللي بتكتبها في الأول دي اسمها <b>Selector</b> (يعني «المحدِّد» أو «اللي بيختار»).</p>
+  <p>تخيّل إنك في فرح 🎉 وعايز تنادي على ناس. عندك 3 طرق بس:</p>
+
+  <div class="tip"><b>1️⃣ تنادي بالنوع: «يا كل الستات!»</b>
+    في HTML كل حاجة ليها نوع: <code class="in">h1</code> = عنوان، <code class="in">p</code> = فقرة، <code class="in">li</code> = سطر في قايمة.<br>
+    في CSS تكتب <b>النوع زي ما هو</b>:<br>
+    <code class="in">p { color: red; }</code> ← معناها: «كل الفقرات في الصفحة تبقى حمرا».
+  </div>
+
+  <div class="tip" style="border-color:#f97316;background:#fff7ed"><b>2️⃣ تنادي بالتيشيرت: «اللي لابس تيشيرت أحمر!» (ده اسمه class)</b>
+    في HTML ممكن تلبّس أي حاجة «تيشيرت» عليه اسم، كده: <code class="in">&lt;p class="red"&gt;</code><br>
+    ناس كتير ممكن يلبسوا نفس التيشيرت.<br>
+    في CSS تكتب <b>نقطة <span style="font-size:1.4em">.</span></b> وبعدها اسم التيشيرت:<br>
+    <code class="in">.red { color: red; }</code> ← معناها: «أي حد لابس تيشيرت red يتلوّن».
+  </div>
+
+  <div class="tip" style="border-color:#2563eb;background:#eff6ff"><b>3️⃣ تنادي بالاسم: «يا أحمد!» (ده اسمه id)</b>
+    الـ id ده زي <b>اسم الشخص</b>، مينفعش اتنين يبقى ليهم نفس الـ id. في HTML: <code class="in">&lt;ul id="menu"&gt;</code><br>
+    في CSS تكتب <b>شباك <span style="font-size:1.2em">#</span></b> وبعدها الاسم:<br>
+    <code class="in">#menu { color: red; }</code> ← معناها: «الحاجة اللي اسمها menu بس».
+  </div>
+
+  <div class="idea"><b>🧠 احفظ دي بس</b>
+    من غير علامة = <b>نوع</b> (p) &nbsp;|&nbsp; نقطة <b>.</b> = <b>class</b> (.red) &nbsp;|&nbsp; شباك <b>#</b> = <b>id</b> (#menu)
+  </div>
+
+  <h3 class="sub">تركيبات (لما تتعود على اللي فوق)</h3>
+  <table class="ref">
+    <tr><th>تكتب</th><th>يعني بالعربي</th></tr>
+    <tr><td>p.red</td><td>فقرة <b>و</b> لابسة تيشيرت red (الاتنين مع بعض، لازقين من غير مسافة)</td></tr>
+    <tr><td>ul li</td><td>فيه <b>مسافة</b> = «جوه». يعني أي <code class="in">li</code> موجود جوه <code class="in">ul</code></td></tr>
+    <tr><td>h1, p</td><td><b>فاصلة</b> = «وكمان». يعني العناوين وكمان الفقرات</td></tr>
+    <tr><td>*</td><td>نجمة = كل حاجة في الصفحة</td></tr>
+  </table>
+  <div class="example"><script type="text/html">
+<style>
+  p      { color: gray; }
+  .star  { background: yellow; }
+  #boss  { color: red; font-weight: bold; }
+</style>
+
+<p>فقرة عادية (رمادي)</p>
+<p class="star">فقرة عليها كلاس star</p>
+<p id="boss">فقرة عليها id اسمه boss</p>
+<p class="star">وأنا كمان star</p>
+  </script></div>
+
+  <div class="game" id="gSel">
+    <div class="game-h">🎮 لعبة: مين هيتلوّن؟ <span class="badge" id="sgLvl">مستوى 1</span></div>
+    <p><b>إزاي تلعب؟</b></p>
+    <ol style="margin-top:0">
+      <li>بص على الكلمة اللي في <b>المربع الأسود</b> 👇 (ده المحدِّد).</li>
+      <li>اقرا معناها بالعربي اللي تحتها.</li>
+      <li>تحت فيه صفحة صغيرة فيها صناديق. فوق كل صندوق مكتوب: <span class="pill" style="background:#ede9fe">نوعه</span> و <span class="pill" style="background:#ffedd5">التيشيرت (class)</span> و <span class="pill" style="background:#dbeafe">اسمه (id)</span>.</li>
+      <li><b>دوس على كل صندوق</b> إنت شايف إنه هيتلوّن (هيبقى أصفر 🟨). ولو غلطت دوس عليه تاني يرجع.</li>
+      <li>دوس <b>✅ اتأكد</b>.</li>
+    </ol>
+    <div style="text-align:center;margin:8px 0"><span class="sg-sel" id="sgSel">p</span></div>
+    <p id="sgMean" style="text-align:center;font-weight:700;color:#7c3aed;margin:4px 0 10px"></p>
+    <div class="stage"><div class="sg-page" id="sgPage"></div></div>
+    <div style="margin-top:8px"><button class="btn" id="sgCheck">✅ اتأكد</button><button class="btn alt" id="sgNext" disabled>➡️ اللي بعده</button><button class="btn gray" id="sgHelp">💡 وريني الحل</button><button class="btn gray" id="sgReset">↩️ امسح اختياراتي</button></div>
+    <div class="msg" id="sgMsg"></div>
+  </div>
+</section>
+
+<!-- 4 -->
+<section class="lesson" id="l4" data-title="الألوان">
+  <h2><span class="num">4</span> الألوان 🌈</h2>
+  <p>فيه خاصيتين هتستخدمهم طول الوقت:</p>
+  <ul>
+    <li><code class="in">color</code> = لون <b>الكلام</b> نفسه.</li>
+    <li><code class="in">background-color</code> = لون <b>الخلفية</b> (اللي ورا الكلام).</li>
+  </ul>
+  <p>وتقدر تكتب اللون بأكتر من طريقة:</p>
+  <table class="ref">
+    <tr><th>الطريقة</th><th>شرحها</th></tr>
+    <tr><td>red, blue, gold</td><td>باسمه بالإنجليزي. سهل جدًا، وفيه أكتر من 140 اسم.</td></tr>
+    <tr><td>rgb(255, 0, 0)</td><td>خليط من <b>أحمر، أخضر، أزرق</b>. كل واحد من 0 لـ 255. (العب باللعبة اللي تحت وهتفهم)</td></tr>
+    <tr><td>#ff0000</td><td>نفس الـ rgb بس مكتوب بشكل مختصر (Hex). المصممين بيحبوه.</td></tr>
+    <tr><td>rgba(0,0,0,0.5)</td><td>زي rgb + رقم رابع للشفافية من 0 (شفاف خالص) لـ 1 (مش شفاف).</td></tr>
+  </table>
+  <div class="example"><script type="text/html">
+<style>
+  .a { color: white; background-color: crimson; }
+  .b { color: rgb(0, 100, 0); background-color: rgb(200, 255, 200); }
+  .c { color: #1e3a8a; background-color: #fde68a; }
+  .d { background-color: rgba(255, 0, 0, 0.3); }
+  p  { padding: 8px; }
+</style>
+<p class="a">لون باسمه: crimson</p>
+<p class="b">لون بالـ rgb</p>
+<p class="c">لون بالـ Hex</p>
+<p class="d">خلفية حمرا شفافة شوية</p>
+  </script></div>
+
+  <div class="game" id="gColor">
+    <div class="game-h">🎮 لعبة: خلّاط الألوان <span class="badge">النقط: <b id="cmScore">0</b></span></div>
+    <p>الشاشة بتعمل <b>كل</b> الألوان من 3 لمبات بس: 🔴 أحمر و🟢 أخضر و🔵 أزرق. كل لمبة من 0 (مطفية) لـ 255 (منوّرة على الآخر). <b>حرّك الأشرطة لحد ما لونك يبقى شبه اللون المطلوب.</b></p>
+    <div class="cm-row">
+      <div><div class="sw" id="cmTarget"></div><small>🎯 اللون المطلوب</small></div>
+      <div><div class="sw" id="cmMine"></div><small>🎨 اللون بتاعك</small></div>
+    </div>
+    <div class="ctrl">
+      <label>🔴 أحمر R = <b id="cmRv"></b><input type="range" id="cmR" min="0" max="255" value="128"></label>
+      <label>🟢 أخضر G = <b id="cmGv"></b><input type="range" id="cmG" min="0" max="255" value="128"></label>
+      <label>🔵 أزرق B = <b id="cmBv"></b><input type="range" id="cmB" min="0" max="255" value="128"></label>
+    </div>
+    <div class="bar"><i id="cmBar" style="width:0"></i></div>
+    <div class="codeview" id="cmCode"></div>
+    <button class="btn" id="cmNew">🔄 لون جديد</button><button class="btn gray" id="cmShow">👀 وريني الحل</button>
+    <div class="msg" id="cmMsg"></div>
+  </div>
+  <div class="tip"><b>💡 حاجات تجرّبها في اللعبة</b>كله 0 = أسود ⚫. كله 255 = أبيض ⚪. أحمر + أخضر بس = أصفر 🟡 (غريبة صح؟).</div>
+</section>
+
+<!-- 5 -->
+<section class="lesson" id="l5" data-title="الخطوط والنصوص">
+  <h2><span class="num">5</span> الخطوط والكلام ✍️</h2>
+  <table class="ref">
+    <tr><th>الخاصية</th><th>بتعمل إيه</th><th>مثال</th></tr>
+    <tr><td>font-size</td><td>حجم الخط</td><td><code class="in">font-size: 24px;</code></td></tr>
+    <tr><td>font-weight</td><td>تخانة الخط (عريض ولا لأ)</td><td><code class="in">bold</code> أو <code class="in">normal</code></td></tr>
+    <tr><td>font-style</td><td>مائل</td><td><code class="in">italic</code></td></tr>
+    <tr><td>font-family</td><td>نوع الخط</td><td><code class="in">Tahoma, Arial</code></td></tr>
+    <tr><td>text-align</td><td>مكان الكلام: يمين، شمال، نص</td><td><code class="in">center</code></td></tr>
+    <tr><td>text-decoration</td><td>خط تحت أو خط في النص</td><td><code class="in">underline</code></td></tr>
+    <tr><td>line-height</td><td>المسافة بين السطور</td><td><code class="in">1.8</code></td></tr>
+    <tr><td>letter-spacing</td><td>المسافة بين الحروف</td><td><code class="in">3px</code></td></tr>
+  </table>
+  <div class="game" id="gFont">
+    <div class="game-h">🎮 لعبة: استوديو الخطوط <span class="badge">غيّر وشوف</span></div>
+    <div class="ctrl">
+      <label>✏️ اكتب أي كلام<input type="text" id="ftText" value="أنا بتعلم CSS 😎"></label>
+      <label>📏 الحجم font-size = <b id="ftSizeV"></b><input type="range" id="ftSize" min="10" max="64" value="28"></label>
+      <label>🎨 اللون color<input type="color" id="ftColor" value="#db2777"></label>
+      <label>💪 التخانة font-weight<select id="ftWeight"><option>normal</option><option selected>bold</option></select></label>
+      <label>↗️ مائل font-style<select id="ftStyle"><option>normal</option><option>italic</option></select></label>
+      <label>↔️ المكان text-align<select id="ftAlign"><option>right</option><option selected>center</option><option>left</option></select></label>
+      <label>➖ الخط text-decoration<select id="ftDeco"><option>none</option><option>underline</option><option>line-through</option><option>overline</option></select></label>
+      <label>🔡 بين الحروف letter-spacing = <b id="ftLsV"></b><input type="range" id="ftLs" min="0" max="15" value="0"></label>
+      <label>🅰️ نوع الخط font-family<select id="ftFam"><option>Cairo</option><option>Tahoma</option><option>Georgia</option><option>Courier New</option><option>Impact</option></select></label>
+    </div>
+    <div class="stage" id="ftPrev" style="min-height:90px"></div>
+    <div class="codeview" id="ftCode"></div>
+  </div>
+</section>
+
+<!-- 6 -->
+<section class="lesson" id="l6" data-title="الخلفيات">
+  <h2><span class="num">6</span> الخلفيات 🖼️</h2>
+  <p>الخلفية ممكن تكون لون واحد، أو <b>تدرّج</b> (لون بيتحول للون تاني بالراحة)، أو صورة.</p>
+  <div class="example"><script type="text/html">
+<style>
+  div { padding: 20px; margin: 8px; color: white; border-radius: 10px; }
+  .one  { background-color: teal; }
+  .two  { background: linear-gradient(to left, orange, crimson); }
+  .three{ background: linear-gradient(135deg, #7c3aed, #06b6d4, #10b981); }
+  .four { background: radial-gradient(circle, gold, darkorange); color: black; }
+</style>
+<div class="one">لون واحد</div>
+<div class="two">تدرّج من برتقاني لأحمر</div>
+<div class="three">تدرّج 3 ألوان بزاوية مايلة</div>
+<div class="four">تدرّج دايري (من النص لبرّه)</div>
+  </script></div>
+  <p>ولو عايز صورة: <code class="in">background-image: url("photo.jpg");</code> ومعاها <code class="in">background-size: cover;</code> عشان الصورة تغطي المكان كله من غير ما تتمط.</p>
+</section>
+
+<!-- 7 -->
+<section class="lesson" id="l7" data-title="الصندوق (Box Model)">
+  <h2><span class="num">7</span> سر الصندوق 📦 (Box Model) - أهم درس!</h2>
+  <p>اسمع الحتة دي كويس: <b>أي حاجة في الصفحة عبارة عن صندوق</b>. العنوان صندوق، الصورة صندوق، الزرار صندوق.</p>
+  <p>وكل صندوق زي <b>برواز الصورة اللي على الحيطة</b> 🖼️:</p>
+  <ul>
+    <li>🔵 <b>Content (المحتوى)</b>: الصورة نفسها، أو الكلام.</li>
+    <li>🟢 <b>Padding (الحشو)</b>: المسافة الفاضية <b>جوه</b> البرواز بين الصورة والإطار (الكرتونة البيضا).</li>
+    <li>⬛ <b>Border (الإطار)</b>: البرواز الخشب نفسه.</li>
+    <li>🟠 <b>Margin (الهامش)</b>: المسافة <b>برّه</b> البرواز بينه وبين أي برواز تاني على الحيطة.</li>
+  </ul>
+  <div class="game" id="gBox">
+    <div class="game-h">🎮 لعبة: ابني الصندوق <span class="badge">حرّك الأشرطة</span></div>
+    <div class="legend"><span><i style="background:#93c5fd"></i>المحتوى</span><span><i style="background:#bbf7d0"></i>padding</span><span><i style="background:#334155"></i>border</span><span><i style="background:#fed7aa"></i>margin</span></div>
+    <div class="ctrl">
+      <label>↔️ العرض width = <b id="bmWv"></b><input type="range" id="bmW" min="60" max="260" value="160"></label>
+      <label>🟢 padding = <b id="bmPv"></b><input type="range" id="bmP" min="0" max="50" value="15"></label>
+      <label>⬛ border = <b id="bmBv"></b><input type="range" id="bmB" min="0" max="25" value="5"></label>
+      <label>🟠 margin = <b id="bmMv"></b><input type="range" id="bmM" min="0" max="50" value="20"></label>
+      <label style="flex-direction:row;align-items:center;gap:8px"><input type="checkbox" id="bmBS"> box-sizing: border-box</label>
+    </div>
+    <div class="stage" style="text-align:center"><div class="bm-wrap"><div class="bm-box" id="bmBox"><div class="bm-content">المحتوى</div></div></div></div>
+    <div class="codeview" id="bmCode"></div>
+    <div class="msg" id="bmMsg"></div>
+  </div>
+  <div class="warn"><b>⚠️ فخ مشهور</b>لما تكتب <code class="in">width: 200px</code> وتزوّد padding وborder، الصندوق بيكبر عن 200! عشان كده الناس بتحط في أول الملف <code class="in">* { box-sizing: border-box; }</code> فالعرض يفضل 200 بالظبط والحشو يتاكل من جوه. جرّب تعلّم على المربع في اللعبة وشوف الفرق.</div>
+  <h3 class="sub">إزاي بنكتبهم؟</h3>
+  <table class="ref">
+    <tr><th>الكتابة</th><th>معناها</th></tr>
+    <tr><td>padding: 10px;</td><td>10 من الأربع جهات</td></tr>
+    <tr><td>padding: 10px 20px;</td><td>10 فوق وتحت، 20 يمين وشمال</td></tr>
+    <tr><td>padding: 5px 10px 15px 20px;</td><td>فوق، يمين، تحت، شمال (زي عقارب الساعة ⏰)</td></tr>
+    <tr><td>margin-top: 30px;</td><td>من فوق بس (وفيه bottom و left و right)</td></tr>
+    <tr><td>margin: 0 auto;</td><td>سحر 🪄: بيحط الصندوق في نص الصفحة (لو له width)</td></tr>
+  </table>
+</section>
+
+<!-- 8 -->
+<section class="lesson" id="l8" data-title="الحواف والظل والدوران">
+  <h2><span class="num">8</span> الإطار، الحواف المدورة، الظل 🔵</h2>
+  <ul>
+    <li><code class="in">border: 3px solid red;</code> = إطار (تخانته، نوعه، لونه). الأنواع: <code class="in">solid</code> متصل، <code class="in">dashed</code> شرط، <code class="in">dotted</code> نقط.</li>
+    <li><code class="in">border-radius</code> = تدوير الزوايا. ولو خليته <code class="in">50%</code> المربع يبقى دايرة!</li>
+    <li><code class="in">box-shadow</code> = ظل الصندوق.</li>
+    <li><code class="in">transform: rotate(45deg)</code> = لفّ العنصر. و<code class="in">scale(1.5)</code> = كبّره.</li>
+  </ul>
+  <div class="game" id="gShape">
+    <div class="game-h">🎮 لعبة: اعجن الشكل <span class="badge">حوّل المربع لدايرة</span></div>
+    <div class="ctrl">
+      <label>🔵 border-radius = <b id="shRv"></b><input type="range" id="shR" min="0" max="50" value="10"></label>
+      <label>⬛ border = <b id="shBv"></b><input type="range" id="shB" min="0" max="15" value="4"></label>
+      <label>〰️ نوع الإطار<select id="shBt"><option>solid</option><option>dashed</option><option>dotted</option><option>double</option></select></label>
+      <label>🌑 الظل يمين/شمال = <b id="shXv"></b><input type="range" id="shX" min="-30" max="30" value="8"></label>
+      <label>🌑 الظل فوق/تحت = <b id="shYv"></b><input type="range" id="shY" min="-30" max="30" value="8"></label>
+      <label>🌫️ نعومة الظل blur = <b id="shBlv"></b><input type="range" id="shBl" min="0" max="50" value="15"></label>
+      <label>🔄 لفّ rotate = <b id="shRotv"></b><input type="range" id="shRot" min="0" max="360" value="0"></label>
+      <label>🔍 كبّر scale = <b id="shScv"></b><input type="range" id="shSc" min="5" max="15" value="10"></label>
+      <label>🎨 اللون<input type="color" id="shCol" value="#f472b6"></label>
+    </div>
+    <div class="stage" style="height:240px;display:flex;align-items:center;justify-content:center"><div id="shBox" style="width:130px;height:130px"></div></div>
+    <div class="codeview" id="shCode"></div>
+    <div class="msg" id="shMsg"></div>
+  </div>
+</section>
+
+<!-- 9 -->
+<section class="lesson" id="l9" data-title="الأحجام والوحدات">
+  <h2><span class="num">9</span> الأحجام والوحدات 📏</h2>
+  <p>لما تقول «طوله 10» لازم تقول 10 <b>إيه</b>؟ متر؟ سنتي؟ في CSS عندنا:</p>
+  <table class="ref">
+    <tr><th>الوحدة</th><th>معناها بالبلدي</th></tr>
+    <tr><td>px</td><td>بيكسل = نقطة صغيرة على الشاشة. ثابت مبيتغيرش. (الأسهل للمبتدئ)</td></tr>
+    <tr><td>%</td><td>نسبة من الصندوق اللي هو جواه. <code class="in">width: 50%</code> = نص الأب.</td></tr>
+    <tr><td>em / rem</td><td>نسبة من حجم الخط. <code class="in">2rem</code> = ضعف حجم الخط العادي.</td></tr>
+    <tr><td>vw / vh</td><td>نسبة من الشاشة كلها. <code class="in">100vh</code> = طول الشاشة كله.</td></tr>
+  </table>
+  <div class="example"><script type="text/html">
+<style>
+  div { background: #f9a8d4; margin: 6px 0; padding: 6px; }
+  .px   { width: 150px; }
+  .half { width: 50%; }
+  .full { width: 100%; }
+</style>
+<div class="px">150px (ثابت)</div>
+<div class="half">50% (نص المكان)</div>
+<div class="full">100% (المكان كله)</div>
+  </script></div>
+  <div class="idea"><b>✨ جرّب</b>دوس «✏️ جرّب بنفسك» وغيّر 50% لـ 80% وشوف.</div>
+</section>
+
+<!-- 10 -->
+<section class="lesson" id="l10" data-title="display: الترتيب">
+  <h2><span class="num">10</span> display: العناصر بتقف إزاي؟ 🧍🧍🧍</h2>
+  <p>فيه عناصر <b>أنانية</b> 😤 واخدة السطر كله لوحدها (زي <code class="in">h1</code> و<code class="in">p</code> و<code class="in">div</code>) واسمها <b>block</b>.<br>وفيه عناصر <b>اجتماعية</b> 🤝 بتقف جنب بعض في نفس السطر (زي <code class="in">span</code> و<code class="in">a</code> و<code class="in">b</code>) واسمها <b>inline</b>.</p>
+  <p>وبخاصية <code class="in">display</code> تقدر تغيّر طبع أي عنصر!</p>
+  <div class="game" id="gDisp">
+    <div class="game-h">🎮 لعبة: غيّر طبع الصناديق <span class="badge">اختار قيمة</span></div>
+    <div class="seg" id="dpSeg"></div>
+    <div class="stage" id="dpStage" style="min-height:120px"></div>
+    <div class="codeview" id="dpCode"></div>
+    <div class="msg" id="dpMsg"></div>
+  </div>
+</section>
+
+<!-- 11 -->
+<section class="lesson" id="l11" data-title="Flexbox: رصّ الحاجات">
+  <h2><span class="num">11</span> Flexbox: إزاي ترصّ الحاجات جنب بعض 🧲</h2>
+  <p>Flexbox ده أشهر وأسهل طريقة ترتّب بيها الحاجات. الفكرة: عندك <b>صندوق أب</b> (زي الرف 📚) وجواه <b>عيال</b> (الكتب). إنت بتكلم <b>الأب</b> وتقوله يرصّ عياله إزاي.</p>
+  <p>أول حاجة: تقول للأب <code class="in">display: flex;</code> ← العيال يقفوا جنب بعض على طول.</p>
+  <table class="ref">
+    <tr><th>الخاصية (على الأب)</th><th>بتعمل إيه</th></tr>
+    <tr><td>justify-content</td><td>بترتّب العيال <b>على الخط الرئيسي</b> (العرضي في العادي ↔️): <code class="in">flex-start</code> البداية، <code class="in">center</code> النص، <code class="in">flex-end</code> الآخر، <code class="in">space-between</code> فرّقهم على الأطراف، <code class="in">space-around</code> مسافات حواليهم</td></tr>
+    <tr><td>align-items</td><td>بترتّبهم <b>على الخط التاني</b> (الطولي في العادي ↕️): <code class="in">flex-start</code> فوق، <code class="in">center</code> النص، <code class="in">flex-end</code> تحت</td></tr>
+    <tr><td>flex-direction</td><td>اتجاه الرصّ: <code class="in">row</code> صف (عادي)، <code class="in">column</code> عمود، و<code class="in">row-reverse</code> صف بالمقلوب</td></tr>
+    <tr><td>gap</td><td>مسافة ثابتة بين العيال</td></tr>
+  </table>
+  <div class="game" id="gFlex">
+    <div class="game-h">🎮 لعبة: ركّن العربيات 🚗 <span class="badge" id="fgLvlTxt">مستوى 1 من 8</span></div>
+    <div class="lv" id="fgLv"></div>
+    <p id="fgTask" style="font-weight:700;margin:6px 0"></p>
+    <p style="font-size:.9rem;color:var(--muted);margin:0">ملحوظة: الجراج ده بيتقري من الشمال لليمين زي الإنجليزي، فـ <code class="in">flex-start</code> = الشمال، و<code class="in">flex-end</code> = اليمين.</p>
+    <div class="fg-ctrl">
+      <label>flex-direction:<select id="fgFd"><option>row</option><option>row-reverse</option><option>column</option><option>column-reverse</option></select></label>
+      <label>justify-content:<select id="fgJc"><option>flex-start</option><option>center</option><option>flex-end</option><option>space-between</option><option>space-around</option><option>space-evenly</option></select></label>
+      <label>align-items:<select id="fgAi"><option>flex-start</option><option>center</option><option>flex-end</option></select></label>
+    </div>
+    <div class="codeview" id="fgCode"></div>
+    <div class="fg-board"><div class="fg-layer" id="fgTarget"></div><div class="fg-layer" id="fgPlay"></div></div>
+    <div style="margin-top:8px"><button class="btn alt" id="fgNext" disabled>➡️ المستوى اللي بعده</button><button class="btn gray" id="fgHint">💡 تلميح</button></div>
+    <div class="msg" id="fgMsg"></div>
+  </div>
+  <div class="example"><script type="text/html">
+<style>
+  .menu {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: #1e293b;
+    padding: 10px 20px;
+  }
+  .menu a { color: white; text-decoration: none; }
+  .logo { color: #f472b6; font-weight: bold; font-size: 22px; }
+</style>
+
+<div class="menu">
+  <span class="logo">موقعي</span>
+  <a href="#">الرئيسية</a>
+  <a href="#">خدماتنا</a>
+  <a href="#">كلمنا</a>
+</div>
+  </script></div>
+  <div class="tip"><b>💡 أشهر استخدام في الدنيا</b>عشان تحط أي حاجة <b>في النص بالظبط</b> (أفقي ورأسي): <code class="in">display:flex; justify-content:center; align-items:center;</code> احفظها 😉</div>
+</section>
+
+<!-- 12 -->
+<section class="lesson" id="l12" data-title="Grid: الشبكة">
+  <h2><span class="num">12</span> Grid: قسّم الصفحة لمربعات زي الشطرنج ♟️</h2>
+  <p>لو Flexbox بيرصّ في صف واحد، فالـ Grid بيقسّم المكان لـ <b>صفوف وأعمدة</b> مع بعض، زي كراتين البيض 🥚.</p>
+  <ul>
+    <li><code class="in">display: grid;</code> = شغّل الشبكة.</li>
+    <li><code class="in">grid-template-columns: 1fr 1fr 1fr;</code> = 3 أعمدة متساوية. (<code class="in">fr</code> = «حتة» من المكان الفاضي)</li>
+    <li>أو اختصار: <code class="in">repeat(3, 1fr)</code> = كرّر «1fr» 3 مرات.</li>
+    <li><code class="in">gap</code> = المسافة بين المربعات.</li>
+  </ul>
+  <div class="game" id="gGrid">
+    <div class="game-h">🎮 لعبة: كرتونة البيض <span class="badge">غيّر الأعمدة</span></div>
+    <div class="ctrl">
+      <label>🏛️ عدد الأعمدة = <b id="grCv"></b><input type="range" id="grC" min="1" max="6" value="3"></label>
+      <label>↔️ المسافة gap = <b id="grGv"></b><input type="range" id="grG" min="0" max="30" value="10"></label>
+      <label>🥚 عدد العناصر = <b id="grNv"></b><input type="range" id="grN" min="1" max="18" value="9"></label>
+    </div>
+    <div class="stage" id="grStage"></div>
+    <div class="codeview" id="grCode"></div>
+  </div>
+</section>
+
+<!-- 13 -->
+<section class="lesson" id="l13" data-title="position: التحريك">
+  <h2><span class="num">13</span> position: حرّك العنصر من مكانه 📍</h2>
+  <table class="ref">
+    <tr><th>القيمة</th><th>بالبلدي</th></tr>
+    <tr><td>static</td><td>العادي. العنصر قاعد مكانه ومش بيسمع كلام top و left.</td></tr>
+    <tr><td>relative</td><td>بيتحرك <b>من مكانه الأصلي</b>، بس مكانه القديم بيفضل محجوز (زي ما تقوم من الكرسي وتقف جنبه، الكرسي لسه بتاعك).</td></tr>
+    <tr><td>absolute</td><td>بيطير من مكانه خالص 🎈 ويتحدد مكانه بالنسبة لأقرب أب عليه <code class="in">relative</code>. والباقيين بياخدوا مكانه.</td></tr>
+    <tr><td>fixed</td><td>بيتلزق في الشاشة ومبيتحركش حتى لو عملت scroll (زي زرار ⬆️ اللي تحت في الصفحة دي).</td></tr>
+    <tr><td>sticky</td><td>عادي لحد ما توصله وإنت بتنزل، بعدين يتلزق فوق.</td></tr>
+  </table>
+  <div class="game" id="gPos">
+    <div class="game-h">🎮 لعبة: الصندوق الطاير <span class="badge">حرّك الأحمر</span></div>
+    <div class="seg" id="psSeg"></div>
+    <div class="ctrl">
+      <label>⬇️ top = <b id="psTv"></b><input type="range" id="psT" min="0" max="160" value="40"></label>
+      <label>➡️ right = <b id="psLv"></b><input type="range" id="psL" min="0" max="300" value="60"></label>
+    </div>
+    <div class="ps-parent" id="psParent"><span class="ps-b">1</span><span class="ps-b me" id="psMe">أنا 😎</span><span class="ps-b">3</span><span class="ps-b">4</span></div>
+    <div class="codeview" id="psCode"></div>
+    <div class="msg" id="psMsg"></div>
+  </div>
+</section>
+
+<!-- 14 -->
+<section class="lesson" id="l14" data-title="hover والانتقال الناعم">
+  <h2><span class="num">14</span> لما الماوس يعدّي (hover) والحركة الناعمة ✨</h2>
+  <p><code class="in">:hover</code> معناها «لما الماوس يقف على العنصر». وبيتكتب بعد اسم المحدِّد كده: <code class="in">button:hover { ... }</code></p>
+  <p>و<code class="in">transition</code> بتخلّي التغيير يحصل <b>بالراحة</b> بدل ما يحصل فجأة.</p>
+  <div class="example"><script type="text/html">
+<style>
+  .btn {
+    background: #7c3aed;
+    color: white;
+    border: none;
+    padding: 14px 30px;
+    font-size: 18px;
+    border-radius: 12px;
+    cursor: pointer;
+    transition: all 0.4s;
+  }
+  .btn:hover {
+    background: #db2777;
+    transform: scale(1.15) rotate(-3deg);
+    box-shadow: 0 10px 20px rgba(0,0,0,.3);
+  }
+</style>
+
+<button class="btn">عدّي بالماوس عليّا 🖱️</button>
+  </script></div>
+  <div class="idea"><b>✨ جرّب</b>عدّل في المثال وغيّر <code class="in">0.4s</code> لـ <code class="in">2s</code> (بطيئة جدًا) أو امسح سطر الـ transition خالص وشوف الفرق.</div>
+</section>
+
+<!-- 15 -->
+<section class="lesson" id="l15" data-title="الأنيميشن">
+  <h2><span class="num">15</span> الأنيميشن: خلّي الحاجة تتحرك لوحدها 🎬</h2>
+  <p>الأنيميشن بيتعمل على خطوتين:</p>
+  <ol>
+    <li>تعمل <b>السيناريو</b> بـ <code class="in">@keyframes</code>: «في الأول كده، في النص كده، في الآخر كده».</li>
+    <li>تقول للعنصر «مثّل السيناريو ده» بـ <code class="in">animation: اسم-السيناريو المدة عدد-المرات;</code></li>
+  </ol>
+  <div class="game" id="gAnim">
+    <div class="game-h">🎮 لعبة: المخرج 🎬 <span class="badge">اختار حركة</span></div>
+    <div class="seg" id="anSeg"></div>
+    <div class="ctrl">
+      <label>⏱️ المدة = <b id="anDv"></b><input type="range" id="anD" min="2" max="40" value="10"></label>
+      <label>🔁 تتكرر كام مرة<select id="anIt"><option value="infinite">على طول (infinite)</option><option value="1">مرة واحدة</option><option value="3">3 مرات</option></select></label>
+      <label>😀 الممثل<select id="anEm"><option>⚽</option><option>🚀</option><option>🐱</option><option>❤️</option><option>🍕</option></select></label>
+    </div>
+    <div class="an-stage"><span id="anObj" style="display:inline-block">⚽</span></div>
+    <button class="btn" id="anPlay">▶️ أكشن!</button>
+    <div class="codeview" id="anCode"></div>
+  </div>
+</section>
+
+<!-- 16 -->
+<section class="lesson" id="l16" data-title="الموبايل (Responsive)">
+  <h2><span class="num">16</span> الموقع على الموبايل 📱 (Responsive)</h2>
+  <p>الموقع لازم يبان حلو على الكمبيوتر الكبير وعلى الموبايل الصغير. عشان كده بنستخدم <code class="in">@media</code> اللي معناها: «<b>لو</b> الشاشة صغيرة، طبّق الكلام ده».</p>
+  <pre class="code">@media (max-width: 600px) {
+  /* الكلام هنا بيشتغل بس لو الشاشة أصغر من 600 */
+  .boxes { flex-direction: column; }
+}</pre>
+  <div class="game" id="gResp">
+    <div class="game-h">🎮 لعبة: صغّر الشاشة <span class="badge">اسحب الشريط</span></div>
+    <label style="font-weight:700">📐 عرض الشاشة = <b id="rsWv"></b><input type="range" id="rsW" min="280" max="900" value="800"></label>
+    <div class="msg" id="rsMsg"></div>
+    <div style="overflow:hidden"><iframe id="rsFrame" style="border:3px solid #334155;border-radius:14px;height:260px;background:#fff;display:block;margin:auto;max-width:100%"></iframe></div>
+  </div>
+  <div class="warn"><b>⚠️ متنساش</b>عشان الموبايل يفهم الكلام ده لازم تحط في الـ head: <code class="in">&lt;meta name="viewport" content="width=device-width, initial-scale=1.0"&gt;</code></div>
+</section>
+
+<!-- 17 -->
+<section class="lesson" id="l17" data-title="الأخطاء الشائعة">
+  <h2><span class="num">17</span> الأخطاء اللي كلنا بنعملها 🙈</h2>
+  <table class="ref">
+    <tr><th>الغلط</th><th>الصح وليه</th></tr>
+    <tr><td>color red;</td><td><code class="in">color: red;</code> ← نسيت النقطتين <b>:</b></td></tr>
+    <tr><td>color: red</td><td>لو فيه سطر بعده لازم <code class="in">;</code> وإلا السطر اللي بعده هيبوظ.</td></tr>
+    <tr><td>red { color: red; }</td><td>لو الكلاس اسمه red اكتب <code class="in">.red</code> بالنقطة.</td></tr>
+    <tr><td>font-size: 20;</td><td><code class="in">font-size: 20px;</code> ← لازم الوحدة (px).</td></tr>
+    <tr><td>colour: red;</td><td><code class="in">color</code> بالإنجليزي الأمريكي. غلطة حرف = الخاصية متشتغلش.</td></tr>
+    <tr><td>.Box ≠ .box</td><td>الكلاسات بتفرّق بين الكابيتال والسمول. خلّيهم دايمًا سمول.</td></tr>
+  </table>
+  <div class="tip"><b>💡 لما حاجة متشتغلش</b>دوس كليك يمين على الصفحة ← <b>Inspect / فحص</b>. هتشوف كل الـ CSS اللي على العنصر، والخاصية الغلط هيبقى عليها خط أو علامة ⚠️. ده أحسن صاحب ليك.</div>
+</section>
+
+<!-- 18 -->
+<section class="lesson" id="l18" data-title="🧠 اختبر نفسك">
+  <h2><span class="num">18</span> 🧠 اختبر نفسك</h2>
+  <p>10 أسئلة سهلة. متقلقش لو غلطت، هنقولك الصح وليه.</p>
+  <div class="game quiz" id="quiz"></div>
+</section>
+
+<!-- 19 -->
+<section class="lesson" id="l19" data-title="🧪 ملعب التجربة">
+  <h2><span class="num">19</span> 🧪 ملعب التجربة: صمّم بإيدك</h2>
+  <p>اكتب HTML وجوّاه <code class="in">&lt;style&gt;</code> والنتيجة هتظهر جنبك على طول. اختار مثال جاهز أو جرّب التحديات.</p>
+  <div class="pg-tools">
+    <button id="pgRun">▶️ شغّل</button>
+    <select id="pgTpl">
+      <option value="">📂 ابدأ بمثال جاهز...</option>
+      <option value="btn">زراير حلوة</option>
+      <option value="card">كارت بروفايل</option>
+      <option value="nav">قائمة موقع بالـ Flex</option>
+      <option value="gallery">معرض بالـ Grid</option>
+      <option value="anim">قلب بينبض ❤️</option>
+    </select>
+    <button id="pgClear" class="gray">🗑️ مسح</button>
+    <button id="pgSave" class="gray">💾 حمّل كملف</button>
+  </div>
+  <div class="pg-wrap">
+    <div class="pg-pane"><div class="ex-bar code"><span>📝 اكتب هنا</span></div><textarea id="pgCode" spellcheck="false"></textarea></div>
+    <div class="pg-pane"><div class="ex-bar res"><span>👀 النتيجة</span></div><iframe id="pgOut" title="النتيجة"></iframe></div>
+  </div>
+  <div class="tip"><b>💡</b>Ctrl + Enter = شغّل. وكلامك بيتحفظ لوحده لو قفلت الصفحة.</div>
+  <h3 class="sub">🎯 تحديات</h3>
+  <ol class="challenges">
+    <li>خلّي خلفية الصفحة كلها لونها لبني فاتح. <button class="try" data-c="1">ابدأ</button></li>
+    <li>اعمل زرار أحمر بحواف مدورة، ولما الماوس يعدي عليه يبقى أخضر. <button class="try" data-c="2">ابدأ</button></li>
+    <li>حط 3 صناديق جنب بعض بالـ Flex وبينهم مسافة. <button class="try" data-c="3">ابدأ</button></li>
+    <li>اعمل صورة دايرة عليها إطار وظل. <button class="try" data-c="4">ابدأ</button></li>
+    <li>حط كلمة «أهلًا» في نص الصفحة بالظبط. <button class="try" data-c="5">ابدأ</button></li>
+  </ol>
+  <div class="idea"><b>🚀 خطوتك الجاية</b>دلوقتي الصفحة حلوة بس «ميتة». عايزها تتحرك وتتفاعل؟ روح لدرس <a href="js.html">⚡ JavaScript</a>.</div>
+</section>
+
+</main>
+</div>
+
+<footer>صُنع بحب ❤️ عشان تتعلم CSS وإنت بتلعب · <a href="mero.html">HTML</a> · <a href="js.html">JavaScript</a> · <a href="python.html">Python</a></footer>
+<button id="topBtn" title="لفوق" onclick="window.scrollTo({top:0})">↑</button>
+
+<script>
+(function(){
+  var PHOTO="data:image/svg+xml,"+encodeURIComponent('<svg xmlns="http://www.w3.org/2000/svg" width="400" height="400" viewBox="0 0 400 400"><rect width="400" height="400" fill="#bae6fd"/><circle cx="300" cy="90" r="45" fill="#fde047"/><path d="M0 400 L130 200 L230 320 L300 240 L400 400 Z" fill="#16a34a"/></svg>');
+  window.__PHOTO=PHOTO;
+  function esc(s){return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');}
+  function hlAttrs(s){
+    var out='',re=/([^\s=\/]+)(?:(\s*=\s*)("[^"]*"|'[^']*'|[^\s]+))?|(\s+|\/)/g,m;
+    while((m=re.exec(s))){
+      if(m[4]!==undefined){out+=esc(m[4]);continue;}
+      out+='<span class="a">'+esc(m[1])+'</span>';
+      if(m[2]) out+=esc(m[2])+'<span class="v">'+esc(m[3])+'</span>';
+    }
+    return out;
+  }
+  function hlHTML(src){
+    var out='',last=0,re=/<\!--[\s\S]*?-->|<(\/?)(!DOCTYPE|[a-zA-Z][a-zA-Z0-9]*)([^>]*)>/gi,m;
+    while((m=re.exec(src))){
+      out+=esc(src.slice(last,m.index));
+      if(m[0].indexOf('<!'+'--')===0) out+='<span class="c">'+esc(m[0])+'</span>';
+      else out+='<span class="t">&lt;'+m[1]+m[2]+'</span>'+hlAttrs(m[3])+'<span class="t">&gt;</span>';
+      last=re.lastIndex;
+    }
+    return out+esc(src.slice(last));
+  }
+  function hlCSS(css){
+    var out='',last=0,re=/(\/\*[\s\S]*?\*\/)|([^{}]+)(?=\{)|([\w-]+)(\s*:\s*)([^;{}]+)/g,m;
+    while((m=re.exec(css))){
+      out+=esc(css.slice(last,m.index));
+      if(m[1]) out+='<span class="c">'+esc(m[1])+'</span>';
+      else if(m[2]) out+='<span class="s">'+esc(m[2])+'</span>';
+      else out+='<span class="a">'+esc(m[3])+'</span>'+esc(m[4])+'<span class="v">'+esc(m[5])+'</span>';
+      last=re.lastIndex;
+    }
+    return out+esc(css.slice(last));
+  }
+  function highlight(src){
+    var out='',last=0,re=/(<style[^>]*>)([\s\S]*?)(<\/style>)/gi,m;
+    while((m=re.exec(src))){
+      out+=hlHTML(src.slice(last,m.index))+hlHTML(m[1])+hlCSS(m[2])+hlHTML(m[3]);
+      last=re.lastIndex;
+    }
+    return out+hlHTML(src.slice(last));
+  }
+  window.__hlCSS=hlCSS;
+  function dedent(s){
+    s=s.replace(/^\s*\n/,'').replace(/\s+$/,'');
+    var lines=s.split('\n'),min=Infinity;
+    lines.forEach(function(l){if(l.trim()){var n=l.match(/^ */)[0].length;if(n<min)min=n;}});
+    return lines.map(function(l){return l.slice(min===Infinity?0:min);}).join('\n');
+  }
+  function buildDoc(code){
+    code=code.replace(/photo\.jpg/g,PHOTO);
+    if(/^\s*<!DOCTYPE/i.test(code)) return code;
+    return '<!DOCTYPE html><html lang="ar" dir="rtl"><head><meta charset="UTF-8"><style>body{font-family:Tahoma,Arial,sans-serif;margin:14px;line-height:1.7;color:#222}</style></head><body>'+code+'</body></html>';
+  }
+  window.__buildDoc=buildDoc;
+  function fit(f){try{var d=f.contentDocument;if(!d)return;f.style.height=((d.body?d.body.scrollHeight:60)+32)+'px';}catch(e){}}
+
+  document.querySelectorAll('.example').forEach(function(box){
+    var s=box.querySelector('script[type="text/html"]');
+    var original=dedent(s.textContent);
+    box.innerHTML='<div class="ex-bar code"><span>📝 الكود</span><span><button class="ghost cp">📋 نسخ</button><button class="ed">✏️ جرّب بنفسك</button><button class="ghost rs" style="display:none">↩️ رجّع الأصلي</button></span></div>'+
+      '<pre class="code"></pre><textarea class="code" spellcheck="false"></textarea><div class="ex-bar res"><span>👀 النتيجة</span></div><iframe class="result" title="النتيجة"></iframe>';
+    var pre=box.querySelector('pre'),ta=box.querySelector('textarea'),fr=box.querySelector('iframe');
+    var bEd=box.querySelector('.ed'),bRs=box.querySelector('.rs'),bCp=box.querySelector('.cp');
+    function render(code){pre.innerHTML=highlight(code);fr.onload=function(){fit(fr);setTimeout(function(){fit(fr);},400);};fr.srcdoc=buildDoc(code);}
+    ta.value=original;render(original);
+    var timer;
+    ta.addEventListener('input',function(){clearTimeout(timer);timer=setTimeout(function(){render(ta.value);},300);});
+    bEd.onclick=function(){
+      var editing=ta.style.display==='block';
+      if(editing){ta.style.display='none';pre.style.display='block';bEd.textContent='✏️ جرّب بنفسك';}
+      else{ta.style.height=Math.max(pre.offsetHeight,160)+'px';ta.style.display='block';pre.style.display='none';ta.focus();bEd.textContent='✅ خلصت';bRs.style.display='inline-block';}
+    };
+    bRs.onclick=function(){ta.value=original;render(original);};
+    bCp.onclick=function(){
+      var txt=ta.value;
+      (navigator.clipboard?navigator.clipboard.writeText(txt):Promise.reject()).then(function(){bCp.textContent='✔️ اتنسخ';},function(){});
+      setTimeout(function(){bCp.textContent='📋 نسخ';},1500);
+    };
+  });
+
+  var toc=document.getElementById('toc'),secs=document.querySelectorAll('section.lesson');
+  secs.forEach(function(sec,i){var a=document.createElement('a');a.href='#'+sec.id;a.textContent=(i+1)+'. '+sec.dataset.title;toc.appendChild(a);});
+  var links=toc.querySelectorAll('a');
+  window.addEventListener('scroll',function(){var cur=0;secs.forEach(function(s,i){if(s.getBoundingClientRect().top<120)cur=i;});links.forEach(function(l,i){l.classList.toggle('active',i===cur);});});
+  window.addEventListener('resize',function(){document.querySelectorAll('iframe.result').forEach(fit);});
+})();
+</script>
+
+<script>
+/* ================= الألعاب ================= */
+function $(id){return document.getElementById(id);}
+function cv(css){return window.__hlCSS(css);} // تلوين كود CSS
+function bindRange(id,unit){var el=$(id),v=$(id+'v');function u(){if(v)v.textContent=el.value+(unit||'');}el.addEventListener('input',u);u();return el;}
+
+/* ---------- قبل وبعد ---------- */
+(function(){
+  var html='<h1>مطعم الأسطى 🍔</h1><p>أحلى سندوتشات في الحتة، سخنة وطازة.</p><ul><li>برجر لحمة</li><li>شاورما فراخ</li><li>بطاطس</li></ul><button>اطلب دلوقتي</button>';
+  var css='<style>body{background:linear-gradient(135deg,#fde68a,#fca5a5);text-align:center;font-family:Tahoma;padding:10px}h1{color:#7c2d12;font-size:36px;margin:6px;text-shadow:2px 2px #fff}p{color:#7c2d12;font-size:18px}ul{list-style:none;padding:0;display:flex;gap:10px;justify-content:center}li{background:#fff;padding:6px 14px;border-radius:20px;box-shadow:0 3px 8px rgba(0,0,0,.15)}button{background:#dc2626;color:#fff;border:0;padding:12px 30px;border-radius:30px;font-size:18px;box-shadow:0 6px 14px rgba(220,38,38,.5);cursor:pointer}</style>';
+  var on=true,f=$('bfFrame');
+  function draw(){f.srcdoc='<!DOCTYPE html><html dir="rtl"><head><meta charset="UTF-8">'+(on?css:'')+'</head><body>'+html+'</body></html>';
+    $('bfToggle').textContent=on?'🪄 شيل الـ CSS':'🪄 رجّع الـ CSS';
+    $('bfMsg').textContent=on?'✨ دلوقتي الصفحة بالـ CSS: حلوة ومتظبطة.':'😱 من غير CSS: نفس الكلام بس شكله وحش ومكركب. ده الـ HTML لوحده!';}
+  $('bfToggle').onclick=function(){on=!on;draw();};draw();
+})();
+
+/* ---------- مين هيتلوّن ---------- */
+(function(){
+  var PAGE='<h1 class="title">عنوان الصفحة</h1><p class="red">فقرة أولى</p><p>فقرة تانية</p><ul id="menu"><li class="red">تفاح</li><li>موز</li><li class="red big">فراولة</li></ul><div class="box"><p>فقرة جوه الصندوق</p><span class="red">كلمة</span></div>';
+  var L=[
+    {s:'h1',mean:'من غير علامة = نوع. يعني: «لوّن كل الصناديق اللي نوعها h1»',why:'فيه صندوق واحد بس نوعه h1 (العنوان اللي فوق خالص).'},
+    {s:'p',mean:'من غير علامة = نوع. يعني: «لوّن كل الصناديق اللي نوعها p»',why:'فيه 3 صناديق نوعهم p. متنساش الفقرة اللي مستخبية جوه الصندوق اللي تحت!'},
+    {s:'.red',mean:'النقطة = تيشيرت (class). يعني: «لوّن أي صندوق لابس تيشيرت red»',why:'مش مهم نوعه إيه. أي صندوق عليه البرتقاني red يتلوّن، وهم 4.'},
+    {s:'#menu',mean:'الشباك # = اسم (id). يعني: «لوّن الصندوق اللي اسمه menu»',why:'صندوق واحد بس اسمه menu، وهو القايمة (ul).'},
+    {s:'li',mean:'من غير علامة = نوع. يعني: «لوّن كل الصناديق اللي نوعها li»',why:'الـ li هم سطور القايمة: تفاح، موز، فراولة.'},
+    {s:'p.red',mean:'لازقين من غير مسافة = الاتنين مع بعض. يعني: «صندوق نوعه p ولابس red في نفس الوقت»',why:'فيه p كتير، وفيه red كتير، بس اللي هو p ولابس red مع بعض واحد بس: «فقرة أولى».'},
+    {s:'#menu .red',mean:'المسافة = «جوه». يعني: «أي حد لابس red وموجود جوه menu»',why:'الـ red اللي جوه القايمة بس: تفاح وفراولة. اللي برّه القايمة مش محسوب.'},
+    {s:'.box p',mean:'المسافة = «جوه». يعني: «أي p موجود جوه الصندوق اللي لابس box»',why:'فيه p واحد بس جوه صندوق box.'},
+    {s:'h1, .big',mean:'الفاصلة = «وكمان». يعني: «لوّن h1، وكمان لوّن اللي لابس big»',why:'العنوان h1 + الفراولة اللي لابسة big.'}
+  ];
+  var lvl=0,answer=[];
+  function label(el){
+    var h='<span class="chip ch-tag">'+el.tagName.toLowerCase()+'</span>';
+    if(el.id)h+='<span class="chip ch-id">id: '+el.id+'</span>';
+    if(el.className)el.className.split(' ').forEach(function(c){h+='<span class="chip ch-cls">class: '+c+'</span>';});
+    return h;
+  }
+  function build(){
+    var s=L[lvl].s; $('sgSel').textContent=s; $('sgMean').textContent='👈 '+L[lvl].mean; $('sgLvl').textContent='مستوى '+(lvl+1)+' من '+L.length;
+    var clean=document.createElement('div'); clean.innerHTML=PAGE;
+    clean.querySelectorAll('*').forEach(function(e,i){e.setAttribute('data-i',i);});
+    answer=[].map.call(clean.querySelectorAll(s),function(e){return e.getAttribute('data-i');});
+    var page=$('sgPage'); page.innerHTML=clean.innerHTML;
+    page.querySelectorAll('[data-i]').forEach(function(e){
+      var first=e.firstChild, lb=document.createElement('span'); lb.className='lbl'; lb.innerHTML=label(e);
+      e.insertBefore(lb,first);
+      e.addEventListener('click',function(ev){ev.stopPropagation();if($('sgNext').disabled===false)return;e.classList.toggle('picked');});
+    });
+    $('sgMsg').textContent=''; $('sgNext').disabled=true;
+  }
+  $('sgCheck').onclick=function(){
+    var all=$('sgPage').querySelectorAll('[data-i]'),good=true;
+    all.forEach(function(e){var should=answer.indexOf(e.getAttribute('data-i'))>-1,p=e.classList.contains('picked');
+      e.classList.remove('right','missed');
+      if(should&&p)e.classList.add('right'); else if(should&&!p){e.classList.add('missed');good=false;} else if(!should&&p){good=false;}
+    });
+    if(good){$('sgMsg').innerHTML='<span class="ok">🎉 صح! '+L[lvl].why+'</span>';$('sgNext').disabled=lvl>=L.length-1;if(lvl>=L.length-1)$('sgMsg').innerHTML+='<br><span class="ok">🏆 خلّصت كل المستويات! إنت كده فاهم المحدِّدات.</span>';}
+    else $('sgMsg').innerHTML='<span class="no">❌ لسه مش مظبوط، ولا يهمك! بص على الألوان:<br>🟩 الأخضر = اخترته صح 👍<br>🟥 الأحمر المتقطع = كان المفروض تختاره ونسيته<br>🟨 الأصفر اللي فاضل = اخترته بالغلط<br>💡 '+L[lvl].why+'</span>';
+  };
+  $('sgHelp').onclick=function(){
+    $('sgPage').querySelectorAll('[data-i]').forEach(function(e){e.classList.remove('picked','missed');e.classList.toggle('right',answer.indexOf(e.getAttribute('data-i'))>-1);});
+    $('sgMsg').innerHTML='<span class="ok">👀 الصناديق الخضرا هي اللي هتتلوّن. '+L[lvl].why+'</span>';$('sgNext').disabled=lvl>=L.length-1;
+  };
+  $('sgNext').onclick=function(){lvl++;build();};
+  $('sgReset').onclick=build;
+  build();
+})();
+
+/* ---------- خلّاط الألوان ---------- */
+(function(){
+  var T=[0,0,0],score=0,won=false;
+  var r=bindRange('cmR'),g=bindRange('cmG'),b=bindRange('cmB');
+  function hex(n){return ('0'+(+n).toString(16)).slice(-2);}
+  function newT(){var P=[[255,0,0],[0,200,0],[255,255,0],[255,128,0],[128,0,255],[0,255,255],[255,0,255],[255,192,203],[0,0,128],[139,69,19],[128,128,128]];
+    T=Math.random()<.5?P[Math.floor(Math.random()*P.length)]:[rnd(),rnd(),rnd()];won=false;$('cmTarget').style.background='rgb('+T+')';upd();}
+  function rnd(){return Math.floor(Math.random()*256);}
+  function upd(){
+    var R=+r.value,G=+g.value,B=+b.value;
+    $('cmMine').style.background='rgb('+R+','+G+','+B+')';
+    $('cmCode').innerHTML=cv('.my-color {\n  background-color: rgb('+R+', '+G+', '+B+');\n  /* أو بالـ Hex */\n  background-color: #'+hex(R)+hex(G)+hex(B)+';\n}');
+    var d=Math.sqrt(Math.pow(R-T[0],2)+Math.pow(G-T[1],2)+Math.pow(B-T[2],2)),pct=Math.max(0,Math.round(100-d/441.7*100));
+    $('cmBar').style.width=pct+'%';
+    if(pct>=94){ if(!won){won=true;score++;$('cmScore').textContent=score;} $('cmMsg').innerHTML='<span class="ok">🎉 برافو عليك! الشبه '+pct+'%. دوس «لون جديد» وكمّل.</span>'; }
+    else $('cmMsg').innerHTML='الشبه دلوقتي: <b>'+pct+'%</b> '+(pct>80?'🔥 قربت جدًا!':pct>60?'👍 كويس، كمّل':'🤔 لسه بعيد');
+  }
+  [r,g,b].forEach(function(e){e.addEventListener('input',upd);});
+  $('cmNew').onclick=newT;
+  $('cmShow').onclick=function(){r.value=T[0];g.value=T[1];b.value=T[2];[r,g,b].forEach(function(e){e.dispatchEvent(new Event('input'));});won=true;$('cmMsg').innerHTML='👀 ده الحل: rgb('+T.join(', ')+')';};
+  newT();
+})();
+
+/* ---------- الخطوط ---------- */
+(function(){
+  var ids=['ftText','ftSize','ftColor','ftWeight','ftStyle','ftAlign','ftDeco','ftLs','ftFam'];
+  bindRange('ftSize','px');bindRange('ftLs','px');
+  function upd(){
+    var p=$('ftPrev'),fam=$('ftFam').value;
+    p.textContent=$('ftText').value||'...';
+    var st={fontSize:$('ftSize').value+'px',color:$('ftColor').value,fontWeight:$('ftWeight').value,fontStyle:$('ftStyle').value,textAlign:$('ftAlign').value,textDecoration:$('ftDeco').value,letterSpacing:$('ftLs').value+'px',fontFamily:'"'+fam+'"'};
+    for(var k in st)p.style[k]=st[k];
+    $('ftCode').innerHTML=cv('p {\n  font-size: '+st.fontSize+';\n  color: '+st.color+';\n  font-weight: '+st.fontWeight+';\n  font-style: '+st.fontStyle+';\n  text-align: '+st.textAlign+';\n  text-decoration: '+st.textDecoration+';\n  letter-spacing: '+st.letterSpacing+';\n  font-family: "'+fam+'";\n}');
+  }
+  ids.forEach(function(i){$(i).addEventListener('input',upd);$(i).addEventListener('change',upd);});upd();
+})();
+
+/* ---------- الصندوق ---------- */
+(function(){
+  var w=bindRange('bmW','px'),p=bindRange('bmP','px'),b=bindRange('bmB','px'),m=bindRange('bmM','px'),bs=$('bmBS');
+  function upd(){
+    var box=$('bmBox');box.style.width=w.value+'px';box.style.padding=p.value+'px';box.style.borderWidth=b.value+'px';box.style.margin=m.value+'px';
+    box.style.boxSizing=bs.checked?'border-box':'content-box';
+    $('bmCode').innerHTML=cv('.box {\n  width: '+w.value+'px;\n  padding: '+p.value+'px;\n  border: '+b.value+'px solid #334155;\n  margin: '+m.value+'px;'+(bs.checked?'\n  box-sizing: border-box;':'')+'\n}');
+    var W=+w.value,P=+p.value,B=+b.value;
+    $('bmMsg').innerHTML=bs.checked?
+      '📐 مع border-box: الصندوق كله عرضه <b>'+W+'px</b> بالظبط زي ما قلت، والمحتوى اتزنق جوه وبقى <b>'+Math.max(0,W-2*P-2*B)+'px</b>.':
+      '📐 العرض الحقيقي = المحتوى '+W+' + padding ('+P+'×2) + border ('+B+'×2) = <b>'+(W+2*P+2*B)+'px</b>، مش '+W+' بس! 😮';
+  }
+  [w,p,b,m,bs].forEach(function(e){e.addEventListener('input',upd);e.addEventListener('change',upd);});upd();
+})();
+
+/* ---------- الشكل ---------- */
+(function(){
+  var R=bindRange('shR','%'),B=bindRange('shB','px'),X=bindRange('shX','px'),Y=bindRange('shY','px'),Bl=bindRange('shBl','px'),Rot=bindRange('shRot','deg'),Sc=$('shSc');
+  function upd(){
+    $('shScv').textContent=(Sc.value/10).toFixed(1);
+    var s=$('shBox'),col=$('shCol').value;
+    var css={radius:R.value+'%',border:B.value+'px '+$('shBt').value+' #1e293b',shadow:X.value+'px '+Y.value+'px '+Bl.value+'px rgba(0,0,0,0.4)',tr:'rotate('+Rot.value+'deg) scale('+(Sc.value/10)+')'};
+    s.style.background=col;s.style.borderRadius=css.radius;s.style.border=css.border;s.style.boxShadow=css.shadow;s.style.transform=css.tr;
+    $('shCode').innerHTML=cv('.shape {\n  background: '+col+';\n  border-radius: '+css.radius+';\n  border: '+css.border+';\n  box-shadow: '+css.shadow+';\n  transform: '+css.tr+';\n}');
+    $('shMsg').innerHTML=R.value>=50?'<span class="ok">🎉 بقت دايرة! border-radius: 50% = دايرة كاملة.</span>':'🎯 المهمة: حوّل المربع لدايرة كاملة.';
+  }
+  ['shR','shB','shBt','shX','shY','shBl','shRot','shSc','shCol'].forEach(function(i){$(i).addEventListener('input',upd);$(i).addEventListener('change',upd);});upd();
+})();
+
+/* ---------- display ---------- */
+(function(){
+  var V={block:'📦 block: كل صندوق واخد سطر لوحده وعرض المكان كله (أناني).',inline:'🤝 inline: جنب بعض زي الكلام، بس مبيسمعش كلام width و height.','inline-block':'🧱 inline-block: جنب بعض، وكمان تقدر تتحكم في العرض والطول. (أحسن الاتنين)',none:'👻 none: اختفوا خالص! كأنهم مش موجودين.'};
+  var cur='block';
+  function draw(){
+    $('dpSeg').innerHTML='';
+    Object.keys(V).forEach(function(k){var b=document.createElement('button');b.textContent=k;if(k===cur)b.className='on';b.onclick=function(){cur=k;draw();};$('dpSeg').appendChild(b);});
+    $('dpStage').innerHTML='قبلهم كلام عادي ';
+    for(var i=1;i<=3;i++){var d=document.createElement('div');d.className='dp-box';d.textContent='صندوق '+i;d.style.display=cur;d.style.width='120px';$('dpStage').appendChild(d);}
+    $('dpStage').appendChild(document.createTextNode(' وبعدهم كلام عادي'));
+    $('dpCode').innerHTML=cv('.box {\n  display: '+cur+';\n  width: 120px;\n}');
+    $('dpMsg').textContent=V[cur];
+  }
+  draw();
+})();
+
+/* ---------- ركّن العربيات (Flex) ---------- */
+(function(){
+  var COLORS=['#ef4444','#3b82f6','#eab308','#22c55e'],CARS=['🚗','🚙','🚕','🚓'];
+  var L=[
+    {n:3,t:{fd:'row',jc:'flex-end',ai:'flex-start'},txt:'العربيات عايزة تروح آخر الجراج ناحية اليمين ➡️',hint:'justify-content: flex-end'},
+    {n:3,t:{fd:'row',jc:'center',ai:'flex-start'},txt:'ركّن العربيات في نص الجراج من فوق.',hint:'justify-content: center'},
+    {n:3,t:{fd:'row',jc:'space-between',ai:'flex-start'},txt:'واحدة في الشمال، وواحدة في اليمين، وواحدة في النص.',hint:'justify-content: space-between'},
+    {n:3,t:{fd:'row',jc:'flex-start',ai:'flex-end'},txt:'العربيات عايزة تنزل تحت خالص ⬇️',hint:'align-items: flex-end'},
+    {n:2,t:{fd:'row',jc:'center',ai:'center'},txt:'حط العربيتين في نص الجراج بالظبط (من كل ناحية) 🎯',hint:'justify-content: center + align-items: center'},
+    {n:4,t:{fd:'row',jc:'space-around',ai:'flex-end'},txt:'وزّع العربيات بمسافات حواليهم، وكلهم تحت.',hint:'justify-content: space-around + align-items: flex-end'},
+    {n:3,t:{fd:'column',jc:'flex-end',ai:'center'},txt:'العربيات عايزة تقف فوق بعض (عمود) في النص تحت.',hint:'flex-direction: column ← وفي العمود justify بقى فوق/تحت، وalign بقى يمين/شمال!'},
+    {n:3,t:{fd:'row-reverse',jc:'flex-start',ai:'center'},txt:'بص على الألوان كويس! الترتيب اتقلب 🔄',hint:'flex-direction: row-reverse + align-items: center'}
+  ];
+  var lvl=0,done={},fd=$('fgFd'),jc=$('fgJc'),ai=$('fgAi');
+  function apply(el,s){el.style.flexDirection=s.fd;el.style.justifyContent=s.jc;el.style.alignItems=s.ai;}
+  function build(){
+    var l=L[lvl];$('fgLvlTxt').textContent='مستوى '+(lvl+1)+' من '+L.length;$('fgTask').textContent='🎯 '+l.txt;
+    var T=$('fgTarget'),P=$('fgPlay');T.innerHTML='';P.innerHTML='';
+    for(var i=0;i<l.n;i++){
+      var s=document.createElement('div');s.className='fg-spot';s.style.borderColor=COLORS[i];T.appendChild(s);
+      var c=document.createElement('div');c.className='fg-car';c.style.background=COLORS[i];c.textContent=CARS[i];P.appendChild(c);
+    }
+    apply(T,l.t);fd.value='row';jc.value='flex-start';ai.value='flex-start';
+    $('fgNext').disabled=true;$('fgMsg').textContent='';
+    var lv=$('fgLv');lv.innerHTML='';L.forEach(function(_,i){var s=document.createElement('span');s.textContent=i+1;if(done[i])s.className='done';if(i===lvl)s.className='cur';s.style.cursor='pointer';s.onclick=function(){lvl=i;build();};lv.appendChild(s);});
+    upd(true);
+  }
+  function upd(silent){
+    var s={fd:fd.value,jc:jc.value,ai:ai.value};apply($('fgPlay'),s);
+    $('fgCode').innerHTML=cv('.garage {\n  display: flex;\n  flex-direction: '+s.fd+';\n  justify-content: '+s.jc+';\n  align-items: '+s.ai+';\n}');
+    setTimeout(check,480);
+  }
+  function check(){
+    var cars=$('fgPlay').children,spots=$('fgTarget').children,ok=true;
+    for(var i=0;i<cars.length;i++){var a=cars[i].getBoundingClientRect(),b=spots[i].getBoundingClientRect();if(Math.abs(a.left-b.left)>4||Math.abs(a.top-b.top)>4)ok=false;}
+    if(ok){done[lvl]=true;$('fgLv').children[lvl].className='cur done';
+      $('fgMsg').innerHTML=lvl===L.length-1?'<span class="ok">🏆 جامد جدًا! خلّصت كل المستويات وبقيت أسطى Flexbox!</span>':'<span class="ok">🎉 العربيات اتركنت! دوس «المستوى اللي بعده».</span>';
+      $('fgNext').disabled=lvl===L.length-1;}
+    else{$('fgMsg').textContent='🚦 لسه العربيات مش في أماكنها...';$('fgNext').disabled=true;}
+  }
+  [fd,jc,ai].forEach(function(e){e.addEventListener('change',function(){upd();});});
+  $('fgNext').onclick=function(){lvl++;build();};
+  $('fgHint').onclick=function(){$('fgMsg').innerHTML='💡 '+L[lvl].hint;};
+  build();
+})();
+
+/* ---------- Grid ---------- */
+(function(){
+  var c=bindRange('grC'),g=bindRange('grG','px'),n=bindRange('grN');
+  function upd(){
+    var st=$('grStage');st.style.display='grid';st.style.gridTemplateColumns='repeat('+c.value+', 1fr)';st.style.gap=g.value+'px';
+    st.innerHTML='';for(var i=1;i<=n.value;i++){var d=document.createElement('div');d.className='gr-item';d.textContent='🥚 '+i;st.appendChild(d);}
+    $('grCode').innerHTML=cv('.eggs {\n  display: grid;\n  grid-template-columns: repeat('+c.value+', 1fr);\n  gap: '+g.value+'px;\n}');
+  }
+  [c,g,n].forEach(function(e){e.addEventListener('input',upd);});upd();
+})();
+
+/* ---------- position ---------- */
+(function(){
+  var V={static:'😴 static: الصندوق مش بيسمع كلام top و right خالص. حرّك الأشرطة ومش هيتحرك.',relative:'🪑 relative: اتحرك من مكانه، بس بص: مكانه القديم لسه فاضي ومحجوز ليه.',absolute:'🎈 absolute: طار! واتحدد مكانه من حافة الصندوق الكبير، والصناديق التانية قفلت مكانه.'};
+  var cur='relative',t=bindRange('psT','px'),l=bindRange('psL','px');
+  function draw(){
+    $('psSeg').innerHTML='';Object.keys(V).forEach(function(k){var b=document.createElement('button');b.textContent=k;if(k===cur)b.className='on';b.onclick=function(){cur=k;draw();};$('psSeg').appendChild(b);});
+    var me=$('psMe');me.style.position=cur;me.style.top=t.value+'px';me.style.right=l.value+'px';
+    $('psCode').innerHTML=cv('.parent { position: relative; }\n\n.me {\n  position: '+cur+';\n  top: '+t.value+'px;\n  right: '+l.value+'px;\n}');
+    $('psMsg').textContent=V[cur];
+  }
+  [t,l].forEach(function(e){e.addEventListener('input',draw);});draw();
+})();
+
+/* ---------- الأنيميشن ---------- */
+(function(){
+  var K={bounce:'0%, 100% { transform: translateY(0); }\n  50%      { transform: translateY(-50px); }',spin:'from { transform: rotate(0deg); }\n  to   { transform: rotate(360deg); }',pulse:'0%, 100% { transform: scale(1); }\n  50%      { transform: scale(1.4); }',shake:'0%, 100% { transform: translateX(0); }\n  25%      { transform: translateX(-20px); }\n  75%      { transform: translateX(20px); }',slide:'0%   { transform: translateX(-140px); }\n  100% { transform: translateX(140px); }'};
+  var N={bounce:'نط ⬆️',spin:'لف 🔄',pulse:'نبض 💓',shake:'رعشة 🫨',slide:'زحلقة ➡️'};
+  var cur='bounce',d=$('anD');
+  function play(){
+    var o=$('anObj');o.textContent=$('anEm').value;o.style.animation='none';void o.offsetWidth;
+    var dur=(d.value/10).toFixed(1)+'s',it=$('anIt').value;
+    o.style.animation=cur+' '+dur+' ease-in-out '+it+(cur==='slide'?' alternate':'');
+    $('anDv').textContent=dur;
+    $('anCode').innerHTML=cv('@keyframes '+cur+' {\n  '+K[cur]+'\n}\n\n.actor {\n  animation: '+cur+' '+dur+' '+it+(cur==='slide'?' alternate':'')+';\n}');
+  }
+  function seg(){$('anSeg').innerHTML='';Object.keys(K).forEach(function(k){var b=document.createElement('button');b.textContent=N[k]+' '+k;if(k===cur)b.className='on';b.onclick=function(){cur=k;seg();play();};$('anSeg').appendChild(b);});}
+  ['anD','anIt','anEm'].forEach(function(i){$(i).addEventListener('change',play);});d.addEventListener('input',function(){$('anDv').textContent=(d.value/10).toFixed(1)+'s';});
+  $('anPlay').onclick=play;seg();play();
+})();
+
+/* ---------- Responsive ---------- */
+(function(){
+  var page='<!DOCTYPE html><html dir="rtl"><head><meta charset="UTF-8"><style>body{font-family:Tahoma;margin:10px;background:#f0f9ff;transition:.3s}h2{margin:4px 0;color:#0369a1}.boxes{display:flex;gap:10px}.boxes div{flex:1;background:#38bdf8;color:#fff;padding:20px;border-radius:10px;text-align:center;font-weight:bold}@media (max-width:600px){body{background:#fdf2f8}h2{color:#be185d}.boxes{flex-direction:column}.boxes div{background:#f472b6;padding:10px}}</style></head><body><h2>موقعي الحلو</h2><div class="boxes"><div>صندوق 1</div><div>صندوق 2</div><div>صندوق 3</div></div></body></html>';
+  var f=$('rsFrame'),w=$('rsW');f.srcdoc=page;
+  function upd(){f.style.width=w.value+'px';$('rsWv').textContent=w.value+'px';
+    $('rsMsg').innerHTML=w.value<=600?'📱 <span class="ok">الشاشة أصغر من 600 ← قاعدة @media اشتغلت: الصناديق بقت فوق بعض والألوان اتغيرت!</span>':'🖥️ الشاشة كبيرة ← الصناديق جنب بعض. صغّرها لأقل من 600 وشوف.';}
+  w.addEventListener('input',upd);upd();
+})();
+
+/* ---------- الاختبار ---------- */
+function makeQuiz(el,Q){
+  var i=0,score=0;
+  function show(){
+    if(i>=Q.length){el.innerHTML='<div class="game-h">🏁 خلصت!</div><p style="font-size:1.3rem">نتيجتك: <b>'+score+' من '+Q.length+'</b> '+(score===Q.length?'🏆 عبقري!':score>=Q.length*0.7?'🔥 ممتاز!':'💪 كويس، راجع الدروس وجرّب تاني.')+'</p><button class="btn">🔁 من الأول</button>';el.querySelector('button').onclick=function(){i=0;score=0;show();};return;}
+    var q=Q[i];
+    el.innerHTML='<div class="game-h">سؤال '+(i+1)+' من '+Q.length+' <span class="badge">النقط: '+score+'</span></div><div class="bar"><i style="width:'+(i/Q.length*100)+'%"></i></div><div class="q">'+q.q+'</div>'+
+      q.o.map(function(o,k){return '<button class="opt" data-k="'+k+'">'+o+'</button>';}).join('')+'<div class="msg"></div>';
+    var answered=false;
+    el.querySelectorAll('.opt').forEach(function(b){b.onclick=function(){
+      if(answered)return;answered=true;var k=+b.dataset.k;
+      if(k===q.a){score++;b.classList.add('right');el.querySelector('.msg').innerHTML='<span class="ok">✅ صح! '+q.w+'</span>';}
+      else{b.classList.add('wrong');el.querySelectorAll('.opt')[q.a].classList.add('right');el.querySelector('.msg').innerHTML='<span class="no">❌ لأ. '+q.w+'</span>';}
+      var n=document.createElement('button');n.className='btn';n.textContent='➡️ اللي بعده';n.onclick=function(){i++;show();};el.appendChild(n);
+    };});
+  }
+  show();
+}
+makeQuiz($('quiz'),[
+  {q:'CSS بتعمل إيه في الصفحة؟',o:['بتضيف كلام وصور','بتحلّي الشكل: ألوان وأحجام وأماكن','بتخلّي الصفحة تحسب'],a:1,w:'CSS = الدهان والديكور.'},
+  {q:'إزاي تخلّي لون الكلام أحمر؟',o:['<code>color: red;</code>','<code>background: red;</code>','<code>text: red;</code>'],a:0,w:'color للكلام، وbackground للخلفية.'},
+  {q:'عشان تختار عنصر عليه <code>class="card"</code> بتكتب إيه؟',o:['<code>card</code>','<code>#card</code>','<code>.card</code>'],a:2,w:'الكلاس بنقطة، والـ id بشباك #.'},
+  {q:'المسافة اللي <b>جوه</b> الصندوق بين الكلام والإطار اسمها إيه؟',o:['margin','padding','border'],a:1,w:'padding جوه، margin برّه.'},
+  {q:'إزاي تخلّي مربع يبقى دايرة؟',o:['<code>border-radius: 50%;</code>','<code>shape: circle;</code>','<code>round: yes;</code>'],a:0,w:'border-radius 50% = دايرة.'},
+  {q:'عشان ترصّ العناصر جنب بعض بسهولة بتكتب على الأب إيه؟',o:['<code>display: none;</code>','<code>display: flex;</code>','<code>position: fixed;</code>'],a:1,w:'flex = رصّ الحاجات جنب بعض.'},
+  {q:'في Flex، عشان تحط العيال في النص أفقيًا (في الصف العادي)؟',o:['<code>align-items: center</code>','<code>justify-content: center</code>','<code>text-align: middle</code>'],a:1,w:'justify على الخط الرئيسي (العرضي)، وalign على التاني.'},
+  {q:'إيه الغلط في: <code>font-size: 20;</code>',o:['مفيش غلط','ناقصة الوحدة px','لازم تتكتب بالعربي'],a:1,w:'لازم تقول 20 إيه؟ 20px.'},
+  {q:'<code>:hover</code> معناها إيه؟',o:['لما الصفحة تفتح','لما الماوس يقف على العنصر','لما تكتب في خانة'],a:1,w:'hover = الماوس فوقه.'},
+  {q:'عشان الموقع يتغير على الموبايل بنستخدم إيه؟',o:['<code>@media</code>','<code>@mobile</code>','<code>@phone</code>'],a:0,w:'@media (max-width: 600px) { ... }'}
+]);
+
+/* ---------- الملعب ---------- */
+(function(){
+  var code=$('pgCode'),out=$('pgOut'),KEY='mero-css-playground';
+  var T={
+    btn:'<style>\n  button {\n    font-size: 18px;\n    padding: 12px 28px;\n    margin: 6px;\n    border: none;\n    border-radius: 30px;\n    color: white;\n    cursor: pointer;\n    transition: 0.3s;\n  }\n  .pink  { background: #db2777; }\n  .green { background: #059669; }\n  .ghost { background: white; color: #7c3aed; border: 2px solid #7c3aed; }\n  button:hover { transform: translateY(-4px); box-shadow: 0 8px 15px rgba(0,0,0,.2); }\n</style>\n\n<button class="pink">زرار بمبي</button>\n<button class="green">زرار أخضر</button>\n<button class="ghost">زرار شفاف</button>',
+    card:'<style>\n  body { background: #f1f5f9; }\n  .card {\n    width: 260px;\n    margin: 20px auto;\n    background: white;\n    border-radius: 20px;\n    padding: 20px;\n    text-align: center;\n    box-shadow: 0 10px 25px rgba(0,0,0,.1);\n  }\n  .card img {\n    width: 110px;\n    height: 110px;\n    border-radius: 50%;\n    border: 4px solid #db2777;\n    object-fit: cover;\n  }\n  .card h2 { margin: 10px 0 0; color: #1e293b; }\n  .card p  { color: gray; }\n</style>\n\n<div class="card">\n  <img src="photo.jpg" alt="صورة">\n  <h2>اسمك هنا</h2>\n  <p>بتعلم CSS 🎨</p>\n</div>',
+    nav:'<style>\n  .nav {\n    display: flex;\n    justify-content: space-between;\n    align-items: center;\n    background: linear-gradient(90deg, #db2777, #7c3aed);\n    padding: 12px 20px;\n    border-radius: 12px;\n  }\n  .links { display: flex; gap: 18px; }\n  .nav a { color: white; text-decoration: none; }\n  .nav a:hover { text-decoration: underline; }\n  .logo { color: white; font-size: 22px; font-weight: bold; }\n</style>\n\n<div class="nav">\n  <span class="logo">🎨 لوجو</span>\n  <div class="links">\n    <a href="#">الرئيسية</a>\n    <a href="#">عنّا</a>\n    <a href="#">كلمنا</a>\n  </div>\n</div>',
+    gallery:'<style>\n  .gallery {\n    display: grid;\n    grid-template-columns: repeat(3, 1fr);\n    gap: 10px;\n  }\n  .gallery div {\n    height: 90px;\n    border-radius: 12px;\n    display: flex;\n    align-items: center;\n    justify-content: center;\n    font-size: 40px;\n    background: #fce7f3;\n  }\n</style>\n\n<div class="gallery">\n  <div>🍎</div><div>🍌</div><div>🍇</div>\n  <div>🍉</div><div>🍓</div><div>🍍</div>\n</div>',
+    anim:'<style>\n  body {\n    height: 90vh;\n    display: flex;\n    justify-content: center;\n    align-items: center;\n  }\n  .heart {\n    font-size: 90px;\n    animation: beat 0.8s infinite;\n  }\n  @keyframes beat {\n    0%, 100% { transform: scale(1); }\n    50%      { transform: scale(1.3); }\n  }\n</style>\n\n<div class="heart">❤️</div>'
+  };
+  var C={
+    '1':'<style>\n  body {\n    /* اكتب لون الخلفية هنا */\n  }\n</style>\n\n<h1>صفحتي</h1>',
+    '2':'<style>\n  button {\n    /* لون أحمر + حواف مدورة */\n  }\n  button:hover {\n    /* أخضر */\n  }\n</style>\n\n<button>دوس هنا</button>',
+    '3':'<style>\n  .row {\n    /* display: ??? و gap */\n  }\n  .row div { background: pink; padding: 20px; }\n</style>\n\n<div class="row">\n  <div>1</div>\n  <div>2</div>\n  <div>3</div>\n</div>',
+    '4':'<style>\n  img {\n    width: 150px;\n    height: 150px;\n    /* دايرة + إطار + ظل */\n  }\n</style>\n\n<img src="photo.jpg" alt="صورة">',
+    '5':'<style>\n  body {\n    height: 90vh;\n    /* حط الكلمة في النص بالـ flex */\n  }\n</style>\n\n<h1>أهلًا</h1>'
+  };
+  function run(){out.srcdoc=window.__buildDoc(code.value);try{localStorage.setItem(KEY,code.value);}catch(e){}}
+  function load(v){code.value=v;run();code.focus();}
+  var saved=null;try{saved=localStorage.getItem(KEY);}catch(e){}
+  code.value=saved&&saved.trim()?saved:T.btn;run();
+  var timer;code.addEventListener('input',function(){clearTimeout(timer);timer=setTimeout(run,350);});
+  code.addEventListener('keydown',function(e){
+    if(e.key==='Tab'){e.preventDefault();var a=code.selectionStart,b=code.selectionEnd;code.value=code.value.slice(0,a)+'  '+code.value.slice(b);code.selectionStart=code.selectionEnd=a+2;run();}
+    if(e.key==='Enter'&&(e.ctrlKey||e.metaKey)){e.preventDefault();run();}
+  });
+  $('pgRun').onclick=run;
+  $('pgClear').onclick=function(){if(!code.value.trim()||confirm('متأكد إنك عايز تمسح؟'))load('');};
+  $('pgTpl').onchange=function(){if(this.value){load(T[this.value]);this.value='';}};
+  document.querySelectorAll('.challenges .try').forEach(function(b){b.onclick=function(){load(C[b.dataset.c]);code.scrollIntoView({behavior:'smooth',block:'center'});};});
+  $('pgSave').onclick=function(){
+    var c=code.value;if(!/^\s*<!DOCTYPE/i.test(c))c='<!DOCTYPE html>\n<html lang="ar" dir="rtl">\n<head>\n  <meta charset="UTF-8">\n  <title>صفحتي</title>\n</head>\n<body>\n'+c+'\n</body>\n</html>';
+    var a=document.createElement('a');a.href=URL.createObjectURL(new Blob([c],{type:'text/html;charset=utf-8'}));a.download='my-design.html';document.body.appendChild(a);a.click();a.remove();
+  };
+})();
+</script>
+
+<script>
+/* ===== تاسكات الدروس: كل درس مقفول لحد ما تحل تاسك اللي قبله ===== */
+window.LESSON_TASKS = { page: 'css', mode: 'dom',
+exam: [
+  { q: 'عشان تختار حاجة لابسة <code>class="card"</code> في CSS بتكتب؟', o: ['<code>card</code>', '<code>.card</code>', '<code>#card</code>'], a: 1 },
+  { q: 'عشان تختار حاجة اسمها <code>id="logo"</code> بتكتب؟', o: ['<code>#logo</code>', '<code>.logo</code>', '<code>*logo</code>'], a: 0 },
+  { q: 'أنهي خاصية بتغيّر لون <b>الخلفية</b>؟', o: ['<code>color</code>', '<code>background-color</code>', '<code>font-color</code>'], a: 1 },
+  { q: 'المسافة اللي <b>برّه</b> الصندوق بينه وبين اللي جنبه اسمها؟', o: ['<code>padding</code>', '<code>margin</code>', '<code>border</code>'], a: 1 },
+  { q: 'إزاي تحوّل مربع لـ <b>دايرة</b>؟', o: ['<code>border-radius: 50%;</code>', '<code>shape: circle;</code>', '<code>round: 100;</code>'], a: 0 },
+  { q: 'إيه الغلط في: <code>font-size: 20;</code>', o: ['مفيش غلط', 'ناقصة الوحدة <code>px</code>', 'لازم تتكتب بالعربي'], a: 1 },
+  { q: 'عشان ترصّ الحاجات <b>جنب بعض</b> بسهولة بتكتب على الأب؟', o: ['<code>display: flex;</code>', '<code>display: none;</code>', '<code>position: fixed;</code>'], a: 0 },
+  { q: 'في Flex، عشان تحط العيال <b>في النص</b> (في الصف العادي)؟', o: ['<code>text-align: middle;</code>', '<code>justify-content: center;</code>', '<code>flex: center;</code>'], a: 1 },
+  { q: 'إزاي تعمل شبكة grid فيها <b>3 أعمدة</b> متساوية؟', o: ['<code>grid-template-columns: repeat(3, 1fr);</code>', '<code>columns: 3 grid;</code>', '<code>grid: 3;</code>'], a: 0 },
+  { q: 'عشان حاجة تتغير لما <b>الماوس يقف عليها</b> بتستخدم؟', o: ['<code>:click</code>', '<code>:hover</code>', '<code>@media</code>'], a: 1 }
+],
+tasks: {
+  l1: { q: 'أول تاسك سهل خالص 😊: خلّي لون العنوان <code>h1</code> <b>أحمر</b>.<br>اكتب جوه القوسين <code>{ }</code> السطر ده: <code>color: red;</code>',
+    start: '<style>\n  h1 {\n    \n  }\n</style>\n\n<h1>أهلًا</h1>', hint: 'اكتب color: red; في السطر الفاضي اللي بين { و }', sol: '<style>\n  h1 {\n    color: red;\n  }\n</style>\n\n<h1>أهلًا</h1>',
+    check: function (c) { return c.is(c.q('h1'), 'color', 'red') || 'العنوان لسه مش أحمر. اتأكد إنك كتبت color: red; بالنقطتين والفاصلة المنقوطة.'; } },
+  l2: { q: 'خلّي الفقرة <code>p</code> لونها <b>أزرق</b> (<code>blue</code>) وحجم الخط بتاعها <code>24px</code>.',
+    start: '<style>\n  p {\n    \n  }\n</style>\n\n<p>أنا فقرة</p>', hint: 'سطرين: color: blue; و font-size: 24px;', sol: '<style>\n  p {\n    color: blue;\n    font-size: 24px;\n  }\n</style>\n\n<p>أنا فقرة</p>',
+    check: function (c) { var p = c.q('p'); if (!c.is(p, 'color', 'blue')) return 'اللون لسه مش blue.'; return c.cs(p, 'fontSize') === '24px' || 'حجم الخط لسه مش 24px (متنساش px).'; } },
+  l3: { q: 'من غير ما تغيّر الـ HTML اللي تحت:<br>1️⃣ لوّن الفقرة اللي لابسة <code>class="star"</code> بالأحمر <code>red</code>.<br>2️⃣ لوّن الفقرة اللي اسمها <code>id="boss"</code> بالأخضر <code>green</code>.',
+    start: '<style>\n  /* اكتب هنا */\n\n</style>\n\n<p>فقرة عادية</p>\n<p class="star">فقرة لابسة star</p>\n<p id="boss">فقرة اسمها boss</p>',
+    hint: 'الكلاس بنقطة: .star { ... } والـ id بشباك: #boss { ... }',
+    sol: '<style>\n  .star { color: red; }\n  #boss { color: green; }\n</style>\n\n<p>فقرة عادية</p>\n<p class="star">فقرة لابسة star</p>\n<p id="boss">فقرة اسمها boss</p>',
+    check: function (c) { if (!c.q('.star') || !c.q('#boss')) return 'متمسحش الـ HTML اللي تحت!'; if (!c.is(c.q('.star'), 'color', 'red')) return 'الفقرة star لسه مش حمرا. اكتب .star بنقطة.'; if (!c.is(c.q('#boss'), 'color', 'green')) return 'الفقرة boss لسه مش خضرا. اكتب #boss بشباك.'; return !c.is(c.q('p'), 'color', 'red') || 'الفقرة العادية اتلونت كمان! لوّن star بس.'; } },
+  l4: { q: 'خلّي الـ <code>div</code> <b>خلفيته صفرا</b> (<code>yellow</code>)، و<b>لون كلامه</b> أحمر مكتوب بطريقة الـ rgb: <code>rgb(255, 0, 0)</code>.',
+    start: '<style>\n  div {\n    \n  }\n</style>\n\n<div>أنا صندوق</div>', hint: 'background-color: yellow; و color: rgb(255, 0, 0);', sol: '<style>\n  div {\n    background-color: yellow;\n    color: rgb(255, 0, 0);\n  }\n</style>\n\n<div>أنا صندوق</div>',
+    check: function (c) { var d = c.q('div'); if (!c.is(d, 'backgroundColor', 'yellow')) return 'الخلفية لسه مش صفرا.'; if (!c.has(/rgb\s*\(/)) return 'لازم تكتب اللون بالـ rgb( ).'; return c.is(d, 'color', 'red') || 'لون الكلام لسه مش أحمر.'; } },
+  l5: { q: 'خلّي الفقرة: حجمها <code>30px</code>، وعريضة <code>bold</code>، ومكانها في <b>النص</b> <code>center</code>.',
+    start: '<style>\n  p {\n    \n  }\n</style>\n\n<p>أنا في النص</p>', hint: 'font-size و font-weight و text-align', sol: '<style>\n  p {\n    font-size: 30px;\n    font-weight: bold;\n    text-align: center;\n  }\n</style>\n\n<p>أنا في النص</p>',
+    check: function (c) { var p = c.q('p'); if (c.cs(p, 'fontSize') !== '30px') return 'الحجم لسه مش 30px.'; if (+c.cs(p, 'fontWeight') < 600) return 'الخط لسه مش bold.'; return c.cs(p, 'textAlign') === 'center' || 'الكلام لسه مش في النص (text-align: center).'; } },
+  l6: { q: 'اعمل للـ <code>div</code> خلفية <b>متدرّجة</b> بـ <code>linear-gradient</code> من أي لونين بتحبهم.',
+    start: '<style>\n  div {\n    padding: 30px;\n    \n  }\n</style>\n\n<div>خلفية متدرجة</div>', hint: 'background: linear-gradient(orange, pink);', sol: '<style>\n  div {\n    padding: 30px;\n    background: linear-gradient(orange, pink);\n  }\n</style>\n\n<div>خلفية متدرجة</div>',
+    check: function (c) { return /linear-gradient/.test(c.cs(c.q('div'), 'backgroundImage')) || 'الخلفية لسه مش متدرّجة. استخدم background: linear-gradient(لون, لون);'; } },
+  l7: { q: 'ابني الصندوق: اديله <code>padding: 20px</code> (جوه)، و <code>margin: 10px</code> (برّه)، و <code>border: 2px solid black</code> (إطار).',
+    start: '<style>\n  .box {\n    background: lightblue;\n    \n  }\n</style>\n\n<div class="box">صندوق</div>', hint: '3 سطور: padding و margin و border.', sol: '<style>\n  .box {\n    background: lightblue;\n    padding: 20px;\n    margin: 10px;\n    border: 2px solid black;\n  }\n</style>\n\n<div class="box">صندوق</div>',
+    check: function (c) { var b = c.q('.box'); if (c.cs(b, 'paddingTop') !== '20px') return 'الـ padding لسه مش 20px.'; if (c.cs(b, 'marginTop') !== '10px') return 'الـ margin لسه مش 10px.'; if (c.cs(b, 'borderTopWidth') !== '2px' || c.cs(b, 'borderTopStyle') !== 'solid') return 'الإطار لسه مش 2px solid.'; return true; } },
+  l8: { q: 'حوّل المربع لـ <b>دايرة</b> بـ <code>border-radius: 50%</code>، وحط له <b>ظل</b> بـ <code>box-shadow</code>.',
+    start: '<style>\n  .ball {\n    width: 100px;\n    height: 100px;\n    background: tomato;\n    \n  }\n</style>\n\n<div class="ball"></div>', hint: 'border-radius: 50%; و box-shadow: 5px 5px 10px gray;',
+    sol: '<style>\n  .ball {\n    width: 100px;\n    height: 100px;\n    background: tomato;\n    border-radius: 50%;\n    box-shadow: 5px 5px 10px gray;\n  }\n</style>\n\n<div class="ball"></div>',
+    check: function (c) { var b = c.q('.ball'); if (c.cs(b, 'borderTopLeftRadius') !== '50%') return 'لسه مش دايرة. اكتب border-radius: 50%;'; return c.cs(b, 'boxShadow') !== 'none' || 'ناقص الظل box-shadow.'; } },
+  l9: { q: 'خلّي الصندوق الصغير <code>.kid</code> عرضه <b>نص</b> الصندوق الكبير بالظبط باستخدام <code>%</code>.',
+    start: '<style>\n  .parent { background: #eee; }\n  .kid {\n    background: hotpink;\n    \n  }\n</style>\n\n<div class="parent">\n  <div class="kid">أنا الصغير</div>\n</div>', hint: 'width: 50%;',
+    sol: '<style>\n  .parent { background: #eee; }\n  .kid {\n    background: hotpink;\n    width: 50%;\n  }\n</style>\n\n<div class="parent">\n  <div class="kid">أنا الصغير</div>\n</div>',
+    check: function (c) { var k = c.q('.kid'), p = c.q('.parent'); if (!k || !p) return 'متمسحش الـ HTML.'; if (!c.has(/width\s*:\s*50%/)) return 'استخدم width: 50%;'; return Math.abs(k.offsetWidth - p.clientWidth / 2) < 3 || 'العرض لسه مش النص.'; } },
+  l10: { q: 'الـ 3 <code>span</code> دول واقفين جنب بعض. خلّي <b>كل واحد في سطر لوحده</b> بـ <code>display: block</code>.',
+    start: '<style>\n  span {\n    background: gold;\n    \n  }\n</style>\n\n<span>واحد</span>\n<span>اتنين</span>\n<span>تلاتة</span>', hint: 'display: block;',
+    sol: '<style>\n  span {\n    background: gold;\n    display: block;\n  }\n</style>\n\n<span>واحد</span>\n<span>اتنين</span>\n<span>تلاتة</span>',
+    check: function (c) { var s = c.qa('span'); if (s.length < 3) return 'متمسحش الـ span.'; return s.every(function (x) { return c.cs(x, 'display') === 'block'; }) || 'لسه مش كل واحد في سطر. اكتب display: block;'; } },
+  l11: { q: 'خلّي الصندوق <code>.row</code> يرصّ عياله <b>جنب بعض</b> بـ <code>display: flex</code>، ويحطهم في <b>النص</b> بـ <code>justify-content: center</code>.',
+    start: '<style>\n  .row {\n    background: #eee;\n    \n  }\n  .row div { background: pink; padding: 15px; margin: 5px; }\n</style>\n\n<div class="row">\n  <div>1</div>\n  <div>2</div>\n  <div>3</div>\n</div>', hint: 'السطرين دول جوه .row: display: flex; و justify-content: center;',
+    sol: '<style>\n  .row {\n    background: #eee;\n    display: flex;\n    justify-content: center;\n  }\n  .row div { background: pink; padding: 15px; margin: 5px; }\n</style>\n\n<div class="row">\n  <div>1</div>\n  <div>2</div>\n  <div>3</div>\n</div>',
+    check: function (c) { var r = c.q('.row'); if (c.cs(r, 'display') !== 'flex') return 'الصندوق لسه مش flex.'; return c.cs(r, 'justifyContent') === 'center' || 'لسه مش في النص. اكتب justify-content: center;'; } },
+  l12: { q: 'خلّي <code>.eggs</code> شبكة <code>grid</code> فيها <b>3 أعمدة</b> متساوية.',
+    start: '<style>\n  .eggs {\n    gap: 8px;\n    \n  }\n  .eggs div { background: wheat; padding: 15px; text-align: center; }\n</style>\n\n<div class="eggs">\n  <div>🥚</div><div>🥚</div><div>🥚</div>\n  <div>🥚</div><div>🥚</div><div>🥚</div>\n</div>', hint: 'display: grid; و grid-template-columns: repeat(3, 1fr);',
+    sol: '<style>\n  .eggs {\n    gap: 8px;\n    display: grid;\n    grid-template-columns: repeat(3, 1fr);\n  }\n  .eggs div { background: wheat; padding: 15px; text-align: center; }\n</style>\n\n<div class="eggs">\n  <div>🥚</div><div>🥚</div><div>🥚</div>\n  <div>🥚</div><div>🥚</div><div>🥚</div>\n</div>',
+    check: function (c) { var g = c.q('.eggs'); if (c.cs(g, 'display') !== 'grid') return 'لسه مش grid.'; return c.cs(g, 'gridTemplateColumns').trim().split(/\s+/).length === 3 || 'عدد الأعمدة لسه مش 3.'; } },
+  l13: { q: 'خلّي الصندوق <code>.me</code> ليه <code>position: relative</code> ونزّله لتحت <code>20px</code> بـ <code>top</code>.',
+    start: '<style>\n  .me {\n    background: crimson;\n    color: white;\n    width: 100px;\n    \n  }\n</style>\n\n<div class="me">أنا</div>', hint: 'position: relative; و top: 20px;',
+    sol: '<style>\n  .me {\n    background: crimson;\n    color: white;\n    width: 100px;\n    position: relative;\n    top: 20px;\n  }\n</style>\n\n<div class="me">أنا</div>',
+    check: function (c) { var m = c.q('.me'); if (c.cs(m, 'position') !== 'relative') return 'لسه مش relative.'; return c.cs(m, 'top') === '20px' || 'الـ top لسه مش 20px.'; } },
+  l14: { q: 'اعمل للزرار حاجتين: <code>transition: 0.5s</code> (عشان التغيير يبقى ناعم)، و <code>button:hover</code> يغيّر لون الخلفية <code>background</code> لما الماوس يقف عليه.',
+    start: '<style>\n  button {\n    background: purple;\n    color: white;\n    padding: 10px 20px;\n    \n  }\n\n  /* اكتب button:hover هنا */\n\n</style>\n\n<button>عدّي عليّا</button>', hint: 'button:hover { background: orange; }',
+    sol: '<style>\n  button {\n    background: purple;\n    color: white;\n    padding: 10px 20px;\n    transition: 0.5s;\n  }\n\n  button:hover {\n    background: orange;\n  }\n</style>\n\n<button>عدّي عليّا</button>',
+    check: function (c) { if (!/0\.5s|500ms/.test(c.cs(c.q('button'), 'transitionDuration'))) return 'ناقص transition: 0.5s; جوه button.'; return c.has(/button\s*:hover\s*\{[^}]*background/) || 'ناقص button:hover { background: ... }'; } },
+  l15: { q: 'اعمل سيناريو حركة <code>@keyframes</code> اسمه <code>spin</code> بيلف من <code>0deg</code> لـ <code>360deg</code>، وخلّي الـ <code>div</code> يمثّله: <code>animation: spin 2s infinite</code>.',
+    start: '<style>\n  @keyframes spin {\n    from { transform: rotate(0deg); }\n    to   {  }\n  }\n  div {\n    width: 60px;\n    font-size: 50px;\n    \n  }\n</style>\n\n<div>🌀</div>', hint: 'كمّل سطر to بـ transform: rotate(360deg); وزوّد animation في الـ div.',
+    sol: '<style>\n  @keyframes spin {\n    from { transform: rotate(0deg); }\n    to   { transform: rotate(360deg); }\n  }\n  div {\n    width: 60px;\n    font-size: 50px;\n    animation: spin 2s infinite;\n  }\n</style>\n\n<div>🌀</div>',
+    check: function (c) { if (!c.has(/@keyframes\s+spin[\s\S]*360deg/)) return 'السيناريو spin لازم يوصل لـ rotate(360deg).'; return c.cs(c.q('div'), 'animationName') === 'spin' || 'الـ div لسه مش بيستخدم animation: spin 2s infinite;'; } },
+  l16: { q: 'اكتب قاعدة <code>@media (max-width: 600px)</code>، وجواها خلّي الفقرة <code>p</code> لونها أحمر <code>red</code> (يعني لما الشاشة تصغر بس).',
+    start: '<style>\n  p { color: black; }\n\n  /* اكتب @media هنا */\n\n</style>\n\n<p>صغّر الشاشة وشوفني</p>', hint: '@media (max-width: 600px) {  p { color: red; }  }',
+    sol: '<style>\n  p { color: black; }\n\n  @media (max-width: 600px) {\n    p { color: red; }\n  }\n</style>\n\n<p>صغّر الشاشة وشوفني</p>',
+    check: function (c) { return c.has(/@media\s*\(\s*max-width\s*:\s*600px\s*\)\s*\{[\s\S]*p\s*\{[^}]*color\s*:\s*red/) || 'لازم يبقى الشكل كده: @media (max-width: 600px) { p { color: red; } }'; } },
+  l17: { q: 'الكود ده فيه <b>3 أخطاء</b> 🐞. صلّحهم عشان الفقرة تبقى <b>حمرا</b> وحجمها <b>20px</b>. (من غير ما تغيّر الـ HTML)',
+    start: '<style>\n  msg {\n    color red;\n    font-size: 20;\n  }\n</style>\n\n<p class="msg">صلّحني</p>', hint: '1) الكلاس محتاج نقطة قبله  2) ناقص : بعد color  3) الـ 20 محتاجة px',
+    sol: '<style>\n  .msg {\n    color: red;\n    font-size: 20px;\n  }\n</style>\n\n<p class="msg">صلّحني</p>',
+    check: function (c) { var p = c.q('p.msg'); if (!p) return 'متغيرش الـ HTML.'; if (!c.is(p, 'color', 'red')) return 'لسه مش حمرا. بص على النقطة قبل msg وعلى النقطتين بعد color.'; return c.cs(p, 'fontSize') === '20px' || 'الحجم لسه مش 20px. ناقص px.'; } },
+  l18: { q: 'التاسك الأخير 🏁: اعمل زرار حلو: خلفية خضرا <code>green</code>، كلام أبيض <code>white</code>، حواف مدورة <code>10px</code>، ومن غير إطار <code>border: none</code>.',
+    start: '<style>\n  button {\n    padding: 12px 24px;\n    \n  }\n</style>\n\n<button>اشترك</button>', hint: 'background, color, border-radius, border',
+    sol: '<style>\n  button {\n    padding: 12px 24px;\n    background: green;\n    color: white;\n    border-radius: 10px;\n    border: none;\n  }\n</style>\n\n<button>اشترك</button>',
+    check: function (c) { var b = c.q('button'); if (!c.is(b, 'backgroundColor', 'green')) return 'الخلفية لسه مش green.'; if (!c.is(b, 'color', 'white')) return 'الكلام لسه مش white.'; if (c.cs(b, 'borderTopLeftRadius') !== '10px') return 'الحواف لسه مش 10px.'; return c.cs(b, 'borderTopStyle') === 'none' || 'لسه فيه إطار. اكتب border: none;'; } }
+}};
+</script>
+<script src="progress.js"></script>
+</body>
+</html>
