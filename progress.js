@@ -145,7 +145,7 @@
 
   /* ---------- ترتيب الكورس: HTML ← CSS ← JS ← Python ---------- */
   var ORDER = [
-    { k: 'html', u: 'mero.html', n: 'HTML' }, { k: 'css', u: 'css.html', n: 'CSS' },
+    { k: 'html', u: 'index.html', n: 'HTML' }, { k: 'css', u: 'css.html', n: 'CSS' },
     { k: 'js', u: 'js.html', n: 'JavaScript' }, { k: 'python', u: 'python.html', n: 'Python' }
   ];
   function passed(k) { try { return localStorage.getItem('mero-passed-' + k) === '1'; } catch (e) { return false; } }

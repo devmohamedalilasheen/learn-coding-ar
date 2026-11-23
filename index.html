@@ -3,11 +3,1052 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>تعلّم البرمجة من الصفر</title>
-<meta http-equiv="refresh" content="0; url=mero.html">
-<style>body{font-family:Tahoma,Arial,sans-serif;background:#f6f7fb;color:#1f2937;text-align:center;padding:60px 16px}a{color:#4f46e5;font-weight:bold}</style>
+<title>تعلّم HTML من الصفر - شرح سهل جدًا</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;800&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#f6f7fb; --card:#ffffff; --ink:#1f2937; --muted:#6b7280;
+    --brand:#4f46e5; --brand2:#06b6d4; --line:#e5e7eb;
+    --code-bg:#1e1e2e; --code-ink:#e5e7eb;
+    --tip:#ecfdf5; --tip-line:#10b981; --warn:#fff7ed; --warn-line:#f97316;
+  }
+  *{box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  body{margin:0;font-family:"Cairo",Tahoma,"Segoe UI",Arial,sans-serif;background:var(--bg);color:var(--ink);line-height:1.9;font-size:17px}
+  header.hero{background:linear-gradient(135deg,var(--brand),var(--brand2));color:#fff;padding:48px 20px 56px;text-align:center}
+  header.hero h1{margin:0 0 8px;font-size:2.4rem;font-weight:800}
+  header.hero p{margin:0 auto;max-width:720px;font-size:1.15rem;opacity:.95}
+  .pages{display:flex;justify-content:center;gap:8px;flex-wrap:wrap;margin-bottom:18px}
+  .pages a{color:#fff;text-decoration:none;border:1px solid rgba(255,255,255,.55);border-radius:999px;padding:2px 14px;font-size:.95rem}
+  .pages a.on{background:#fff;color:var(--brand);font-weight:800}
+  .layout{display:grid;grid-template-columns:270px 1fr;gap:24px;max-width:1250px;margin:-30px auto 40px;padding:0 16px}
+  nav.toc{position:sticky;top:12px;align-self:start;background:var(--card);border-radius:16px;padding:16px;box-shadow:0 4px 18px rgba(0,0,0,.06);max-height:calc(100vh - 24px);overflow:auto}
+  nav.toc h3{margin:0 0 8px;font-size:1.05rem;color:var(--brand)}
+  nav.toc a{display:block;padding:5px 10px;border-radius:8px;color:var(--ink);text-decoration:none;font-size:.93rem}
+  nav.toc a:hover,nav.toc a.active{background:#eef2ff;color:var(--brand)}
+  main{min-width:0}
+  section.lesson{background:var(--card);border-radius:18px;padding:26px 28px;margin-bottom:22px;box-shadow:0 4px 18px rgba(0,0,0,.05)}
+  section.lesson h2{margin:0 0 12px;font-size:1.6rem;display:flex;align-items:center;gap:12px}
+  .num{background:var(--brand);color:#fff;border-radius:12px;min-width:42px;height:42px;display:inline-flex;align-items:center;justify-content:center;font-size:1.1rem}
+  h3.sub{color:var(--brand);margin:22px 0 6px;font-size:1.2rem}
+  code.in{background:#eef2ff;color:#3730a3;padding:1px 7px;border-radius:6px;font-family:Consolas,"Courier New",monospace;direction:ltr;unicode-bidi:embed;font-size:.92em}
+  .tip,.warn,.idea{border-right:5px solid var(--tip-line);background:var(--tip);padding:12px 16px;border-radius:10px;margin:14px 0}
+  .warn{border-color:var(--warn-line);background:var(--warn)}
+  .idea{border-color:var(--brand);background:#eef2ff}
+  .tip b:first-child,.warn b:first-child,.idea b:first-child{display:block}
+  table.ref{width:100%;border-collapse:collapse;margin:10px 0;font-size:.95rem}
+  table.ref th,table.ref td{border:1px solid var(--line);padding:8px 10px;text-align:right;vertical-align:top}
+  table.ref th{background:#eef2ff;color:var(--brand)}
+  table.ref td:first-child{direction:ltr;text-align:left;font-family:Consolas,monospace;color:#be185d;white-space:nowrap}
+  /* example boxes */
+  .example{margin:16px 0;border:1px solid var(--line);border-radius:14px;overflow:hidden}
+  .ex-bar{display:flex;justify-content:space-between;align-items:center;padding:8px 14px;font-weight:700;font-size:.95rem}
+  .ex-bar.code{background:#2a2a3d;color:#c7d2fe}
+  .ex-bar.res{background:#ecfeff;color:#0e7490;border-top:1px solid var(--line)}
+  .ex-bar button{font-family:inherit;font-size:.85rem;border:0;border-radius:8px;padding:4px 12px;cursor:pointer;background:#4f46e5;color:#fff;margin-inline-start:6px}
+  .ex-bar button.ghost{background:#3f3f5a}
+  pre.code{margin:0;background:var(--code-bg);color:var(--code-ink);padding:16px;direction:ltr;text-align:left;overflow:auto;font-family:Consolas,"Courier New",monospace;font-size:15px;line-height:1.7;white-space:pre}
+  textarea.code{display:none;width:100%;min-height:200px;margin:0;border:0;background:#111827;color:#fde68a;padding:16px;direction:ltr;text-align:left;font-family:Consolas,monospace;font-size:15px;line-height:1.7;resize:vertical;outline:none}
+  .t{color:#f472b6}.a{color:#93c5fd}.v{color:#86efac}.c{color:#9ca3af;font-style:italic}.e{color:#fbbf24}
+  iframe.result{display:block;width:100%;border:0;background:#fff;min-height:60px}
+  footer{text-align:center;color:var(--muted);padding:20px 10px 40px}
+  .steps{counter-reset:s;list-style:none;padding:0}
+  .steps li{counter-increment:s;position:relative;padding-right:44px;margin:10px 0}
+  .steps li::before{content:counter(s);position:absolute;right:0;top:2px;width:32px;height:32px;border-radius:50%;background:var(--brand2);color:#fff;display:flex;align-items:center;justify-content:center;font-weight:700}
+  .anatomy{direction:ltr;text-align:center;font-family:Consolas,monospace;font-size:1.25rem;background:#0f172a;color:#fff;padding:18px;border-radius:12px;margin:12px 0}
+  .anatomy span{padding:2px 6px;border-radius:6px}
+  .lbls{display:flex;justify-content:center;gap:18px;flex-wrap:wrap;font-size:.95rem}
+  .lbls span{padding:2px 10px;border-radius:8px}
+  #topBtn{position:fixed;left:18px;bottom:18px;background:var(--brand);color:#fff;border:0;border-radius:50%;width:48px;height:48px;font-size:22px;cursor:pointer;box-shadow:0 6px 16px rgba(79,70,229,.4)}
+
+  .pg-tools{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin:14px 0}
+  .pg-tools button,.challenges .try{font-family:inherit;border:0;border-radius:10px;padding:7px 16px;cursor:pointer;background:var(--brand);color:#fff;font-size:.95rem}
+  .pg-tools button.gray{background:#64748b}
+  .pg-tools select{font-family:inherit;font-size:.95rem;padding:6px 10px;border-radius:10px;border:1px solid var(--line)}
+  .pg-auto{font-size:.95rem;display:flex;align-items:center;gap:6px}
+  .pg-wrap{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+  .pg-pane{border:1px solid var(--line);border-radius:14px;overflow:hidden;display:flex;flex-direction:column}
+  #pgCode{flex:1;min-height:420px;width:100%;border:0;background:#111827;color:#fde68a;padding:16px;direction:ltr;text-align:left;font-family:Consolas,"Courier New",monospace;font-size:15px;line-height:1.7;resize:vertical;outline:none;tab-size:2}
+  #pgOut{flex:1;min-height:420px;width:100%;border:0;background:#fff}
+  .challenges li{margin:8px 0}
+  .challenges .try{padding:2px 12px;font-size:.85rem;margin-inline-start:8px;background:var(--brand2)}
+  @media (max-width:900px){.pg-wrap{grid-template-columns:1fr}}
+  @media (max-width:900px){.layout{grid-template-columns:1fr}nav.toc{position:static;max-height:none}section.lesson{padding:20px 16px}}
+</style>
 </head>
 <body>
-<p>⏳ جاري فتح أول درس... لو مفتحش <a href="mero.html">دوس هنا</a></p>
+
+<header class="hero">
+  <div class="pages">
+    <a href="index.html" class="on">🌐 HTML</a><a href="css.html">🎨 CSS</a><a href="js.html">⚡ JavaScript</a><a href="python.html">🐍 Python</a>
+  </div>
+  <h1>🌐 تعلّم HTML من الصفر</h1>
+  <p>شرح سهل جدًا جدًا خطوة بخطوة. في كل درس هتلاقي: <b>الشرح</b> ⬅ <b>الكود</b> ⬅ <b>شكل النتيجة</b>. وتقدر تدوس على «✏️ جرّب بنفسك» وتعدّل الكود وتشوف النتيجة بتتغير قدامك. وفي الآخر فيه <a href="#l22" style="color:#fff;font-weight:800">🧪 ملعب التجربة</a> تكتب فيه كودك بنفسك.</p>
+</header>
+
+<div class="layout">
+<nav class="toc" id="toc">
+  <h3>📚 الفهرس</h3>
+</nav>
+
+<main>
+
+<!-- ============ 1 ============ -->
+<section class="lesson" id="l1" data-title="يعني إيه HTML؟">
+  <h2><span class="num">1</span> يعني إيه HTML؟</h2>
+  <p><b>HTML</b> اختصار لـ <b>H</b>yper<b>T</b>ext <b>M</b>arkup <b>L</b>anguage، يعني «لغة ترميز النصوص».</p>
+  <p>تخيّل إنك بتبني بيت 🏠:</p>
+  <ul>
+    <li><b>HTML</b> = الطوب والحيطان (الهيكل: عنوان، فقرة، صورة، زرار...).</li>
+    <li><b>CSS</b> = الدهان والديكور (الألوان، الأحجام، الأماكن).</li>
+    <li><b>JavaScript</b> = الكهربا (الحركة والتفاعل، زي لما تدوس زرار يحصل حاجة).</li>
+  </ul>
+  <p>يعني HTML هي <b>أول خطوة</b> لأي موقع على الإنترنت. أي صفحة بتفتحها دلوقتي، جواها كود HTML.</p>
+  <div class="tip"><b>💡 خليك فاكر</b>HTML مش لغة برمجة بالمعنى الحرفي، هي لغة «بتوصف» للمتصفح شكل ومحتوى الصفحة. وعشان كده سهلة جدًا.</div>
+</section>
+
+<!-- ============ 2 ============ -->
+<section class="lesson" id="l2" data-title="أول صفحة ليك">
+  <h2><span class="num">2</span> إزاي تعمل أول صفحة ليك؟</h2>
+  <p>مش محتاج أي برامج غالية. كل اللي محتاجه:</p>
+  <ol class="steps">
+    <li>افتح برنامج كتابة: <b>Notepad</b> (موجود في الويندوز) أو الأحسن <b>VS Code</b> (مجاني).</li>
+    <li>اكتب الكود اللي تحت.</li>
+    <li>احفظ الملف باسم ينتهي بـ <code class="in">.html</code> مثلًا <code class="in">index.html</code> (وفي Notepad اختار Encoding = <b>UTF-8</b> عشان العربي يظهر صح).</li>
+    <li>دوس دبل كليك على الملف، هيفتح في المتصفح (Chrome أو Edge) وتشوف صفحتك 🎉</li>
+  </ol>
+  <div class="example"><script type="text/html">
+<h1>أهلًا بيك في أول صفحة ليا!</h1>
+<p>أنا بتعلم HTML 😄</p>
+  </script></div>
+  <div class="idea"><b>✨ جرّب دلوقتي</b>دوس على «✏️ جرّب بنفسك» فوق الكود، وغيّر الكلام، وشوف النتيجة بتتغير على طول.</div>
+</section>
+
+<!-- ============ 3 ============ -->
+<section class="lesson" id="l3" data-title="الوسوم (Tags)">
+  <h2><span class="num">3</span> الوسوم (Tags) والعناصر</h2>
+  <p>HTML كلها مبنية على حاجة اسمها <b>وسم</b> أو <b>Tag</b>. الوسم كلمة بين علامتين <code class="in">&lt; &gt;</code>.</p>
+  <p>أغلب الوسوم بتيجي <b>اتنين</b>: وسم فتح ووسم قفل، والقفل فيه شرطة <code class="in">/</code>:</p>
+  <div class="anatomy">
+    <span style="background:#be185d">&lt;p&gt;</span><span style="background:#0369a1">ده نص الفقرة</span><span style="background:#be185d">&lt;/p&gt;</span>
+  </div>
+  <div class="lbls">
+    <span style="background:#fce7f3">🔓 &lt;p&gt; = وسم الفتح</span>
+    <span style="background:#e0f2fe">📝 المحتوى</span>
+    <span style="background:#fce7f3">🔒 &lt;/p&gt; = وسم القفل</span>
+  </div>
+  <p>الوسم + المحتوى + القفل = <b>عنصر (Element)</b>.</p>
+  <h3 class="sub">وسوم مالهاش قفل (فاضية)</h3>
+  <p>فيه وسوم قليلة ملهاش محتوى فمش محتاجة قفل، زي: <code class="in">&lt;br&gt;</code> (سطر جديد)، <code class="in">&lt;hr&gt;</code> (خط فاصل)، <code class="in">&lt;img&gt;</code> (صورة).</p>
+  <h3 class="sub">العناصر جوه بعض (Nesting)</h3>
+  <p>ممكن تحط عنصر جوه عنصر، زي العلب جوه بعض 📦. بس لازم تقفل الجوّاني الأول:</p>
+  <div class="example"><script type="text/html">
+<p>أنا بحب <b>HTML</b> جدًا</p>
+
+<!-- ✅ صح: قفلنا b الأول بعدين p -->
+<!-- ❌ غلط: <p><b>كلام</p></b> -->
+  </script></div>
+  <div class="warn"><b>⚠️ خلي بالك</b>نسيان وسم القفل من أشهر الأخطاء. المتصفح ساعات بيسامحك، بس الصفحة ممكن يبوظ شكلها.</div>
+</section>
+
+<!-- ============ 4 ============ -->
+<section class="lesson" id="l4" data-title="هيكل الصفحة الأساسي">
+  <h2><span class="num">4</span> هيكل الصفحة الأساسي (الهيكل العظمي 💀)</h2>
+  <p>أي صفحة HTML محترمة بتبدأ بالشكل ده. احفظه كويس لأنك هتكتبه في كل صفحة:</p>
+  <div class="example"><script type="text/html">
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+  <head>
+    <meta charset="UTF-8">
+    <title>عنوان التاب</title>
+  </head>
+  <body>
+    <h1>كل اللي هيظهر في الصفحة بيتكتب هنا</h1>
+    <p>جوه الـ body</p>
+  </body>
+</html>
+  </script></div>
+  <p>تعالى نفهم كل سطر:</p>
+  <table class="ref">
+    <tr><th>الكود</th><th>معناه</th></tr>
+    <tr><td>&lt;!DOCTYPE html&gt;</td><td>بيقول للمتصفح «دي صفحة HTML حديثة (HTML5)». بيتكتب أول سطر دايمًا.</td></tr>
+    <tr><td>&lt;html&gt;</td><td>العلبة الكبيرة اللي فيها الصفحة كلها. <code class="in">lang="ar"</code> = اللغة عربي، و<code class="in">dir="rtl"</code> = الكتابة من اليمين للشمال.</td></tr>
+    <tr><td>&lt;head&gt;</td><td>«دماغ» الصفحة: معلومات عن الصفحة <b>مش بتظهر</b> جوه الصفحة نفسها.</td></tr>
+    <tr><td>&lt;meta charset="UTF-8"&gt;</td><td>عشان الحروف العربي والإيموجي تظهر صح ومتبقاش رموز غريبة.</td></tr>
+    <tr><td>&lt;title&gt;</td><td>الكلام اللي بيظهر فوق على التاب في المتصفح.</td></tr>
+    <tr><td>&lt;body&gt;</td><td>«جسم» الصفحة: أي حاجة عايزها تظهر للناس تتكتب هنا.</td></tr>
+  </table>
+  <div class="tip"><b>💡 ملحوظة</b>في باقي الأمثلة هنكتب اللي جوه الـ <code class="in">body</code> بس عشان نركز، لكن في ملفك الحقيقي لازم الهيكل ده كله.</div>
+</section>
+
+<!-- ============ 5 ============ -->
+<section class="lesson" id="l5" data-title="العناوين h1 - h6">
+  <h2><span class="num">5</span> العناوين (Headings)</h2>
+  <p>فيه 6 أحجام للعناوين من <code class="in">h1</code> (الأكبر والأهم) لحد <code class="in">h6</code> (الأصغر). الـ h اختصار Heading.</p>
+  <div class="example"><script type="text/html">
+<h1>عنوان h1 - الأكبر</h1>
+<h2>عنوان h2</h2>
+<h3>عنوان h3</h3>
+<h4>عنوان h4</h4>
+<h5>عنوان h5</h5>
+<h6>عنوان h6 - الأصغر</h6>
+  </script></div>
+  <div class="tip"><b>💡 نصيحة</b>استخدم <code class="in">h1</code> مرة واحدة بس في الصفحة (للعنوان الرئيسي)، وبعدين h2 للأقسام، وh3 للأقسام الصغيرة جوهم... زي فهرس الكتاب. ده بيساعد جوجل يفهم صفحتك.</div>
+</section>
+
+<!-- ============ 6 ============ -->
+<section class="lesson" id="l6" data-title="الفقرات والسطور">
+  <h2><span class="num">6</span> الفقرات، السطر الجديد، والخط الفاصل</h2>
+  <ul>
+    <li><code class="in">&lt;p&gt;</code> = فقرة (Paragraph). كل فقرة بتبدأ في سطر جديد وبينها وبين اللي بعدها مسافة.</li>
+    <li><code class="in">&lt;br&gt;</code> = انزل سطر (Break). من غير قفل.</li>
+    <li><code class="in">&lt;hr&gt;</code> = خط أفقي فاصل. من غير قفل.</li>
+  </ul>
+  <div class="example"><script type="text/html">
+<p>دي الفقرة الأولى.</p>
+<p>دي الفقرة التانية.<br>وده سطر جديد جوه نفس الفقرة.</p>
+<hr>
+<p>دي فقرة بعد الخط الفاصل.</p>
+  </script></div>
+  <div class="warn"><b>⚠️ معلومة مهمة</b>لو دوست Enter كتير أو حطيت مسافات كتير في الكود، المتصفح بيتجاهلهم ويعتبرهم مسافة واحدة! عشان تنزل سطر لازم تستخدم <code class="in">&lt;br&gt;</code> أو <code class="in">&lt;p&gt;</code> جديدة.</div>
+  <div class="example"><script type="text/html">
+<p>الكلام ده      فيه مسافات
+كتير    و Enter
+بس هيظهر في سطر واحد عادي!</p>
+  </script></div>
+</section>
+
+<!-- ============ 7 ============ -->
+<section class="lesson" id="l7" data-title="تنسيق النص">
+  <h2><span class="num">7</span> تنسيق النص (عريض، مائل، تحته خط...)</h2>
+  <div class="example"><script type="text/html">
+<p><b>كلام عريض</b> بـ b</p>
+<p><strong>كلام مهم</strong> بـ strong (عريض + مهم)</p>
+<p><i>كلام مائل</i> بـ i</p>
+<p><em>كلام مؤكد عليه</em> بـ em</p>
+<p><u>كلام تحته خط</u> بـ u</p>
+<p><mark>كلام متعلّم عليه بالأصفر</mark> بـ mark</p>
+<p><small>كلام صغير</small> بـ small</p>
+<p>السعر: <del>200 جنيه</del> <ins>150 جنيه</ins></p>
+<p>المية: H<sub>2</sub>O و المساحة: 5م<sup>2</sup></p>
+  </script></div>
+  <table class="ref">
+    <tr><th>الوسم</th><th>بيعمل إيه</th></tr>
+    <tr><td>&lt;b&gt; / &lt;strong&gt;</td><td>عريض (strong معناها كمان إن الكلام مهم)</td></tr>
+    <tr><td>&lt;i&gt; / &lt;em&gt;</td><td>مائل (em معناها تأكيد)</td></tr>
+    <tr><td>&lt;u&gt;</td><td>خط تحت الكلام</td></tr>
+    <tr><td>&lt;mark&gt;</td><td>تظليل زي القلم الفسفوري</td></tr>
+    <tr><td>&lt;del&gt; / &lt;ins&gt;</td><td>كلام اتشال (عليه خط) / كلام اتضاف</td></tr>
+    <tr><td>&lt;sub&gt; / &lt;sup&gt;</td><td>رقم صغير تحت / رقم صغير فوق (أُس)</td></tr>
+  </table>
+</section>
+
+<!-- ============ 8 ============ -->
+<section class="lesson" id="l8" data-title="التعليقات">
+  <h2><span class="num">8</span> التعليقات (Comments)</h2>
+  <p>التعليق ملاحظة بتكتبها لنفسك جوه الكود، <b>مش بتظهر</b> في الصفحة. بتبدأ بـ <code class="in">&lt;!--</code> وتخلص بـ <code class="in">--&gt;</code>.</p>
+  <div class="example"><script type="text/html">
+<!-- ده تعليق: محدش هيشوفه في الصفحة -->
+<p>الكلام ده هيظهر عادي.</p>
+<!-- <p>والفقرة دي اتعطلت ومش هتظهر</p> -->
+  </script></div>
+  <div class="tip"><b>💡 فايدته</b>تشرح لنفسك الكود بعد شهر لما تنسى 😅، أو «تخفي» جزء مؤقتًا من غير ما تمسحه.</div>
+</section>
+
+<!-- ============ 9 ============ -->
+<section class="lesson" id="l9" data-title="الخصائص (Attributes)">
+  <h2><span class="num">9</span> الخصائص (Attributes)</h2>
+  <p>الخاصية معلومة إضافية بتحطها جوه <b>وسم الفتح</b> عشان تتحكم في العنصر. شكلها دايمًا: <code class="in">اسم="قيمة"</code></p>
+  <div class="anatomy">
+    &lt;p <span style="background:#1d4ed8">title</span>=<span style="background:#15803d">"أنا معلومة"</span>&gt;نص&lt;/p&gt;
+  </div>
+  <div class="lbls"><span style="background:#dbeafe">اسم الخاصية</span><span style="background:#dcfce7">القيمة بين علامتين تنصيص " "</span></div>
+  <p>أشهر الخصائص اللي ممكن تتحط على أي عنصر تقريبًا:</p>
+  <table class="ref">
+    <tr><th>الخاصية</th><th>فايدتها</th></tr>
+    <tr><td>title</td><td>كلام بيظهر لما توقف بالماوس على العنصر</td></tr>
+    <tr><td>style</td><td>تغيير الشكل (لون، حجم...) - هنشرحها كمان شوية</td></tr>
+    <tr><td>id</td><td>اسم مميز للعنصر (مايتكررش في الصفحة)</td></tr>
+    <tr><td>class</td><td>اسم «مجموعة» ممكن تتكرر على عناصر كتير (بنستخدمها مع CSS)</td></tr>
+  </table>
+  <div class="example"><script type="text/html">
+<p title="ألف مبروك 🎉">وقّف الماوس على الجملة دي وشوف هيحصل إيه</p>
+<p id="intro" class="important">فقرة ليها id وclass</p>
+  </script></div>
+</section>
+
+<!-- ============ 10 ============ -->
+<section class="lesson" id="l10" data-title="الروابط (Links)">
+  <h2><span class="num">10</span> الروابط (Links)</h2>
+  <p>الرابط بيتعمل بوسم <code class="in">&lt;a&gt;</code> (a = anchor يعني «مرساة»)، والخاصية <code class="in">href</code> هي العنوان اللي هيروح له.</p>
+  <div class="example"><script type="text/html">
+<!-- رابط عادي -->
+<a href="https://www.google.com">روح لجوجل</a>
+<br><br>
+<!-- رابط يفتح في تاب جديدة -->
+<a href="https://www.wikipedia.org" target="_blank">ويكيبيديا في تاب جديدة</a>
+<br><br>
+<!-- رابط لصفحة تانية عندك في نفس الفولدر -->
+<a href="about.html">صفحة من نحن</a>
+<br><br>
+<!-- رابط إيميل -->
+<a href="mailto:test@example.com">ابعتلي إيميل</a>
+<br><br>
+<!-- رابط اتصال (بيشتغل على الموبايل) -->
+<a href="tel:+201000000000">اتصل بيا</a>
+  </script></div>
+  <table class="ref">
+    <tr><th>الخاصية</th><th>معناها</th></tr>
+    <tr><td>href="..."</td><td>العنوان اللي الرابط بيوديك عليه</td></tr>
+    <tr><td>target="_blank"</td><td>افتح الرابط في تاب جديدة</td></tr>
+  </table>
+  <div class="tip"><b>💡 رابط لمكان في نفس الصفحة</b>لو عندك عنصر <code class="in">id="contact"</code> تقدر تعمل له رابط: <code class="in">&lt;a href="#contact"&gt;</code> ولما تدوس، الصفحة تنزل له على طول. (الفهرس اللي على جنب في الصفحة دي شغال كده بالظبط!)</div>
+</section>
+
+<!-- ============ 11 ============ -->
+<section class="lesson" id="l11" data-title="الصور (Images)">
+  <h2><span class="num">11</span> الصور (Images)</h2>
+  <p>الصورة بتتحط بوسم <code class="in">&lt;img&gt;</code> ومالوش قفل.</p>
+  <div class="example"><script type="text/html">
+<img src="photo.jpg" alt="صورة منظر طبيعي" width="300">
+
+<p>صورة أصغر:</p>
+<img src="photo.jpg" alt="صورة صغيرة" width="150" height="80">
+  </script></div>
+  <table class="ref">
+    <tr><th>الخاصية</th><th>معناها</th></tr>
+    <tr><td>src="photo.jpg"</td><td>مكان الصورة (Source). لو الصورة جنب ملف الـ html اكتب اسمها بس، أو حط رابط صورة من النت.</td></tr>
+    <tr><td>alt="..."</td><td>وصف الصورة: بيظهر لو الصورة مافتحتش، والمكفوفين بيسمعوه، وجوجل بيفهم منه الصورة.</td></tr>
+    <tr><td>width / height</td><td>العرض / الطول بالبكسل. لو حطيت واحد بس، التاني بيتظبط لوحده من غير ما الصورة تتمط.</td></tr>
+  </table>
+  <div class="warn"><b>⚠️ لو الصورة مش ظاهرة</b>اتأكد إن اسم الصورة وامتدادها (jpg / png) مكتوبين <b>بالظبط</b> زي الملف، حتى الحروف الكابيتال والصغيرة. ولو في فولدر اكتب: <code class="in">src="images/photo.jpg"</code></div>
+  <h3 class="sub">صورة تبقى رابط</h3>
+  <div class="example"><script type="text/html">
+<a href="https://www.google.com">
+  <img src="photo.jpg" alt="دوس عليا" width="200">
+</a>
+<p>☝️ دوس على الصورة هتفتح الرابط</p>
+  </script></div>
+</section>
+
+<!-- ============ 12 ============ -->
+<section class="lesson" id="l12" data-title="القوائم (Lists)">
+  <h2><span class="num">12</span> القوائم (Lists)</h2>
+  <h3 class="sub">١) قائمة نقط (مش مترقمة) - ul</h3>
+  <p><code class="in">ul</code> = Unordered List، وكل عنصر جواها <code class="in">li</code> = List Item.</p>
+  <div class="example"><script type="text/html">
+<h3>طلبات البيت:</h3>
+<ul>
+  <li>عيش</li>
+  <li>لبن</li>
+  <li>جبنة</li>
+</ul>
+  </script></div>
+  <h3 class="sub">٢) قائمة مترقمة - ol</h3>
+  <p><code class="in">ol</code> = Ordered List (مرتبة بأرقام).</p>
+  <div class="example"><script type="text/html">
+<h3>خطوات عمل الشاي:</h3>
+<ol>
+  <li>اغلي المية</li>
+  <li>حط الشاي في الكوباية</li>
+  <li>صب المية وقلّب</li>
+</ol>
+
+<!-- ترقيم بالحروف ويبدأ من 3 -->
+<ol type="A" start="3">
+  <li>عنصر</li>
+  <li>عنصر</li>
+</ol>
+  </script></div>
+  <h3 class="sub">٣) قائمة جوه قائمة</h3>
+  <div class="example"><script type="text/html">
+<ul>
+  <li>فواكه
+    <ul>
+      <li>تفاح</li>
+      <li>موز</li>
+    </ul>
+  </li>
+  <li>خضار</li>
+</ul>
+  </script></div>
+</section>
+
+<!-- ============ 13 ============ -->
+<section class="lesson" id="l13" data-title="الجداول (Tables)">
+  <h2><span class="num">13</span> الجداول (Tables)</h2>
+  <p>الجدول بيتبني صف صف:</p>
+  <ul>
+    <li><code class="in">&lt;table&gt;</code> = الجدول كله</li>
+    <li><code class="in">&lt;tr&gt;</code> = صف (Table Row)</li>
+    <li><code class="in">&lt;th&gt;</code> = خلية عنوان (Table Header) - بتظهر عريضة</li>
+    <li><code class="in">&lt;td&gt;</code> = خلية عادية (Table Data)</li>
+  </ul>
+  <div class="example"><script type="text/html">
+<table border="1">
+  <tr>
+    <th>الاسم</th>
+    <th>السن</th>
+    <th>المدينة</th>
+  </tr>
+  <tr>
+    <td>محمد</td>
+    <td>25</td>
+    <td>القاهرة</td>
+  </tr>
+  <tr>
+    <td>سارة</td>
+    <td>22</td>
+    <td>الرياض</td>
+  </tr>
+</table>
+  </script></div>
+  <h3 class="sub">دمج الخلايا</h3>
+  <p><code class="in">colspan="2"</code> = الخلية تاخد مكان عمودين، و <code class="in">rowspan="2"</code> = تاخد مكان صفين.</p>
+  <div class="example"><script type="text/html">
+<table border="1" cellpadding="8">
+  <caption>جدول الحصص</caption>
+  <tr>
+    <th>اليوم</th>
+    <th colspan="2">الحصص</th>
+  </tr>
+  <tr>
+    <td rowspan="2">الأحد</td>
+    <td>عربي</td>
+    <td>رياضيات</td>
+  </tr>
+  <tr>
+    <td>علوم</td>
+    <td>إنجليزي</td>
+  </tr>
+</table>
+  </script></div>
+  <div class="tip"><b>💡 ملحوظة</b><code class="in">border</code> و <code class="in">cellpadding</code> طريقة قديمة وسهلة للتجربة. في الشغل الحقيقي بنعمل الحدود بالـ CSS.</div>
+</section>
+
+<!-- ============ 14 ============ -->
+<section class="lesson" id="l14" data-title="الألوان والستايل">
+  <h2><span class="num">14</span> الألوان والشكل (لمحة عن CSS)</h2>
+  <p>HTML لوحدها شكلها بسيط. عشان تلوّن وتكبّر بنستخدم خاصية <code class="in">style</code> وجواها أوامر CSS بالشكل ده: <code class="in">style="الخاصية: القيمة;"</code></p>
+  <div class="example"><script type="text/html">
+<h2 style="color: blue;">عنوان أزرق</h2>
+<p style="color: white; background-color: green;">خلفية خضرا وكلام أبيض</p>
+<p style="font-size: 26px;">كلام كبير</p>
+<p style="text-align: center;">كلام في النص</p>
+<p style="color: #e11d48; font-weight: bold;">لون بالكود (Hex)</p>
+<p style="border: 2px solid orange; padding: 10px; border-radius: 10px;">فقرة جوه برواز بأركان مدورة</p>
+  </script></div>
+  <table class="ref">
+    <tr><th>CSS</th><th>بيعمل إيه</th></tr>
+    <tr><td>color</td><td>لون الكلام (red / blue / #ff0000)</td></tr>
+    <tr><td>background-color</td><td>لون الخلفية</td></tr>
+    <tr><td>font-size</td><td>حجم الخط (مثلًا 20px)</td></tr>
+    <tr><td>text-align</td><td>مكان الكلام: center / right / left</td></tr>
+    <tr><td>border</td><td>برواز: سُمك + نوع + لون</td></tr>
+    <tr><td>padding</td><td>مسافة جوه البرواز</td></tr>
+  </table>
+  <h3 class="sub">الطريقة الأنضف: وسم style في الـ head</h3>
+  <p>بدل ما تكتب style على كل عنصر، تكتب القواعد مرة واحدة وتتطبق على كل العناصر من نفس النوع أو نفس الـ class:</p>
+  <div class="example"><script type="text/html">
+<style>
+  h3 { color: purple; }
+  .box { background: #fef3c7; padding: 10px; border-radius: 8px; }
+</style>
+
+<h3>كل عناوين h3 بقت بنفسجي</h3>
+<h3>وده كمان</h3>
+<p class="box">أي عنصر عليه class="box" هياخد الشكل ده</p>
+<p class="box">وده كمان 👌</p>
+  </script></div>
+</section>
+
+<!-- ============ 15 ============ -->
+<section class="lesson" id="l15" data-title="div و span">
+  <h2><span class="num">15</span> div و span (العلب)</h2>
+  <p>دول عناصر «فاضية» ملهاش شكل خاص، بنستخدمها عشان نجمّع حاجات ونديها شكل:</p>
+  <ul>
+    <li><code class="in">&lt;div&gt;</code> = علبة <b>كبيرة</b>: بتاخد سطر كامل لوحدها (عنصر Block).</li>
+    <li><code class="in">&lt;span&gt;</code> = علبة <b>صغيرة</b> جوه السطر: لكلمة أو جزء من جملة (عنصر Inline).</li>
+  </ul>
+  <div class="example"><script type="text/html">
+<div style="background: lightblue; padding: 10px;">
+  <h3>أنا div</h3>
+  <p>وجوايا عنوان وفقرة</p>
+</div>
+
+<p>أنا جملة عادية وفيها <span style="color: red; font-weight: bold;">كلمة حمرا</span> بـ span.</p>
+  </script></div>
+  <div class="tip"><b>💡 الفرق ببساطة</b>العناصر الـ <b>Block</b> (زي div, p, h1, ul) بتبدأ في سطر جديد وتاخد العرض كله. العناصر الـ <b>Inline</b> (زي span, a, b, img) بتقعد جنب بعض في نفس السطر.</div>
+</section>
+
+<!-- ============ 16 ============ -->
+<section class="lesson" id="l16" data-title="النماذج (Forms)">
+  <h2><span class="num">16</span> النماذج (Forms) - خانات الكتابة والأزرار</h2>
+  <p>أي مكان بتكتب فيه بياناتك (تسجيل دخول، بحث، اشتراك) اسمه <b>Form</b>. أهم عنصر فيه <code class="in">&lt;input&gt;</code> ونوعه بيتحدد بـ <code class="in">type</code>.</p>
+  <div class="example"><script type="text/html">
+<form>
+  <label for="name">الاسم:</label>
+  <input type="text" id="name" placeholder="اكتب اسمك هنا">
+  <br><br>
+
+  <label>الإيميل:</label>
+  <input type="email" placeholder="name@mail.com">
+  <br><br>
+
+  <label>الباسورد:</label>
+  <input type="password">
+  <br><br>
+
+  <label>السن:</label>
+  <input type="number" min="1" max="100">
+  <br><br>
+
+  <label>تاريخ الميلاد:</label>
+  <input type="date">
+  <br><br>
+
+  <button type="submit">إرسال</button>
+</form>
+  </script></div>
+  <h3 class="sub">اختيارات: radio و checkbox و select</h3>
+  <div class="example"><script type="text/html">
+<form>
+  <p>النوع (اختيار واحد بس):</p>
+  <input type="radio" name="gender" id="m"> <label for="m">ذكر</label>
+  <input type="radio" name="gender" id="f"> <label for="f">أنثى</label>
+
+  <p>هواياتك (ممكن أكتر من واحدة):</p>
+  <input type="checkbox" id="h1"> <label for="h1">قراءة</label>
+  <input type="checkbox" id="h2"> <label for="h2">رياضة</label>
+  <input type="checkbox" id="h3" checked> <label for="h3">برمجة</label>
+
+  <p>بلدك:</p>
+  <select>
+    <option>مصر</option>
+    <option>السعودية</option>
+    <option>الإمارات</option>
+  </select>
+
+  <p>رسالتك:</p>
+  <textarea rows="4" cols="30" placeholder="اكتب رسالتك..."></textarea>
+  <br><br>
+  <input type="submit" value="ابعت">
+</form>
+  </script></div>
+  <table class="ref">
+    <tr><th>الكود</th><th>معناه</th></tr>
+    <tr><td>type="text"</td><td>خانة كتابة عادية</td></tr>
+    <tr><td>type="password"</td><td>الكتابة بتظهر نقط ••••</td></tr>
+    <tr><td>type="email" / "number" / "date"</td><td>إيميل / أرقام بس / تاريخ بنتيجة</td></tr>
+    <tr><td>type="radio"</td><td>اختيار واحد من مجموعة (لازم نفس <code class="in">name</code>)</td></tr>
+    <tr><td>type="checkbox"</td><td>مربع صح ✅ ممكن تختار أكتر من واحد</td></tr>
+    <tr><td>&lt;select&gt; + &lt;option&gt;</td><td>قائمة منسدلة</td></tr>
+    <tr><td>&lt;textarea&gt;</td><td>خانة كتابة كبيرة لأكتر من سطر</td></tr>
+    <tr><td>&lt;label for="id"&gt;</td><td>اسم الخانة، ولما تدوس عليه بيختار الخانة اللي ليها نفس الـ id</td></tr>
+    <tr><td>placeholder</td><td>كلام رمادي توضيحي جوه الخانة بيختفي لما تكتب</td></tr>
+    <tr><td>required</td><td>الخانة دي إجبارية مينفعش تتساب فاضية</td></tr>
+  </table>
+  <div class="tip"><b>💡 ملحوظة</b>الـ Form في HTML بيعرض الخانات بس. استقبال البيانات وحفظها محتاج لغة تانية على السيرفر (زي Python أو PHP) - ودي خطوتك الجاية 😉</div>
+</section>
+
+<!-- ============ 17 ============ -->
+<section class="lesson" id="l17" data-title="الصوت والفيديو">
+  <h2><span class="num">17</span> الصوت والفيديو والصفحات المدمجة</h2>
+  <div class="example"><script type="text/html">
+<!-- فيديو: حط ملف الفيديو جنب صفحتك -->
+<video src="movie.mp4" width="320" controls></video>
+
+<br>
+
+<!-- صوت -->
+<audio src="song.mp3" controls></audio>
+  </script></div>
+  <ul>
+    <li><code class="in">controls</code> = يظهر أزرار التشغيل والإيقاف والصوت.</li>
+    <li><code class="in">autoplay</code> = يشتغل لوحده أول ما الصفحة تفتح. <code class="in">loop</code> = يعيد نفسه.</li>
+  </ul>
+  <div class="warn"><b>⚠️</b>المشغل فوق فاضي لأن مفيش ملف <code class="in">movie.mp4</code> فعلًا. لما تحط ملف حقيقي جنب صفحتك هيشتغل.</div>
+  <h3 class="sub">iframe: صفحة جوه صفحة</h3>
+  <p>بيتستخدم مثلًا لعرض فيديو يوتيوب أو خريطة جوجل. يوتيوب بيديك الكود جاهز من زرار «مشاركة ⬅ تضمين (Embed)»:</p>
+  <div class="example"><script type="text/html">
+<iframe width="320" height="180"
+  src="https://www.youtube.com/embed/qz0aGYrrlhU"
+  title="فيديو يوتيوب" allowfullscreen></iframe>
+  </script></div>
+</section>
+
+<!-- ============ 18 ============ -->
+<section class="lesson" id="l18" data-title="الوسوم الدلالية">
+  <h2><span class="num">18</span> تقسيم الصفحة (الوسوم الدلالية - Semantic)</h2>
+  <p>بدل ما تعمل الصفحة كلها <code class="in">div</code>، HTML5 فيها وسوم أسماؤها بتشرح نفسها. بتخلي الكود منظم وجوجل يفهمه أحسن:</p>
+  <table class="ref">
+    <tr><th>الوسم</th><th>مكانه</th></tr>
+    <tr><td>&lt;header&gt;</td><td>رأس الصفحة (اللوجو والعنوان)</td></tr>
+    <tr><td>&lt;nav&gt;</td><td>قائمة الروابط (المنيو)</td></tr>
+    <tr><td>&lt;main&gt;</td><td>المحتوى الأساسي</td></tr>
+    <tr><td>&lt;section&gt;</td><td>قسم من الصفحة</td></tr>
+    <tr><td>&lt;article&gt;</td><td>موضوع مستقل (زي مقال أو بوست)</td></tr>
+    <tr><td>&lt;aside&gt;</td><td>حاجة جانبية</td></tr>
+    <tr><td>&lt;footer&gt;</td><td>ذيل الصفحة (حقوق النشر، التواصل)</td></tr>
+  </table>
+  <div class="example"><script type="text/html">
+<header style="background:#4f46e5; color:white; padding:10px;">
+  <h2>موقعي 🌟</h2>
+  <nav>
+    <a href="#" style="color:white;">الرئيسية</a> |
+    <a href="#" style="color:white;">من نحن</a> |
+    <a href="#" style="color:white;">تواصل</a>
+  </nav>
+</header>
+
+<main style="padding:10px;">
+  <section>
+    <h3>قسم الأخبار</h3>
+    <article>
+      <h4>خبر جديد</h4>
+      <p>تفاصيل الخبر هنا...</p>
+    </article>
+  </section>
+</main>
+
+<footer style="background:#eee; padding:10px; text-align:center;">
+  جميع الحقوق محفوظة &copy; 2026
+</footer>
+  </script></div>
+</section>
+
+<!-- ============ 19 ============ -->
+<section class="lesson" id="l19" data-title="الرموز الخاصة">
+  <h2><span class="num">19</span> الرموز الخاصة (Entities)</h2>
+  <p>لو عايز تكتب علامة <code class="in">&lt;</code> في الصفحة، المتصفح هيفتكرها بداية وسم! عشان كده فيه أكواد خاصة بتبدأ بـ <code class="in">&amp;</code> وتخلص بـ <code class="in">;</code></p>
+  <div class="example"><script type="text/html">
+<p>&lt;p&gt; ده شكل وسم الفقرة</p>
+<p>حقوق النشر: &copy; - علامة مسجلة: &reg;</p>
+<p>كلمة&nbsp;&nbsp;&nbsp;&nbsp;وبعدها مسافات حقيقية</p>
+<p>&amp; علامة و</p>
+<p>&hearts; قلب - &rarr; سهم</p>
+  </script></div>
+  <table class="ref">
+    <tr><th>الكود</th><th>بيظهر</th></tr>
+    <tr><td>&amp;lt;</td><td>&lt; (أصغر من)</td></tr>
+    <tr><td>&amp;gt;</td><td>&gt; (أكبر من)</td></tr>
+    <tr><td>&amp;amp;</td><td>&amp;</td></tr>
+    <tr><td>&amp;nbsp;</td><td>مسافة حقيقية مش بتتشال</td></tr>
+    <tr><td>&amp;copy;</td><td>&copy;</td></tr>
+  </table>
+  <div class="tip"><b>💡</b>الإيموجي 😍🔥 تقدر تكتبها عادي جدًا طالما حاطط <code class="in">&lt;meta charset="UTF-8"&gt;</code>.</div>
+</section>
+
+<!-- ============ 20 ============ -->
+<section class="lesson" id="l20" data-title="مشروع: صفحة كاملة">
+  <h2><span class="num">20</span> 🏆 المشروع النهائي: صفحة تعريفية كاملة</h2>
+  <p>تعالى نجمّع كل اللي اتعلمناه في صفحة واحدة حقيقية. انسخ الكود ده كله، حطه في ملف <code class="in">index.html</code> وافتحه في المتصفح:</p>
+  <div class="example"><script type="text/html">
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <title>صفحتي الشخصية</title>
+  <style>
+    body { font-family: Tahoma, Arial; margin: 0; background: #f3f4f6; }
+    header { background: #0ea5e9; color: white; text-align: center; padding: 20px; }
+    nav a { color: white; margin: 0 8px; }
+    section { background: white; margin: 12px; padding: 15px; border-radius: 10px; }
+    img { border-radius: 50%; }
+    table { border-collapse: collapse; width: 100%; }
+    td, th { border: 1px solid #ccc; padding: 6px; }
+    footer { text-align: center; padding: 10px; color: #555; }
+  </style>
+</head>
+<body>
+
+  <header>
+    <img src="photo.jpg" alt="صورتي" width="100" height="100">
+    <h1>محمد علي</h1>
+    <p>مهندس 👷 وبتعلم برمجة المواقع</p>
+    <nav>
+      <a href="#about">عني</a>
+      <a href="#skills">مهاراتي</a>
+      <a href="#contact">تواصل</a>
+    </nav>
+  </header>
+
+  <section id="about">
+    <h2>👋 عني</h2>
+    <p>أنا بحب <strong>التكنولوجيا</strong> وبتعلم <mark>HTML</mark> دلوقتي.</p>
+  </section>
+
+  <section id="skills">
+    <h2>🛠️ مهاراتي</h2>
+    <ul>
+      <li>HTML ✅</li>
+      <li>CSS (قريب)</li>
+      <li>Python 🐍</li>
+    </ul>
+    <table>
+      <tr><th>المهارة</th><th>المستوى</th></tr>
+      <tr><td>HTML</td><td>ممتاز</td></tr>
+      <tr><td>Python</td><td>مبتدئ</td></tr>
+    </table>
+  </section>
+
+  <section id="contact">
+    <h2>📩 تواصل معايا</h2>
+    <form>
+      <input type="text" placeholder="اسمك" required>
+      <input type="email" placeholder="إيميلك" required>
+      <br><br>
+      <textarea rows="3" cols="30" placeholder="رسالتك"></textarea>
+      <br>
+      <button type="submit">إرسال</button>
+    </form>
+  </section>
+
+  <footer>&copy; 2026 - صُنع بحب ❤️ بـ HTML</footer>
+
+</body>
+</html>
+  </script></div>
+  <div class="idea"><b>🎯 تحدّي ليك</b>غيّر الاسم لاسمك، وحط صورتك بدل photo.jpg، وزوّد قسم جديد فيه هواياتك بقائمة مترقمة.</div>
+</section>
+
+<!-- ============ 21 ============ -->
+<section class="lesson" id="l21" data-title="ملخص وأهم الوسوم">
+  <h2><span class="num">21</span> 📋 ملخص: أهم الوسوم في جدول واحد</h2>
+  <table class="ref">
+    <tr><th>الوسم</th><th>استخدامه</th></tr>
+    <tr><td>&lt;!DOCTYPE html&gt;</td><td>أول سطر في أي صفحة</td></tr>
+    <tr><td>&lt;html&gt; &lt;head&gt; &lt;body&gt;</td><td>هيكل الصفحة</td></tr>
+    <tr><td>&lt;title&gt;</td><td>اسم التاب</td></tr>
+    <tr><td>&lt;h1&gt; ... &lt;h6&gt;</td><td>العناوين</td></tr>
+    <tr><td>&lt;p&gt;</td><td>فقرة</td></tr>
+    <tr><td>&lt;br&gt; &lt;hr&gt;</td><td>سطر جديد / خط فاصل</td></tr>
+    <tr><td>&lt;b&gt; &lt;i&gt; &lt;u&gt; &lt;mark&gt;</td><td>عريض / مائل / خط تحت / تظليل</td></tr>
+    <tr><td>&lt;a href=""&gt;</td><td>رابط</td></tr>
+    <tr><td>&lt;img src="" alt=""&gt;</td><td>صورة</td></tr>
+    <tr><td>&lt;ul&gt; &lt;ol&gt; &lt;li&gt;</td><td>قوائم</td></tr>
+    <tr><td>&lt;table&gt; &lt;tr&gt; &lt;th&gt; &lt;td&gt;</td><td>جداول</td></tr>
+    <tr><td>&lt;div&gt; &lt;span&gt;</td><td>علب للتجميع</td></tr>
+    <tr><td>&lt;form&gt; &lt;input&gt; &lt;button&gt;</td><td>نماذج وخانات</td></tr>
+    <tr><td>&lt;select&gt; &lt;textarea&gt; &lt;label&gt;</td><td>قائمة منسدلة / نص طويل / اسم الخانة</td></tr>
+    <tr><td>&lt;video&gt; &lt;audio&gt; &lt;iframe&gt;</td><td>فيديو / صوت / صفحة مدمجة</td></tr>
+    <tr><td>&lt;header&gt; &lt;nav&gt; &lt;main&gt; &lt;footer&gt;</td><td>تقسيم الصفحة</td></tr>
+    <tr><td>&lt;!-- --&gt;</td><td>تعليق</td></tr>
+  </table>
+  <h3 class="sub">✅ نصايح ذهبية</h3>
+  <ol>
+    <li>اقفل كل وسم فتحته.</li>
+    <li>رتّب الكود بمسافات (Indentation) عشان تقرأه بسهولة.</li>
+    <li>اكتب أسماء الوسوم بالحروف الصغيرة (<code class="in">&lt;p&gt;</code> مش <code class="in">&lt;P&gt;</code>).</li>
+    <li>حط <code class="in">alt</code> لكل صورة.</li>
+    <li>لو حاجة مش ظاهرة: دوس <b>F12</b> في المتصفح وشوف الأخطاء، أو كليك يمين ⬅ <b>Inspect</b>.</li>
+    <li>اتعلم بالتجربة: غيّر في الأمثلة اللي فوق بزرار «✏️ جرّب بنفسك».</li>
+  </ol>
+  <div class="idea"><b>🚀 خطوتك الجاية</b>بعد HTML اتعلم <b>CSS</b> عشان تجمّل الصفحات، وبعدها <b>JavaScript</b> عشان تخليها تتحرك وتتفاعل.</div>
+</section>
+
+
+<!-- ============ 22 ============ -->
+<section class="lesson" id="l22" data-title="🧪 ملعب التجربة">
+  <h2><span class="num">22</span> 🧪 ملعب التجربة: اكتب كودك وشوف النتيجة</h2>
+  <p>هنا المكان بتاعك 😎 اكتب أي كود HTML في الخانة اللي تحت، والنتيجة هتظهر جنبه على طول. لو مش عارف تبدأ منين، اختار مثال جاهز من القائمة أو جرّب واحد من التحديات.</p>
+
+  <div class="pg-tools">
+    <button id="pgRun">▶️ شغّل الكود</button>
+    <label class="pg-auto"><input type="checkbox" id="pgAuto" checked> تشغيل تلقائي وأنا بكتب</label>
+    <select id="pgTpl">
+      <option value="">📂 ابدأ بمثال جاهز...</option>
+      <option value="hello">صفحة ترحيب</option>
+      <option value="card">كارت تعريفي</option>
+      <option value="list">قائمة مشتريات</option>
+      <option value="table">جدول درجات</option>
+      <option value="form">فورم تسجيل</option>
+      <option value="full">صفحة كاملة بالهيكل</option>
+    </select>
+    <button id="pgClear" class="gray">🗑️ مسح</button>
+    <button id="pgSave" class="gray">💾 حمّل كملف .html</button>
+  </div>
+
+  <div class="pg-wrap">
+    <div class="pg-pane">
+      <div class="ex-bar code"><span>📝 اكتب الكود هنا</span><span id="pgCount" style="font-weight:400;font-size:.85rem"></span></div>
+      <textarea id="pgCode" spellcheck="false" placeholder="اكتب كود HTML هنا... مثلًا: &lt;h1&gt;أهلًا&lt;/h1&gt;"></textarea>
+    </div>
+    <div class="pg-pane">
+      <div class="ex-bar res"><span>👀 النتيجة</span></div>
+      <iframe id="pgOut" title="نتيجة الكود"></iframe>
+    </div>
+  </div>
+
+  <div class="tip"><b>💡 اختصارات</b>زرار <b>Tab</b> بيعمل مسافة جوه الكود، و <b>Ctrl + Enter</b> بيشغّل الكود. وكلامك بيتحفظ لوحده، فلو قفلت الصفحة وفتحتها تاني هتلاقيه زي ما هو.</div>
+
+  <h3 class="sub">🎯 تحديات صغيرة جرّبها</h3>
+  <ol class="challenges">
+    <li>اعمل عنوان <code class="in">h1</code> باسمك، وتحته فقرة بتعرّف فيها نفسك. <button class="try" data-c="1">ابدأ</button></li>
+    <li>اعمل قائمة مترقمة بـ 3 أفلام بتحبها، وخلي اسم أحلى واحد فيهم عريض. <button class="try" data-c="2">ابدأ</button></li>
+    <li>اعمل رابط لجوجل يفتح في تاب جديدة. <button class="try" data-c="3">ابدأ</button></li>
+    <li>اعمل جدول فيه عمودين (اليوم - المهمة) و3 صفوف. <button class="try" data-c="4">ابدأ</button></li>
+    <li>اعمل فقرة لونها أبيض وخلفيتها زرقا وكلامها في النص. <button class="try" data-c="5">ابدأ</button></li>
+  </ol>
+</section>
+
+</main>
+</div>
+
+<footer>صُنع بحب ❤️ عشان تتعلم HTML بسهولة · <a href="css.html">CSS</a> · <a href="js.html">JavaScript</a> · <a href="python.html">Python</a></footer>
+<button id="topBtn" title="لفوق" onclick="window.scrollTo({top:0})">↑</button>
+
+<script>
+(function(){
+  // صورة تجريبية بتتحط مكان photo.jpg في النتايج
+  var PHOTO = "data:image/svg+xml," + encodeURIComponent(
+    '<svg xmlns="http://www.w3.org/2000/svg" width="400" height="260" viewBox="0 0 400 260">' +
+    '<defs><linearGradient id="g" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#7dd3fc"/><stop offset="1" stop-color="#e0f2fe"/></linearGradient></defs>' +
+    '<rect width="400" height="260" fill="url(#g)"/><circle cx="320" cy="60" r="32" fill="#fde047"/>' +
+    '<path d="M0 260 L110 120 L190 210 L260 140 L400 260 Z" fill="#16a34a"/>' +
+    '<path d="M0 260 L80 190 L150 260 Z" fill="#15803d"/></svg>');
+
+  function esc(s){return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');}
+  function hlText(s){return esc(s).replace(/&amp;(#?\w+);/g,'<span class="e">&amp;$1;</span>');}
+  function hlAttrs(s){
+    var out='',re=/([^\s=\/]+)(?:(\s*=\s*)("[^"]*"|'[^']*'|[^\s]+))?|(\s+|\/)/g,m;
+    while((m=re.exec(s))){
+      if(m[4]!==undefined){out+=esc(m[4]);continue;}
+      out+='<span class="a">'+esc(m[1])+'</span>';
+      if(m[2]) out+=esc(m[2])+'<span class="v">'+esc(m[3])+'</span>';
+    }
+    return out;
+  }
+  function highlight(src){
+    var out='',last=0,re=/<\!--[\s\S]*?-->|<(\/?)(!DOCTYPE|[a-zA-Z][a-zA-Z0-9]*)([^>]*)>/gi,m;
+    while((m=re.exec(src))){
+      out+=hlText(src.slice(last,m.index));
+      if(m[0].indexOf('<!'+'--')===0) out+='<span class="c">'+esc(m[0])+'</span>';
+      else out+='<span class="t">&lt;'+m[1]+m[2]+'</span>'+hlAttrs(m[3])+'<span class="t">&gt;</span>';
+      last=re.lastIndex;
+    }
+    return out+hlText(src.slice(last));
+  }
+  function dedent(s){
+    s=s.replace(/^\s*\n/,'').replace(/\s+$/,'');
+    var lines=s.split('\n'),min=Infinity;
+    lines.forEach(function(l){if(l.trim()){var n=l.match(/^ */)[0].length;if(n<min)min=n;}});
+    return lines.map(function(l){return l.slice(min===Infinity?0:min);}).join('\n');
+  }
+  var GUARD='<scr'+'ipt>document.addEventListener("submit",function(e){e.preventDefault();alert("تم الإرسال ✅ (ده مجرد تجربة)");});<\/script>';
+  function buildDoc(code){
+    code=code.replace(/photo\.jpg/g,PHOTO);
+    if(/^\s*<!DOCTYPE/i.test(code)){
+      return code.replace(/<\/body>/i,GUARD+'</body>');
+    }
+    return '<!DOCTYPE html><html lang="ar" dir="rtl"><head><meta charset="UTF-8">'+
+      '<style>body{font-family:Tahoma,Arial,sans-serif;margin:14px;line-height:1.7;color:#222}</style></head><body>'+
+      code+GUARD+'</body></html>';
+  }
+  function fit(f){
+    try{var d=f.contentDocument;if(!d)return;f.style.height=((d.body?d.body.scrollHeight:60)+32)+'px';}catch(e){}
+  }
+
+  document.querySelectorAll('.example').forEach(function(box){
+    var s=box.querySelector('script[type="text/html"]');
+    var original=dedent(s.textContent);
+    box.innerHTML=
+      '<div class="ex-bar code"><span>📝 الكود</span><span>'+
+        '<button class="ghost cp">📋 نسخ</button><button class="ed">✏️ جرّب بنفسك</button><button class="ghost rs" style="display:none">↩️ رجّع الأصلي</button></span></div>'+
+      '<pre class="code"></pre><textarea class="code" spellcheck="false"></textarea>'+
+      '<div class="ex-bar res"><span>👀 النتيجة في المتصفح</span></div>'+
+      '<iframe class="result" title="النتيجة"></iframe>';
+    var pre=box.querySelector('pre'),ta=box.querySelector('textarea'),fr=box.querySelector('iframe');
+    var bEd=box.querySelector('.ed'),bRs=box.querySelector('.rs'),bCp=box.querySelector('.cp');
+    function render(code){
+      pre.innerHTML=highlight(code);
+      fr.onload=function(){fit(fr);setTimeout(function(){fit(fr);},400);};
+      fr.srcdoc=buildDoc(code);
+    }
+    ta.value=original; render(original);
+    var timer;
+    ta.addEventListener('input',function(){clearTimeout(timer);timer=setTimeout(function(){render(ta.value);},300);});
+    bEd.onclick=function(){
+      var editing=ta.style.display==='block';
+      if(editing){ta.style.display='none';pre.style.display='block';bEd.textContent='✏️ جرّب بنفسك';}
+      else{ta.style.height=Math.max(pre.offsetHeight,160)+'px';ta.style.display='block';pre.style.display='none';ta.focus();bEd.textContent='✅ خلصت';bRs.style.display='inline-block';}
+    };
+    bRs.onclick=function(){ta.value=original;render(original);};
+    bCp.onclick=function(){
+      var txt=ta.value;
+      (navigator.clipboard?navigator.clipboard.writeText(txt):Promise.reject()).then(function(){bCp.textContent='✔️ اتنسخ';},function(){
+        ta.style.display='block';ta.select();try{document.execCommand('copy');bCp.textContent='✔️ اتنسخ';}catch(e){}
+        if(bEd.textContent.indexOf('جرّب')>-1)ta.style.display='none';
+      });
+      setTimeout(function(){bCp.textContent='📋 نسخ';},1500);
+    };
+  });
+
+  // الفهرس
+  var toc=document.getElementById('toc');
+  var secs=document.querySelectorAll('section.lesson');
+  secs.forEach(function(sec,i){
+    var a=document.createElement('a');a.href='#'+sec.id;a.textContent=(i+1)+'. '+sec.dataset.title;toc.appendChild(a);
+  });
+  var links=toc.querySelectorAll('a');
+  window.addEventListener('scroll',function(){
+    var cur=0;secs.forEach(function(s,i){if(s.getBoundingClientRect().top<120)cur=i;});
+    links.forEach(function(l,i){l.classList.toggle('active',i===cur);});
+  });
+  window.addEventListener('resize',function(){document.querySelectorAll('iframe.result').forEach(fit);});
+})();
+</script>
+
+<script>
+(function(){
+  var code=document.getElementById('pgCode'), out=document.getElementById('pgOut');
+  var auto=document.getElementById('pgAuto'), tpl=document.getElementById('pgTpl'), cnt=document.getElementById('pgCount');
+  var KEY='mero-playground-code';
+  var T={
+    hello:'<h1>أهلًا بيك 👋</h1>\n<p>دي أول صفحة أعملها بإيدي.</p>\n<p style="color: green;">غيّر الكلام ده وشوف النتيجة!</p>',
+    card:'<div style="border: 2px solid #4f46e5; border-radius: 12px; padding: 15px; width: 250px; text-align: center;">\n  <img src="photo.jpg" alt="صورة" width="100" height="100" style="border-radius: 50%;">\n  <h2>اسمك هنا</h2>\n  <p>مهندس | بتعلم برمجة</p>\n  <a href="mailto:test@example.com">تواصل معايا</a>\n</div>',
+    list:'<h2>🛒 قائمة المشتريات</h2>\n<ul>\n  <li>عيش</li>\n  <li>لبن</li>\n  <li><b>قهوة</b> (مهم جدًا 😄)</li>\n</ul>',
+    table:'<table border="1" cellpadding="8">\n  <tr>\n    <th>المادة</th>\n    <th>الدرجة</th>\n  </tr>\n  <tr>\n    <td>عربي</td>\n    <td>95</td>\n  </tr>\n  <tr>\n    <td>رياضيات</td>\n    <td>88</td>\n  </tr>\n</table>',
+    form:'<h2>📝 تسجيل</h2>\n<form>\n  <label>الاسم:</label>\n  <input type="text" placeholder="اسمك" required>\n  <br><br>\n  <label>الإيميل:</label>\n  <input type="email" placeholder="name@mail.com" required>\n  <br><br>\n  <input type="checkbox" id="ok"> <label for="ok">موافق على الشروط</label>\n  <br><br>\n  <button type="submit">سجّل</button>\n</form>',
+    full:'<!DOCTYPE html>\n<html lang="ar" dir="rtl">\n<head>\n  <meta charset="UTF-8">\n  <title>صفحتي</title>\n  <style>\n    body { font-family: Tahoma; background: #f0f9ff; }\n    h1 { color: #0369a1; }\n  </style>\n</head>\n<body>\n  <h1>صفحتي الكاملة</h1>\n  <p>اكتب هنا أي حاجة...</p>\n</body>\n</html>'
+  };
+  var C={
+    '1':'<h1>اكتب اسمك هنا</h1>\n<p>اكتب تعريف عن نفسك...</p>',
+    '2':'<ol>\n  <li>فيلم 1</li>\n  <li>فيلم 2</li>\n  <li>فيلم 3</li>\n</ol>\n<!-'+'- حط أحلى فيلم بين <b> و </b> -->',
+    '3':'<a href="https://www.google.com">جوجل</a>\n<!-'+'- زوّد الخاصية اللي بتفتح الرابط في تاب جديدة -->',
+    '4':'<table border="1">\n  <tr>\n    <th>اليوم</th>\n    <th>المهمة</th>\n  </tr>\n  <!-'+'- كمّل الصفوف هنا -->\n</table>',
+    '5':'<p style="">فقرة بيضا على خلفية زرقا</p>\n<!-'+'- اكتب جوه style: color و background-color و text-align -->'
+  };
+  var PHOTO="data:image/svg+xml,"+encodeURIComponent('<svg xmlns="http://www.w3.org/2000/svg" width="400" height="260" viewBox="0 0 400 260"><rect width="400" height="260" fill="#bae6fd"/><circle cx="320" cy="60" r="32" fill="#fde047"/><path d="M0 260 L110 120 L190 210 L260 140 L400 260 Z" fill="#16a34a"/></svg>');
+  var GUARD='<scr'+'ipt>document.addEventListener("submit",function(e){e.preventDefault();alert("تم الإرسال ✅ (ده مجرد تجربة)");});<\/script>';
+  function run(){
+    var c=code.value.replace(/photo\.jpg/g,PHOTO), doc;
+    if(/^\s*<!DOCTYPE/i.test(c)) doc=/<\/body>/i.test(c)?c.replace(/<\/body>/i,GUARD+'</body>'):c+GUARD;
+    else doc='<!DOCTYPE html><html lang="ar" dir="rtl"><head><meta charset="UTF-8"><style>body{font-family:Tahoma,Arial,sans-serif;margin:14px;line-height:1.7;color:#222}</style></head><body>'+c+GUARD+'</body></html>';
+    out.srcdoc=doc;
+    cnt.textContent=code.value.split('\n').length+' سطر';
+    try{localStorage.setItem(KEY,code.value);}catch(e){}
+  }
+  function load(v){code.value=v;run();code.focus();}
+  var saved=null; try{saved=localStorage.getItem(KEY);}catch(e){}
+  code.value = saved!==null && saved.trim() ? saved : T.hello;
+  run();
+
+  var timer;
+  code.addEventListener('input',function(){ if(auto.checked){clearTimeout(timer);timer=setTimeout(run,350);} else {try{localStorage.setItem(KEY,code.value);}catch(e){}} });
+  code.addEventListener('keydown',function(e){
+    if(e.key==='Tab'){e.preventDefault();var a=code.selectionStart,b=code.selectionEnd;code.value=code.value.slice(0,a)+'  '+code.value.slice(b);code.selectionStart=code.selectionEnd=a+2;if(auto.checked)run();}
+    if(e.key==='Enter'&&(e.ctrlKey||e.metaKey)){e.preventDefault();run();}
+  });
+  document.getElementById('pgRun').onclick=run;
+  document.getElementById('pgClear').onclick=function(){ if(!code.value.trim()||confirm('متأكد إنك عايز تمسح الكود؟')) load(''); };
+  tpl.onchange=function(){ if(tpl.value){ load(T[tpl.value]); tpl.value=''; } };
+  document.querySelectorAll('.challenges .try').forEach(function(b){
+    b.onclick=function(){ load(C[b.dataset.c]); document.getElementById('pgCode').scrollIntoView({behavior:'smooth',block:'center'}); };
+  });
+  document.getElementById('pgSave').onclick=function(){
+    var c=code.value;
+    if(!/^\s*<!DOCTYPE/i.test(c)) c='<!DOCTYPE html>\n<html lang="ar" dir="rtl">\n<head>\n  <meta charset="UTF-8">\n  <title>صفحتي</title>\n</head>\n<body>\n'+c+'\n</body>\n</html>';
+    var a=document.createElement('a');
+    a.href=URL.createObjectURL(new Blob([c],{type:'text/html;charset=utf-8'}));
+    a.download='my-page.html'; document.body.appendChild(a); a.click(); a.remove();
+  };
+})();
+</script>
+
+<script>
+/* ===== تاسكات الدروس: كل درس مقفول لحد ما تحل تاسك اللي قبله ===== */
+window.LESSON_TASKS = { page: 'html', mode: 'dom',
+exam: [
+  { q: 'HTML في مثال البيت 🏠 تبقى إيه؟', o: ['الطوب والحيطان 🧱', 'الدهان والديكور 🎨', 'الكهربا ⚡'], a: 0 },
+  { q: 'أنهي وسم بيعمل <b>أكبر</b> عنوان؟', o: ['<code>&lt;h6&gt;</code>', '<code>&lt;h1&gt;</code>', '<code>&lt;head&gt;</code>'], a: 1 },
+  { q: 'أنهي وسم بينزّل سطر جديد؟', o: ['<code>&lt;br&gt;</code>', '<code>&lt;hr&gt;</code>', '<code>&lt;new&gt;</code>'], a: 0 },
+  { q: 'الرابط بيتعمل بأنهي وسم؟', o: ['<code>&lt;link&gt;</code>', '<code>&lt;a&gt;</code>', '<code>&lt;url&gt;</code>'], a: 1 },
+  { q: 'عشان الرابط يفتح في <b>تاب جديدة</b> بنكتب إيه؟', o: ['<code>target="_blank"</code>', '<code>new="tab"</code>', '<code>open="yes"</code>'], a: 0 },
+  { q: 'في وسم الصورة <code>&lt;img&gt;</code>، أنهي خاصية فيها <b>مكان</b> الصورة؟', o: ['<code>alt</code>', '<code>src</code>', '<code>href</code>'], a: 1 },
+  { q: 'القايمة اللي بـ <b>أرقام</b> (1، 2، 3) بتتعمل بـ؟', o: ['<code>&lt;ul&gt;</code>', '<code>&lt;ol&gt;</code>', '<code>&lt;list&gt;</code>'], a: 1 },
+  { q: 'في الجدول، الخانة العادية اللي فيها بيانات اسمها؟', o: ['<code>&lt;th&gt;</code>', '<code>&lt;tr&gt;</code>', '<code>&lt;td&gt;</code>'], a: 2 },
+  { q: 'أي حاجة عايزها <b>تظهر</b> للناس في الصفحة بتتكتب جوه؟', o: ['<code>&lt;head&gt;</code>', '<code>&lt;body&gt;</code>', '<code>&lt;title&gt;</code>'], a: 1 },
+  { q: 'التعليق (الملاحظة اللي مش بتظهر) في HTML بيتكتب إزاي؟', o: ['<code>// ملاحظة</code>', '<code>&lt;!-- ملاحظة --&gt;</code>', '<code># ملاحظة</code>'], a: 1 }
+],
+tasks: {
+  l1: { q: 'اكتب كلمة <b>أهلًا</b> جوه وسم عنوان <code>h1</code>.<br>يعني: افتح بـ <code>&lt;h1&gt;</code> واكتب الكلمة واقفل بـ <code>&lt;/h1&gt;</code>.',
+    start: '', hint: 'الشكل كده: &lt;h1&gt;الكلمة&lt;/h1&gt;', sol: '<h1>أهلًا</h1>',
+    check: function (c) { var h = c.q('h1'); if (!h) return 'مفيش h1! لازم تكتب &lt;h1&gt; في الأول.'; return /أهل/.test(c.text(h)) || 'الـ h1 موجود بس مفيش جواه كلمة أهلًا.'; } },
+  l2: { q: 'اعمل أول صفحة ليك: عنوان <code>h1</code> فيه اسمك، وتحته فقرة <code>p</code> فيها أي كلام عنك.',
+    start: '', hint: 'سطرين: واحد &lt;h1&gt;...&lt;/h1&gt; والتاني &lt;p&gt;...&lt;/p&gt;', sol: '<h1>مروة</h1>\n<p>أنا بتعلم HTML 😄</p>',
+    check: function (c) { if (!c.text(c.q('h1'))) return 'محتاج h1 وجواه اسمك.'; return !!c.text(c.q('p')) || 'محتاج فقرة p وجواها كلام.'; } },
+  l3: { q: 'اعمل فقرة <code>p</code>، وجواها كلمة واحدة <b>عريضة</b> بوسم <code>b</code> (يعني وسم جوه وسم 📦).',
+    start: '<p>أنا بحب البرمجة</p>', hint: 'حط الكلمة اللي عايزها عريضة بين &lt;b&gt; و &lt;/b&gt; وهي جوه الـ p.', sol: '<p>أنا بحب <b>البرمجة</b></p>',
+    check: function (c) { return !!c.q('p b') || 'لازم يبقى فيه &lt;b&gt; جوه الـ &lt;p&gt;.'; } },
+  l4: { q: 'اكتب <b>الهيكل الكامل</b> للصفحة: <code>&lt;!DOCTYPE html&gt;</code> و <code>html</code> و <code>head</code> (جواه <code>meta charset</code> و <code>title</code>) و <code>body</code> (جواه <code>h1</code>).',
+    start: '<!DOCTYPE html>\n<html lang="ar" dir="rtl">\n  <head>\n    \n  </head>\n  <body>\n    \n  </body>\n</html>',
+    hint: 'جوه head حط: &lt;meta charset="UTF-8"&gt; و &lt;title&gt;أي اسم&lt;/title&gt;. وجوه body حط &lt;h1&gt;.',
+    sol: '<!DOCTYPE html>\n<html lang="ar" dir="rtl">\n  <head>\n    <meta charset="UTF-8">\n    <title>صفحتي</title>\n  </head>\n  <body>\n    <h1>أهلًا</h1>\n  </body>\n</html>',
+    check: function (c) {
+      if (!c.has(/<!DOCTYPE html>/i)) return 'ناقص &lt;!DOCTYPE html&gt; في أول سطر.';
+      if (!c.has(/<html[\s>]/i) || !c.has(/<\/html>/i)) return 'ناقص &lt;html&gt; أو قفلته &lt;/html&gt;.';
+      if (!c.has(/<head>[\s\S]*<\/head>/i)) return 'ناقص &lt;head&gt; ... &lt;/head&gt;.';
+      if (!c.has(/<meta\s+charset\s*=\s*["']?utf-8/i)) return 'ناقص &lt;meta charset="UTF-8"&gt; جوه الـ head.';
+      if (!c.has(/<title>[^<]+<\/title>/i)) return 'ناقص &lt;title&gt; وجواه اسم للصفحة.';
+      if (!c.has(/<body>[\s\S]*<h1>[\s\S]*<\/h1>[\s\S]*<\/body>/i)) return 'محتاج &lt;h1&gt; جوه الـ body.';
+      return true; } },
+  l5: { q: 'اعمل 3 عناوين ورا بعض: <code>h1</code> و <code>h2</code> و <code>h3</code> (اكتب جوه كل واحد أي كلام).',
+    start: '', hint: '&lt;h1&gt;كبير&lt;/h1&gt; وبعدين h2 وبعدين h3.', sol: '<h1>عنوان كبير</h1>\n<h2>عنوان متوسط</h2>\n<h3>عنوان صغير</h3>',
+    check: function (c) { var m = ['h1', 'h2', 'h3'].filter(function (t) { return !c.text(c.q(t)); }); return !m.length || ('ناقص: ' + m.join(' و ')); } },
+  l6: { q: 'اعمل <b>فقرتين</b> <code>p</code>، وبينهم خط فاصل <code>hr</code>. وفي الفقرة التانية انزل سطر جديد بـ <code>br</code>.',
+    start: '', hint: '&lt;p&gt;...&lt;/p&gt; ثم &lt;hr&gt; ثم &lt;p&gt;سطر&lt;br&gt;سطر تاني&lt;/p&gt;', sol: '<p>الفقرة الأولى</p>\n<hr>\n<p>الفقرة التانية<br>وده سطر جديد</p>',
+    check: function (c) { if (c.qa('p').length < 2) return 'محتاج فقرتين p.'; if (!c.q('hr')) return 'ناقص الخط الفاصل &lt;hr&gt;.'; return !!c.q('p br') || 'ناقص &lt;br&gt; جوه فقرة.'; } },
+  l7: { q: 'اكتب فقرة <code>p</code> فيها: كلمة <b>عريضة</b> (<code>b</code> أو <code>strong</code>)، وكلمة <i>مائلة</i> (<code>i</code> أو <code>em</code>)، وكلمة <mark>متعلّم عليها</mark> (<code>mark</code>).',
+    start: '<p>أنا شاطر جدًا ومبسوط</p>', hint: 'حوّط كل كلمة بالوسم بتاعها: &lt;b&gt;شاطر&lt;/b&gt; و &lt;i&gt;...&lt;/i&gt; و &lt;mark&gt;...&lt;/mark&gt;', sol: '<p>أنا <b>شاطر</b> <i>جدًا</i> و<mark>مبسوط</mark></p>',
+    check: function (c) { if (!c.q('p b, p strong')) return 'ناقص كلمة عريضة جوه الـ p.'; if (!c.q('p i, p em')) return 'ناقص كلمة مائلة.'; return !!c.q('p mark') || 'ناقص &lt;mark&gt;.'; } },
+  l8: { q: 'اكتب <b>تعليق</b> (ملاحظة مش بتظهر) فيه كلمة «ملاحظة»، وتحته فقرة <code>p</code> عادية بتظهر.',
+    start: '', hint: 'التعليق بيبدأ بـ &lt;!-- وبيخلص بـ --&gt;', sol: '<!-- ملاحظة: دي فقرة التعريف -->\n<p>أنا فقرة ظاهرة</p>',
+    check: function (c) { if (!c.has(/<!--[\s\S]*ملاحظة[\s\S]*-->/)) return 'ناقص تعليق &lt;!-- ... --&gt; وجواه كلمة ملاحظة.'; return !!c.text(c.q('p')) || 'ناقص فقرة p ظاهرة.'; } },
+  l9: { q: 'اعمل فقرة <code>p</code> عليها خاصية <code>title</code> قيمتها <b>معلومة</b> (لما تقف عليها بالماوس يظهر الكلام).',
+    start: '<p>عدّي بالماوس عليّا</p>', hint: 'الخاصية بتتكتب جوه وسم الفتح: &lt;p title="..."&gt;', sol: '<p title="معلومة">عدّي بالماوس عليّا</p>',
+    check: function (c) { var p = c.q('p[title]'); if (!p) return 'الـ p مفيهاش خاصية title.'; return p.getAttribute('title').trim() === 'معلومة' || 'قيمة الـ title لازم تبقى «معلومة» بالظبط.'; } },
+  l10: { q: 'اعمل رابط <code>a</code> مكتوب عليه «جوجل»، بيودّي على <code>https://www.google.com</code> وبيفتح في <b>تاب جديدة</b>.',
+    start: '', hint: 'href = العنوان، و target="_blank" = تاب جديدة.', sol: '<a href="https://www.google.com" target="_blank">جوجل</a>',
+    check: function (c) { var a = c.q('a'); if (!a) return 'مفيش رابط &lt;a&gt;.'; if (!/google\.com/.test(a.getAttribute('href') || '')) return 'الـ href لازم يبقى https://www.google.com'; if (a.getAttribute('target') !== '_blank') return 'ناقص target="_blank" عشان يفتح في تاب جديدة.'; return !!c.text(a) || 'اكتب كلام جوه الرابط.'; } },
+  l11: { q: 'حط صورة <code>img</code>: الـ <code>src</code> بتاعها <code>photo.jpg</code>، وليها <code>alt</code> فيه وصف للصورة، وعرضها <code>width="200"</code>.',
+    start: '', hint: '&lt;img src="..." alt="..." width="200"&gt; ومالهاش قفلة.', sol: '<img src="photo.jpg" alt="منظر طبيعي" width="200">',
+    check: function (c) { var i = c.q('img'); if (!i) return 'مفيش &lt;img&gt;.'; if (!c.has(/src\s*=\s*["']photo\.jpg["']/)) return 'الـ src لازم يبقى photo.jpg'; if (!(i.getAttribute('alt') || '').trim()) return 'ناقص alt وجواه وصف.'; return i.getAttribute('width') === '200' || 'ناقص width="200".'; } },
+  l12: { q: 'اعمل قايمة <b>بنقط</b> <code>ul</code> فيها 3 حاجات بتحبها، وتحتها قايمة <b>بأرقام</b> <code>ol</code> فيها خطوتين.',
+    start: '', hint: '&lt;ul&gt; جواها 3 &lt;li&gt;، و &lt;ol&gt; جواها 2 &lt;li&gt;.', sol: '<ul>\n  <li>القهوة</li>\n  <li>الكتب</li>\n  <li>البحر</li>\n</ul>\n<ol>\n  <li>اصحى</li>\n  <li>اذاكر</li>\n</ol>',
+    check: function (c) { if (c.qa('ul > li').length < 3) return 'الـ ul لازم يبقى فيها 3 li على الأقل.'; return c.qa('ol > li').length >= 2 || 'الـ ol لازم يبقى فيها 2 li على الأقل.'; } },
+  l13: { q: 'اعمل جدول <code>table</code> فيه صف عناوين (<code>th</code>): «الاسم» و«السن»، وتحته صفين فيهم بيانات (<code>td</code>).',
+    start: '<table border="1">\n  <tr>\n    <th>الاسم</th>\n    <th>السن</th>\n  </tr>\n  \n</table>', hint: 'كل صف = &lt;tr&gt; وجواه &lt;td&gt;...&lt;/td&gt; لكل خانة.',
+    sol: '<table border="1">\n  <tr>\n    <th>الاسم</th>\n    <th>السن</th>\n  </tr>\n  <tr>\n    <td>مروة</td>\n    <td>22</td>\n  </tr>\n  <tr>\n    <td>أحمد</td>\n    <td>25</td>\n  </tr>\n</table>',
+    check: function (c) { if (c.qa('table th').length < 2) return 'محتاج 2 th.'; var rows = c.qa('table tr').filter(function (r) { return r.querySelectorAll('td').length >= 2; }); return rows.length >= 2 || 'محتاج صفين tr كل واحد فيه 2 td.'; } },
+  l14: { q: 'اعمل فقرة <code>p</code> لون الكلام بتاعها <b>أحمر</b> <code>red</code>، باستخدام خاصية <code>style</code>.',
+    start: '<p>أنا فقرة حمرا</p>', hint: '&lt;p style="color: red;"&gt;', sol: '<p style="color: red;">أنا فقرة حمرا</p>',
+    check: function (c) { return c.is(c.q('p'), 'color', 'red') || 'لون الـ p لسه مش أحمر. اكتب style="color: red;"'; } },
+  l15: { q: 'اعمل <code>div</code> جواه فقرة <code>p</code>، وجوه الفقرة كلمة جوه <code>span</code>.',
+    start: '', hint: '&lt;div&gt;&lt;p&gt;كلام &lt;span&gt;كلمة&lt;/span&gt;&lt;/p&gt;&lt;/div&gt;', sol: '<div>\n  <p>أنا <span>مروة</span></p>\n</div>',
+    check: function (c) { return !!c.q('div p span') || 'لازم span جوه p جوه div.'; } },
+  l16: { q: 'اعمل فورم <code>form</code> جواه: خانة <code>input</code> نوعها <code>text</code>، وخانة نوعها <code>email</code>، وزرار إرسال.',
+    start: '<form>\n  \n</form>', hint: '&lt;input type="text"&gt; و &lt;input type="email"&gt; و &lt;button&gt;ابعت&lt;/button&gt;',
+    sol: '<form>\n  <input type="text" placeholder="اسمك">\n  <input type="email" placeholder="الإيميل">\n  <button type="submit">ابعت</button>\n</form>',
+    check: function (c) { if (!c.q('form input[type=text]')) return 'ناقص input type="text" جوه الفورم.'; if (!c.q('form input[type=email]')) return 'ناقص input type="email".'; return !!c.q('form button, form input[type=submit]') || 'ناقص زرار إرسال.'; } },
+  l17: { q: 'حط فيديو بوسم <code>video</code> وعليه خاصية <code>controls</code> (عشان يبان زرار التشغيل).',
+    start: '', hint: '&lt;video src="movie.mp4" controls width="300"&gt;&lt;/video&gt;', sol: '<video src="movie.mp4" controls width="300"></video>',
+    check: function (c) { var v = c.q('video'); if (!v) return 'مفيش &lt;video&gt;.'; return v.hasAttribute('controls') || 'ناقص خاصية controls.'; } },
+  l18: { q: 'اعمل هيكل صفحة بالوسوم اللي ليها معنى: <code>header</code> فوق، و <code>main</code> في النص، و <code>footer</code> تحت (وحط جوه كل واحد أي كلام).',
+    start: '', hint: '&lt;header&gt;...&lt;/header&gt; &lt;main&gt;...&lt;/main&gt; &lt;footer&gt;...&lt;/footer&gt;', sol: '<header>لوجو الموقع</header>\n<main>المحتوى</main>\n<footer>كل الحقوق محفوظة</footer>',
+    check: function (c) { var m = ['header', 'main', 'footer'].filter(function (t) { return !c.q(t); }); return !m.length || ('ناقص: ' + m.join(' و ')); } },
+  l19: { q: 'اكتب فقرة <code>p</code> فيها علامة الحقوق © باستخدام الكود الخاص <code>&amp;copy;</code> (مش تنسخ العلامة).',
+    start: '', hint: '&lt;p&gt;&amp;copy; 2026 مروة&lt;/p&gt;', sol: '<p>&copy; 2026 مروة</p>',
+    check: function (c) { if (!c.has(/&copy;/)) return 'لازم تكتب &amp;copy; بالحروف.'; return /©/.test(c.text(c.q('p'))) || 'الـ &amp;copy; لازم تبقى جوه p.'; } },
+  l20: { q: 'اعمل كارت تعريفي: <code>h2</code> فيه اسمك، وصورة <code>img</code> (src="photo.jpg")، وقايمة <code>ul</code> فيها هوايتين.',
+    start: '', hint: 'h2 + img + ul فيها 2 li.', sol: '<h2>مروة</h2>\n<img src="photo.jpg" alt="صورتي" width="150">\n<ul>\n  <li>القراية</li>\n  <li>البرمجة</li>\n</ul>',
+    check: function (c) { if (!c.text(c.q('h2'))) return 'ناقص h2 فيه اسمك.'; if (!c.q('img')) return 'ناقص الصورة img.'; return c.qa('ul li').length >= 2 || 'محتاج ul فيها 2 li.'; } },
+  l21: { q: 'التاسك الأخير قبل الملعب 🏁: اكتب صفحة صغيرة فيها <code>h1</code> وفقرة <code>p</code> ورابط <code>a</code> فيه <code>href</code> وصورة <code>img</code> وقايمة <code>ul</code>.',
+    start: '', hint: 'جمّع كل اللي اتعلمته: كل وسم في سطر.', sol: '<h1>صفحتي</h1>\n<p>أهلًا بيك</p>\n<a href="https://www.google.com">جوجل</a>\n<img src="photo.jpg" alt="صورة" width="150">\n<ul>\n  <li>HTML</li>\n  <li>CSS</li>\n</ul>',
+    check: function (c) { var m = []; if (!c.q('h1')) m.push('h1'); if (!c.q('p')) m.push('p'); if (!c.q('a[href]')) m.push('a بـ href'); if (!c.q('img')) m.push('img'); if (!c.q('ul li')) m.push('ul فيها li'); return !m.length || ('ناقص: ' + m.join(' و ')); } }
+}};
+</script>
+<script src="progress.js"></script>
 </body>
 </html>
